@@ -28,4 +28,5 @@
     <color name="md_on_error_container">#410E0B</color>
     <color name="md_inverse_surface">#2A2335</color>
     <color name="md_inverse_on_surface">#F3EDFA</color>
+    <color name="launcher_background">#6A2FA0</color>
 </resources>
