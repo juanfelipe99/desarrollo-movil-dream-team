@@ -1,9 +1,7 @@
 package com.equipo2.vinilos.data.network
 
-/** Modelos de la app. */
 import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.data.model.NewAlbum
-
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
