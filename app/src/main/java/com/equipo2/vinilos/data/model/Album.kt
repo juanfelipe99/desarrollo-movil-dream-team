@@ -22,7 +22,7 @@ data class NewAlbum(
     val recordLabel: String,
 )
 
-/** Únicos valores que acepta BackVynils; cualquier otro responde 400. */
+/** Únicos valores aceptados, cualquier otro responde 400. */
 object AlbumCatalog {
     val genres = listOf("Classical", "Salsa", "Rock", "Folk")
     val recordLabels = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")

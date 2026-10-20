@@ -18,7 +18,6 @@ class NetworkServiceAdapter(baseUrl: String) {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    // El backend vive en Render y la primera petición puede tardar mientras el servidor despierta.
     private val client = OkHttpClient.Builder()
         .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
