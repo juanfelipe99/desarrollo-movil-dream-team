@@ -4,13 +4,16 @@
     <string name="nav_albums">Álbumes</string>
     <string name="nav_artists">Artistas</string>
     <string name="nav_collectors">Coleccionistas</string>
-    
+
     <string name="album_list_title">Álbumes</string>
     <string name="artist_list_title">Artistas</string>
     <string name="collector_list_title">Coleccionistas</string>
 
     <string name="loading_default">Cargando…</string>
+
     <string name="error_load_title">No pudimos cargar %1$s</string>
     <string name="error_network_body">Revisa tu conexión a internet e inténtalo de nuevo.</string>
     <string name="error_network_retry">Reintentar</string>
+
+    <string name="cd_close_snackbar">Cerrar aviso</string>
 </resources>

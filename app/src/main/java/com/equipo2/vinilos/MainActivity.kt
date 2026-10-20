@@ -1,6 +1,7 @@
 package com.equipo2.vinilos
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.equipo2.vinilos.databinding.ActivityMainBinding
+import com.equipo2.vinilos.ui.common.AppSnackbar
 import kotlin.math.max
 
 /** Barra superior, contenedor de navegación y barra inferior. */
@@ -26,6 +28,18 @@ class MainActivity : AppCompatActivity() {
         val navController = binding.navHost.getFragment<NavHostFragment>().navController
         binding.toolbar.setupWithNavController(navController, AppBarConfiguration(binding.bottomNav.menu))
         binding.bottomNav.setupWithNavController(navController)
+    }
+
+    /** Muestra un aviso sobre el elemento inferior visible */
+    fun showSnackbar(
+        message: CharSequence,
+        isError: Boolean = false,
+        anchor: View? = null,
+        actionText: CharSequence? = null,
+        action: (() -> Unit)? = null,
+    ) {
+        val target = anchor?.takeIf { it.isShown } ?: binding.bottomNav.takeIf { it.isShown }
+        AppSnackbar.show(binding.root, message, isError, target, actionText, action)
     }
 
     private fun applyWindowInsets() {

@@ -33,6 +33,10 @@
         <item name="cornerRadius">24dp</item>
     </style>
 
+    <style name="Widget.Vinilos.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="android:layout_margin">16dp</item>
+    </style>
+
     <style name="Widget.Vinilos.Skeleton.Block" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">120dp</item>
@@ -48,12 +52,14 @@
     <!-- Tipografía con Roboto del sistema. En API 21 sans-serif-medium hace de SemiBold. -->
     <style name="TextAppearance.Vinilos.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
         <item name="android:textSize">40sp</item>
+        <item name="lineHeight">48sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/md_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vinilos.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="android:textSize">22sp</item>
+        <item name="lineHeight">28sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/md_on_surface</item>
@@ -61,6 +67,8 @@
 
     <style name="TextAppearance.Vinilos.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/md_on_surface</item>
     </style>
 
@@ -94,5 +102,6 @@
 
     <style name="TextAppearance.Vinilos.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
     </style>
 </resources>
