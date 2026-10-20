@@ -31,15 +31,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** Muestra un aviso sobre el elemento inferior visible */
-    fun showSnackbar(
-        message: CharSequence,
-        isError: Boolean = false,
-        anchor: View? = null,
-        actionText: CharSequence? = null,
-        action: (() -> Unit)? = null,
-    ) {
+    fun showSnackbar(message: CharSequence, isError: Boolean = false, anchor: View? = null) {
         val target = anchor?.takeIf { it.isShown } ?: binding.bottomNav.takeIf { it.isShown }
-        AppSnackbar.show(binding.root, message, isError, target, actionText, action)
+        AppSnackbar.show(binding.root, message, isError, target)
     }
 
     private fun applyWindowInsets() {

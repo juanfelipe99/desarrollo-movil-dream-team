@@ -15,17 +15,9 @@ object AppSnackbar {
 
     private const val DURATION_MS = 4000
 
-    fun show(
-        root: View,
-        message: CharSequence,
-        isError: Boolean = false,
-        anchor: View? = null,
-        actionText: CharSequence? = null,
-        action: (() -> Unit)? = null,
-    ) {
+    fun show(root: View, message: CharSequence, isError: Boolean = false, anchor: View? = null) {
         val snackbar = Snackbar.make(root, message, DURATION_MS)
         snackbar.anchorView = anchor
-        if (actionText != null && action != null) snackbar.setAction(actionText) { action() }
         snackbar.customize(isError)
         snackbar.show()
     }
