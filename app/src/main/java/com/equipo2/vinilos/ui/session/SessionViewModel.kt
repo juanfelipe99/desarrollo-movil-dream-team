@@ -18,8 +18,8 @@ class SessionViewModel(
     private val themeRepository: ThemeRepository,
 ) : ViewModel() {
 
-    fun enterAs(role: Role) {
-        viewModelScope.launch { roleRepository.setRole(role) }
+    suspend fun enterAs(role: Role) {
+        roleRepository.setRole(role)
     }
 
     /** Guarda el tema y lo aplica. */
