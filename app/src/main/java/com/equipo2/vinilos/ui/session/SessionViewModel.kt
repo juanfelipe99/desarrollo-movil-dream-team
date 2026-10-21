@@ -10,6 +10,9 @@ import com.equipo2.vinilos.data.model.ThemeMode
 import com.equipo2.vinilos.data.repository.RoleRepository
 import com.equipo2.vinilos.data.repository.ThemeRepository
 import com.equipo2.vinilos.ui.common.applyThemeMode
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /** Rol y tema de la app. Lo comparten la actividad y las pantallas que los cambian. */
@@ -17,6 +20,9 @@ class SessionViewModel(
     private val roleRepository: RoleRepository,
     private val themeRepository: ThemeRepository,
 ) : ViewModel() {
+
+    /** El rol guardado. Es null mientras se lee o si todavía no se eligió ninguno. */
+    val role: StateFlow<Role?> = roleRepository.role.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     suspend fun enterAs(role: Role) {
         roleRepository.setRole(role)
