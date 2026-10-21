@@ -4,5 +4,6 @@
     <string name="album_create_title">Crear álbum</string>
 
     <!-- Lectores de pantalla -->
+    <string name="cd_create_album">Crear álbum</string>
     <string name="cd_close_without_saving">Cerrar sin guardar</string>
 </resources>

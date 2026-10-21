@@ -7,23 +7,29 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Role
 import com.equipo2.vinilos.data.repository.RoleRepository
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RoleViewModel(private val roleRepository: RoleRepository) : ViewModel() {
 
+    private val currentRole = MutableStateFlow<Role?>(null)
+
     /** Rol actual. Es null solo mientras se lee. */
-    val role: StateFlow<Role?> = roleRepository.role.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    val role: StateFlow<Role?> = currentRole
+
+    init {
+        viewModelScope.launch { roleRepository.role.collect { currentRole.value = it } }
+    }
 
     /** Espera a que se guarde. */
     suspend fun saveRole(role: Role) {
         roleRepository.setRole(role)
     }
 
-    /** Desde el menú, sin esperar a que se guarde. */
+    /** Desde el menú. La pantalla cambia al instante, antes de que termine el guardado. */
     fun changeRole(role: Role) {
+        currentRole.value = role
         viewModelScope.launch { roleRepository.setRole(role) }
     }
 

@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    /** Vista de la pantalla actual que los avisos no deben tapar, como el botón «+» de Álbumes. */
+    var snackbarAnchor: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         RoleChip(this, binding.roleChip, onRoleChanged = { role -> showSnackbar(getString(role.changedMessageRes)) })
     }
 
-    /** Muestra un aviso encima de la barra inferior, o encima de anchor si se pasa. */
+    /** Muestra un aviso encima de anchor, del snackbarAnchor o de la barra inferior, el primero que se vea. */
     fun showSnackbar(message: CharSequence, isError: Boolean = false, anchor: View? = null) {
-        val target = anchor?.takeIf { it.isShown } ?: binding.bottomNav.takeIf { it.isShown }
+        val target = listOf(anchor, snackbarAnchor, binding.bottomNav).firstOrNull { it?.isShown == true }
         AppSnackbar.show(binding.root, message, isError, target)
     }
 

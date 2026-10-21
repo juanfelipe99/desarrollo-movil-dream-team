@@ -3,7 +3,9 @@
     <!-- Componentes -->
     <style name="Widget.Vinilos.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/md_surface</item>
+        <!-- Título a 20 dp del borde, o justo después del botón de 56 dp cuando hay X o flecha -->
         <item name="contentInsetStart">20dp</item>
+        <item name="titleMarginStart">0dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Vinilos.TitleLarge</item>
         <item name="navigationIconTint">@color/md_on_surface</item>
     </style>
