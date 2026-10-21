@@ -1,4 +1,4 @@
-package com.equipo2.vinilos.ui.albums
+package com.equipo2.vinilos.ui.albums.list
 
 import androidx.fragment.app.Fragment
 import com.equipo2.vinilos.R

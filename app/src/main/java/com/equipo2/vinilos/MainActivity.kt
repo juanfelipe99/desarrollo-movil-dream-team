@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -44,6 +45,22 @@ class MainActivity : AppCompatActivity() {
         val navController = binding.navHost.getFragment<NavHostFragment>().navController
         binding.toolbar.setupWithNavController(navController, AppBarConfiguration(binding.bottomNav.menu))
         binding.bottomNav.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            showFullScreen(destination.id == R.id.albumCreateFragment)
+        }
+    }
+
+    /** Pantalla completa: X para cerrar, sin chip de rol ni barra inferior. */
+    private fun showFullScreen(fullScreen: Boolean) {
+        binding.roleChipSlot.isVisible = !fullScreen
+        binding.bottomNav.isVisible = !fullScreen
+        binding.bottomNavDivider.isVisible = !fullScreen
+
+        // X en lugar de la flecha de volver, que pone la navegación
+        if (fullScreen) {
+            binding.toolbar.setNavigationIcon(R.drawable.ic_close)
+            binding.toolbar.setNavigationContentDescription(R.string.cd_close_without_saving)
+        }
     }
 
     private fun applyWindowInsets() {
