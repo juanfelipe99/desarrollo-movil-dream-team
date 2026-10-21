@@ -5,11 +5,11 @@
         android:icon="@drawable/ic_album"
         android:title="@string/nav_albums" />
     <item
-        android:id="@+id/artistsFragment"
+        android:id="@+id/artistListFragment"
         android:icon="@drawable/ic_mic"
         android:title="@string/nav_artists" />
     <item
-        android:id="@+id/collectorsFragment"
+        android:id="@+id/collectorListFragment"
         android:icon="@drawable/ic_groups"
         android:title="@string/nav_collectors" />
 </menu>

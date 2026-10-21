@@ -6,16 +6,16 @@
 
     <fragment
         android:id="@+id/albumListFragment"
-        android:name="com.equipo2.vinilos.ui.common.EmptySectionFragment"
+        android:name="com.equipo2.vinilos.ui.albums.AlbumListFragment"
         android:label="@string/album_list_title" />
 
     <fragment
-        android:id="@+id/artistsFragment"
-        android:name="com.equipo2.vinilos.ui.common.EmptySectionFragment"
+        android:id="@+id/artistListFragment"
+        android:name="com.equipo2.vinilos.ui.artists.ArtistListFragment"
         android:label="@string/artist_list_title" />
 
     <fragment
-        android:id="@+id/collectorsFragment"
-        android:name="com.equipo2.vinilos.ui.common.EmptySectionFragment"
+        android:id="@+id/collectorListFragment"
+        android:name="com.equipo2.vinilos.ui.collectors.CollectorListFragment"
         android:label="@string/collector_list_title" />
 </navigation>
