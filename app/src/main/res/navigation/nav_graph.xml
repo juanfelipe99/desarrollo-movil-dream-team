@@ -2,7 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/albumListFragment">
+    app:startDestination="@id/roleSelectFragment">
+
+    <!-- Al entrar se borra de la pila. -->
+    <fragment
+        android:id="@+id/roleSelectFragment"
+        android:name="com.equipo2.vinilos.ui.role.RoleSelectFragment">
+        <action
+            android:id="@+id/action_roleSelect_to_albums"
+            app:destination="@id/albumListFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/albumListFragment"
