@@ -37,6 +37,15 @@ android {
         buildConfig = true
         viewBinding = true
     }
+    lint {
+        // Las versiones están fijadas en las últimas que funcionan en Android 5.0, así que no se avisa de las nuevas.
+        disable += setOf("GradleDependency", "NewerVersionAvailable")
+        // Accesibilidad.
+        error += setOf(
+            "ContentDescription", "HardcodedText", "LabelFor", "SpUsage", "SmallSp",
+            "ClickableViewAccessibility", "KeyboardInaccessibleWidget",
+        )
+    }
 }
 
 dependencies {
