@@ -15,10 +15,10 @@ class ThemeViewModel(private val themeRepository: ThemeRepository) : ViewModel()
     fun setDarkMode(enabled: Boolean) {
         val mode = if (enabled) ThemeMode.DARK else ThemeMode.LIGHT
 
-        // Se guarda en segundo plano, y termina aunque la pantalla se recree por el cambio
+        // Se guarda en segundo plano
         viewModelScope.launch { themeRepository.setThemeMode(mode) }
 
-        // Se aplica de inmediato, sin esperar a que termine el guardado
+        // Se aplica sin esperar el guardado
         applyThemeMode(mode)
     }
 

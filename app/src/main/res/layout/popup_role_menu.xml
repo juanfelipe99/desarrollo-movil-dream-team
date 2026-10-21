@@ -105,11 +105,11 @@
         <View style="@style/Widget.Vinilos.MenuDivider" />
 
         <TextView
-            android:id="@+id/optionGoHome"
+            android:id="@+id/optionRoleSelect"
             style="@style/Widget.Vinilos.MenuRow"
             android:drawablePadding="12dp"
             android:minHeight="48dp"
-            android:text="@string/role_menu_go_home"
+            android:text="@string/role_menu_role_select"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="@color/md_on_surface"
             app:drawableStartCompat="@drawable/ic_home"

@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
-/** Conexión con la API */
+/** Conexión con la API. */
 class ApiClient(baseUrl: String) {
 
     private val json = Json { ignoreUnknownKeys = true }

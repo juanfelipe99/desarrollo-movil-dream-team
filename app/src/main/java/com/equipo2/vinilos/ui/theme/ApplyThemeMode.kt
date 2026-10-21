@@ -3,12 +3,12 @@ package com.equipo2.vinilos.ui.theme
 import androidx.appcompat.app.AppCompatDelegate
 import com.equipo2.vinilos.data.model.ThemeMode
 
-/** Aplica el tema sin guardarlo. AppCompat recrea las pantallas abiertas para que tomen los colores de values-night. */
+/** Aplica el tema sin guardarlo. Recrea las pantallas abiertas. */
 fun applyThemeMode(mode: ThemeMode) {
     AppCompatDelegate.setDefaultNightMode(mode.nightMode)
 }
 
-/** El mismo modo con el valor que entiende AppCompat. */
+/** Valor equivalente en AppCompat. */
 private val ThemeMode.nightMode: Int
     get() = when (this) {
         ThemeMode.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM

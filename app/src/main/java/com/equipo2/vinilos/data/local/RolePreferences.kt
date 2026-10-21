@@ -11,16 +11,13 @@ import kotlinx.coroutines.flow.map
 /** Guarda el rol en las preferencias del teléfono, como texto con el nombre del rol. */
 class RolePreferences(private val dataStore: DataStore<Preferences>) {
 
-    val role: Flow<Role?> = dataStore.data.map { prefs ->
-        Role.entries.find { it.name == prefs[ROLE_KEY] }
+    /** Sin rol guardado, o con un texto que no es un rol, es visitante. */
+    val role: Flow<Role> = dataStore.data.map { prefs ->
+        Role.entries.find { it.name == prefs[ROLE_KEY] } ?: Role.VISITOR
     }
 
     suspend fun save(role: Role) {
         dataStore.edit { it[ROLE_KEY] = role.name }
-    }
-
-    suspend fun clear() {
-        dataStore.edit { it.remove(ROLE_KEY) }
     }
 }
 

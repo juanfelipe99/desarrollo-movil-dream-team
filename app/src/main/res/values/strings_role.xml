@@ -22,7 +22,7 @@
     <string name="role_visitor_desc">Solo consulta</string>
     <string name="role_collector_desc">Crea álbumes y agrega tracks</string>
     <string name="role_menu_dark_mode">Modo oscuro</string>
-    <string name="role_menu_go_home">Volver a la pantalla de inicio</string>
+    <string name="role_menu_role_select">Volver a la pantalla de inicio</string>
 
     <!-- Aviso al cambiar de rol -->
     <string name="snackbar_role_visitor">Ahora estás en modo visitante</string>

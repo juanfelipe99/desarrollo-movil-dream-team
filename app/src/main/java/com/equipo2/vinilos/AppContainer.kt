@@ -13,7 +13,7 @@ import com.equipo2.vinilos.data.repository.RoleRepositoryImpl
 import com.equipo2.vinilos.data.repository.ThemeRepository
 import com.equipo2.vinilos.data.repository.ThemeRepositoryImpl
 
-/** Crea cada repositorio la primera vez que se pide y lo comparte. Las pruebas heredan de esta clase para cambiar alguno por uno falso. */
+/** Crea y comparte los repositorios. Las pruebas lo heredan para usar repositorios falsos. */
 open class AppContainer(context: Context) {
 
     private val apiClient by lazy { ApiClient(BuildConfig.API_BASE_URL) }
