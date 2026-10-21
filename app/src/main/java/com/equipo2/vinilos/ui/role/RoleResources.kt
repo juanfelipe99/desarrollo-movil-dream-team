@@ -2,10 +2,8 @@ package com.equipo2.vinilos.ui.role
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.core.view.isVisible
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.Role
-import com.equipo2.vinilos.databinding.ViewRoleChipBinding
 
 @get:StringRes
 val Role.nameRes: Int
@@ -28,13 +26,3 @@ val Role.changedMessageRes: Int
         Role.VISITOR -> R.string.snackbar_role_visitor
         Role.COLLECTOR -> R.string.snackbar_role_collector
     }
-
-/** Muestra el rol en el chip de la barra superior. Mientras no hay rol, el chip no se ve. */
-fun ViewRoleChipBinding.show(role: Role?) {
-    root.isVisible = role != null
-    if (role == null) return
-    val name = root.context.getString(role.nameRes)
-    roleChipIcon.setImageResource(role.iconRes)
-    roleChipText.text = name
-    root.contentDescription = root.context.getString(R.string.cd_change_role, name)
-}

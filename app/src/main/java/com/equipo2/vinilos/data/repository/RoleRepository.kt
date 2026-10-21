@@ -12,6 +12,7 @@ interface RoleRepository {
     /** El rol elegido, o null si todavía no se eligió ninguno. */
     val role: Flow<Role?>
     suspend fun setRole(role: Role)
+    suspend fun clearRole()
 }
 
 class RoleRepositoryImpl(context: Context) : RoleRepository {
@@ -24,6 +25,10 @@ class RoleRepositoryImpl(context: Context) : RoleRepository {
 
     override suspend fun setRole(role: Role) {
         preferences.edit { it[ROLE_KEY] = role.name }
+    }
+
+    override suspend fun clearRole() {
+        preferences.edit { it.remove(ROLE_KEY) }
     }
 }
 

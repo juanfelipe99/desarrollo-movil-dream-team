@@ -11,6 +11,7 @@ import androidx.core.widget.ImageViewCompat
 import com.equipo2.vinilos.R
 import com.google.android.material.snackbar.Snackbar
 
+/** Aviso de la app: ícono de éxito o de error, el mensaje y una X para cerrarlo. */
 object AppSnackbar {
 
     private const val DURATION_MS = 4000
@@ -32,9 +33,10 @@ object AppSnackbar {
 
     /** El ícono va a la izquierda del texto y toma su mismo color. */
     private fun TextView.addStatusIcon(isError: Boolean) {
-        val size = resources.getDimensionPixelSize(R.dimen.snackbar_icon)
-        val icon = AppCompatResources.getDrawable(context, if (isError) R.drawable.ic_error else R.drawable.ic_check)!!.mutate()
+        val iconRes = if (isError) R.drawable.ic_error else R.drawable.ic_check
+        val icon = AppCompatResources.getDrawable(context, iconRes)!!.mutate()
         icon.setTint(currentTextColor)
+        val size = resources.getDimensionPixelSize(R.dimen.snackbar_icon)
         icon.setBounds(0, 0, size, size)
         setCompoundDrawablesRelative(icon, null, null, null)
         compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.snackbar_icon_padding)
