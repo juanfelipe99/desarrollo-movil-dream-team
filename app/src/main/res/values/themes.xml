@@ -32,6 +32,7 @@
         <item name="colorOnSurfaceInverse">@color/md_inverse_on_surface</item>
 
         <item name="android:windowBackground">@color/md_background</item>
+
         <item name="textAppearanceDisplaySmall">@style/TextAppearance.Vinilos.DisplaySmall</item>
         <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Vinilos.HeadlineMedium</item>
         <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Vinilos.HeadlineSmall</item>
@@ -44,9 +45,11 @@
         <item name="textAppearanceLabelLarge">@style/TextAppearance.Vinilos.LabelLarge</item>
         <item name="textAppearanceLabelMedium">@style/TextAppearance.Vinilos.LabelMedium</item>
         <item name="textAppearanceLabelSmall">@style/TextAppearance.Vinilos.LabelSmall</item>
+
         <item name="toolbarStyle">@style/Widget.Vinilos.Toolbar</item>
         <item name="bottomNavigationStyle">@style/Widget.Vinilos.BottomNavigation</item>
         <item name="materialButtonStyle">@style/Widget.Vinilos.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.Vinilos.Card</item>
         <item name="snackbarStyle">@style/Widget.Vinilos.Snackbar</item>
     </style>
 
