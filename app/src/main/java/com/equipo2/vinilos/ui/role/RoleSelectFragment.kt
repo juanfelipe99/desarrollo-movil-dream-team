@@ -19,8 +19,8 @@ class RoleSelectFragment : Fragment(R.layout.fragment_role_select) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentRoleSelectBinding.bind(view)
-        binding.visitorButton.setOnClickListener { enterAs(Role.VISITOR) }
-        binding.collectorButton.setOnClickListener { enterAs(Role.COLLECTOR) }
+        binding.actions.visitorButton.setOnClickListener { enterAs(Role.VISITOR) }
+        binding.actions.collectorButton.setOnClickListener { enterAs(Role.COLLECTOR) }
         bindThemeButton(binding.themeButton)
     }
 

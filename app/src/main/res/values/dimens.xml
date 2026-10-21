@@ -3,4 +3,9 @@
     <dimen name="touch_target">48dp</dimen>
     <dimen name="snackbar_icon">20dp</dimen>
     <dimen name="snackbar_icon_padding">12dp</dimen>
+
+    <!-- Selección de rol en pantallas de menos de 720 dp de alto. -->
+    <dimen name="role_select_logo">88dp</dimen>
+    <dimen name="role_select_padding_vertical">8dp</dimen>
+    <dimen name="role_select_block_gap">16dp</dimen>
 </resources>
