@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- En tablets no pasa de 528 dp para que los botones no se estiren. -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"

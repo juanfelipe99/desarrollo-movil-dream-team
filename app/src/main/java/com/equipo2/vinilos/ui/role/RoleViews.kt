@@ -21,6 +21,14 @@ val Role.iconRes: Int
         Role.COLLECTOR -> R.drawable.ic_album
     }
 
+/** Aviso que se muestra al cambiar a este rol desde el menú. */
+@get:StringRes
+val Role.changedMessageRes: Int
+    get() = when (this) {
+        Role.VISITOR -> R.string.snackbar_role_visitor
+        Role.COLLECTOR -> R.string.snackbar_role_collector
+    }
+
 /** Muestra el rol en el chip de la barra superior. Mientras no hay rol, el chip no se ve. */
 fun ViewRoleChipBinding.show(role: Role?) {
     root.isVisible = role != null

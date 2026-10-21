@@ -28,6 +28,10 @@ class SessionViewModel(
         roleRepository.setRole(role)
     }
 
+    fun changeRole(role: Role) {
+        viewModelScope.launch { roleRepository.setRole(role) }
+    }
+
     /** Guarda el tema y lo aplica. */
     fun setDarkMode(enabled: Boolean) {
         val mode = if (enabled) ThemeMode.DARK else ThemeMode.LIGHT
