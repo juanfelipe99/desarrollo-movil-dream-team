@@ -1,9 +1,9 @@
 package com.equipo2.vinilos.data.repository
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.equipo2.vinilos.data.local.appPreferences
 import com.equipo2.vinilos.data.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,9 +13,7 @@ interface ThemeRepository {
     suspend fun setThemeMode(mode: ThemeMode)
 }
 
-class ThemeRepositoryImpl(context: Context) : ThemeRepository {
-
-    private val preferences = context.appPreferences
+class ThemeRepositoryImpl(private val preferences: DataStore<Preferences>) : ThemeRepository {
 
     override val themeMode = preferences.data.map { prefs ->
         ThemeMode.entries.find { it.name == prefs[THEME_MODE_KEY] } ?: ThemeMode.SYSTEM

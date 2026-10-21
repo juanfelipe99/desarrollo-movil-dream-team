@@ -1,9 +1,9 @@
 package com.equipo2.vinilos.data.repository
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.equipo2.vinilos.data.local.appPreferences
 import com.equipo2.vinilos.data.model.Role
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,9 +15,7 @@ interface RoleRepository {
     suspend fun clearRole()
 }
 
-class RoleRepositoryImpl(context: Context) : RoleRepository {
-
-    private val preferences = context.appPreferences
+class RoleRepositoryImpl(private val preferences: DataStore<Preferences>) : RoleRepository {
 
     override val role = preferences.data.map { prefs ->
         Role.entries.find { it.name == prefs[ROLE_KEY] }
