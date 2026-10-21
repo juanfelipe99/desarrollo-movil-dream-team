@@ -10,6 +10,7 @@ import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.Role
 import com.equipo2.vinilos.databinding.FragmentRoleSelectBinding
 import com.equipo2.vinilos.ui.common.isDarkTheme
+import com.equipo2.vinilos.ui.common.navigateIfPossible
 import com.equipo2.vinilos.ui.session.SessionViewModel
 
 /** Primera pantalla de la app: se elige con qué rol entrar. */
@@ -25,11 +26,9 @@ class RoleSelectFragment : Fragment(R.layout.fragment_role_select) {
     }
 
     private fun enterAs(role: Role) {
-        val navController = findNavController()
-        // Con dos toques rápidos el segundo llega cuando ya se salió de esta pantalla.
-        if (navController.currentDestination?.id != R.id.roleSelectFragment) return
-        session.enterAs(role)
-        navController.navigate(R.id.action_roleSelect_to_albums)
+        if (findNavController().navigateIfPossible(R.id.action_roleSelect_to_albums)) {
+            session.enterAs(role)
+        }
     }
 
     /** Muestra la luna en el tema claro y el sol en el oscuro. */
