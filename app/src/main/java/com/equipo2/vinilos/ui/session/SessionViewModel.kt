@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-/** Rol y tema de la app. Lo comparten la actividad y las pantallas que los cambian. */
+/** Rol y tema de la app. Lo usan la selección de rol y la barra superior de la app. */
 class SessionViewModel(
     private val roleRepository: RoleRepository,
     private val themeRepository: ThemeRepository,
