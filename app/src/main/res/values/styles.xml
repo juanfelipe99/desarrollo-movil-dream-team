@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Componentes -->
     <style name="Widget.Vinilos.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/md_surface</item>
+        <item name="contentInsetStart">20dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Vinilos.TitleLarge</item>
         <item name="navigationIconTint">@color/md_on_surface</item>
     </style>
@@ -28,54 +29,153 @@
         <item name="android:background">@color/md_outline_variant</item>
     </style>
 
-    <!-- Tipografía con Roboto del sistema. En API 21 sans-serif-medium hace de SemiBold. -->
+    <style name="Widget.Vinilos.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- Tarjeta base. -->
+    <style name="Widget.Vinilos.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/md_surface_container_lowest</item>
+        <item name="strokeColor">@color/md_outline_variant</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.Vinilos.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="android:layout_margin">16dp</item>
+    </style>
+
+    <!-- Esqueletos de carga -->
+    <style name="Widget.Vinilos.Skeleton.Block" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:background">@drawable/bg_skeleton_block</item>
+    </style>
+
+    <style name="Widget.Vinilos.Skeleton.Line" parent="">
+        <item name="android:layout_height">14dp</item>
+        <item name="android:background">@drawable/bg_skeleton_line</item>
+    </style>
+
+    <style name="Widget.Vinilos.Skeleton.Line.Secondary">
+        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@drawable/bg_skeleton_line_secondary</item>
+    </style>
+
+    <style name="Widget.Vinilos.Skeleton.Circle" parent="">
+        <item name="android:background">@drawable/bg_skeleton_circle</item>
+    </style>
+
+    <!-- Tipografía con la Roboto incluida en la app, con sus pesos reales desde Android 5.0. -->
     <style name="TextAppearance.Vinilos.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">40sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="lineHeight">48sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">48sp</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+
+    <style name="TextAppearance.Vinilos.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="lineHeight">36sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">36sp</item>
         <item name="android:textColor">@color/md_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vinilos.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="fontFamily">sans-serif-medium</item>
+        <item name="lineHeight">28sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">28sp</item>
         <item name="android:textColor">@color/md_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vinilos.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/md_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vinilos.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.Vinilos.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="TextAppearance.Vinilos.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!-- Nombre en tarjetas e ítems de lista -->
+    <style name="TextAppearance.Vinilos.BodyLarge.SemiBold">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
+        <item name="lineHeight">22sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">22sp</item>
+    </style>
+
+    <!-- Iniciales en las fotos de personas -->
+    <style name="TextAppearance.Vinilos.BodyLarge.Bold">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
     <style name="TextAppearance.Vinilos.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.Vinilos.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextAppearance.Vinilos.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="TextAppearance.Vinilos.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- Chips de tipo de artista y chip «Nuevo» -->
+    <style name="TextAppearance.Vinilos.LabelMedium.SemiBold">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
+    </style>
+
     <style name="TextAppearance.Vinilos.LabelMedium.Bold">
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
     <style name="TextAppearance.Vinilos.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/roboto_semibold</item>
+        <item name="fontFamily">@font/roboto_semibold</item>
         <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">18sp</item>
     </style>
 </resources>

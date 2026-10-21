@@ -35,6 +35,16 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        viewBinding = true
+    }
+    lint {
+        // Las versiones están fijadas en las últimas que funcionan en Android 5.0, así que no se avisa de las nuevas.
+        disable += setOf("GradleDependency", "NewerVersionAvailable")
+        // Accesibilidad.
+        error += setOf(
+            "ContentDescription", "HardcodedText", "LabelFor", "SpUsage", "SmallSp",
+            "ClickableViewAccessibility", "KeyboardInaccessibleWidget",
+        )
     }
 }
 
@@ -43,16 +53,22 @@ dependencies {
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.okhttp)
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
