@@ -10,6 +10,11 @@
         android:label="@string/album_list_title" />
 
     <fragment
+        android:id="@+id/albumDetailFragment"
+        android:name="com.equipo2.vinilos.ui.albums.AlbumDetailFragment"
+        android:label="Álbum" />
+
+    <fragment
         android:id="@+id/artistListFragment"
         android:name="com.equipo2.vinilos.ui.artists.ArtistListFragment"
         android:label="@string/artist_list_title" />
