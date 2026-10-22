@@ -14,9 +14,11 @@ import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.AlbumCatalog
 import com.equipo2.vinilos.databinding.FragmentAlbumCreateBinding
 import com.equipo2.vinilos.ui.common.collectWhileVisible
+import com.equipo2.vinilos.ui.common.keepSnackbarsAbove
 import com.equipo2.vinilos.ui.common.reconnectDatePicker
 import com.equipo2.vinilos.ui.common.showError
 import com.equipo2.vinilos.ui.common.showPastDatePicker
+import com.equipo2.vinilos.ui.common.showSnackbar
 import com.equipo2.vinilos.ui.common.toShortText
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
 import com.google.android.material.progressindicator.IndeterminateDrawable
@@ -41,6 +43,7 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         setUpDropdowns(binding)
         setUpErrors(binding)
         setUpSaving(binding)
+        setUpResults(binding)
 
         // Cancelar cierra la pantalla igual que la X
         binding.cancelButton.setOnClickListener { findNavController().navigateUp() }
@@ -112,6 +115,22 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         }
     }
 
+    /** Si se creó vuelve a Álbumes con el id del álbum nuevo, y si falló avisa encima de los botones. */
+    private fun setUpResults(binding: FragmentAlbumCreateBinding) {
+        keepSnackbarsAbove(binding.actionBar)
+
+        viewLifecycleOwner.collectWhileVisible(viewModel.events) { event ->
+            when (event) {
+                is AlbumCreateEvent.Saved -> {
+                    val navController = findNavController()
+                    navController.previousBackStackEntry?.savedStateHandle?.set(CREATED_ALBUM_ID, event.albumId)
+                    navController.navigateUp()
+                }
+                AlbumCreateEvent.Failed -> showSnackbar(getString(R.string.error_album_create_failed), isError = true)
+            }
+        }
+    }
+
     /** Círculo de carga de 20 dp para el botón. */
     private fun buttonProgress(): IndeterminateDrawable<CircularProgressIndicatorSpec> {
         val context = requireContext()
@@ -141,7 +160,10 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         AlbumField.DESCRIPTION -> descriptionField
     }
 
-    private companion object {
-        const val DATE_PICKER_TAG = "releaseDatePicker"
+    companion object {
+        /** Clave con la que Álbumes recibe el id del álbum recién creado. */
+        const val CREATED_ALBUM_ID = "createdAlbumId"
+
+        private const val DATE_PICKER_TAG = "releaseDatePicker"
     }
 }
