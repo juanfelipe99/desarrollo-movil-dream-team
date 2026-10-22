@@ -13,7 +13,7 @@ val Role.nameRes: Int
         Role.COLLECTOR -> R.string.role_collector
     }
 
-/** Ícono del rol: persona para el visitante, disco para el coleccionista. */
+/** Ícono del rol: persona para el visitante y disco para el coleccionista. */
 @get:DrawableRes
 val Role.iconRes: Int
     get() = when (this) {

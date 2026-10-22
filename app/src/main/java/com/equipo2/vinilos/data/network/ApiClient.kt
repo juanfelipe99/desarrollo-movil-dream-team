@@ -7,9 +7,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
-/** Conexión con la API. */
 class ApiClient(baseUrl: String) {
 
+    // La API trae campos que la app no usa, y se ignoran en lugar de fallar
     private val json = Json { ignoreUnknownKeys = true }
 
     private val client = OkHttpClient.Builder()
@@ -24,7 +24,6 @@ class ApiClient(baseUrl: String) {
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
-    /** Crea la interfaz de Retrofit de una entidad. */
     fun <T> create(api: Class<T>): T = retrofit.create(api)
 
     private companion object {

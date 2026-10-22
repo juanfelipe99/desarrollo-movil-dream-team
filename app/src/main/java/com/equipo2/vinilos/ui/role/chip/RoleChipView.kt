@@ -7,16 +7,16 @@ import com.equipo2.vinilos.databinding.ViewRoleChipBinding
 import com.equipo2.vinilos.ui.role.iconRes
 import com.equipo2.vinilos.ui.role.nameRes
 
-/** Muestra el rol en el chip. Mientras se lee, el chip no se ve. */
+/** Muestra el rol en el chip: ícono, nombre y lo que lee TalkBack. */
 fun ViewRoleChipBinding.show(role: Role?) {
+    // Mientras se lee el rol no hay nada que mostrar
     root.isVisible = role != null
     if (role == null) return
 
-    // Ícono del rol: persona o disco
-    roleChipIcon.setImageResource(role.iconRes)
+    val context = root.context
+    val name = context.getString(role.nameRes)
 
-    // Nombre del rol y lo que lee TalkBack: «Cambiar de rol. Modo actual: …»
-    val name = root.context.getString(role.nameRes)
+    roleChipIcon.setImageResource(role.iconRes)
     roleChipText.text = name
-    root.contentDescription = root.context.getString(R.string.cd_change_role, name)
+    root.contentDescription = context.getString(R.string.cd_change_role, name)
 }

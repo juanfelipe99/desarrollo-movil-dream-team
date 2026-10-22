@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp">
 
+            <!-- La pantalla decide si hay chip y el chip decide si ya tiene un rol para mostrar. -->
             <FrameLayout
                 android:id="@+id/roleChipSlot"
                 android:layout_width="wrap_content"

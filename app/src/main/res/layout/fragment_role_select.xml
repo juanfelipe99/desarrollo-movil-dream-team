@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true">
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,13 +32,13 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/themeButton"
+            android:id="@+id/themeModeButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/cd_dark_mode_on"
-            android:src="@drawable/ic_dark_mode"
+            android:contentDescription="@string/theme_mode_header"
+            android:src="@drawable/ic_contrast"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/md_on_surface" />

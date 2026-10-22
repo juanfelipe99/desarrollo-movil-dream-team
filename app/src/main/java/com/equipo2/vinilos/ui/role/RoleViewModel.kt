@@ -11,29 +11,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class RoleViewModel(private val roleRepository: RoleRepository) : ViewModel() {
+/** Rol de la app, compartido por la selección de rol, el chip y las pantallas que dependen del rol. */
+class RoleViewModel(private val repository: RoleRepository) : ViewModel() {
 
     private val currentRole = MutableStateFlow<Role?>(null)
 
-    /** Rol actual. Es null solo mientras se lee. */
     val role: StateFlow<Role?> = currentRole
 
     init {
-        viewModelScope.launch { roleRepository.role.collect { currentRole.value = it } }
+        // Lee el rol guardado y lo actualiza cada vez que se guarda uno nuevo
+        viewModelScope.launch { repository.role.collect { currentRole.value = it } }
     }
 
-    /** Espera a que se guarde. */
-    suspend fun saveRole(role: Role) {
-        roleRepository.setRole(role)
-    }
-
-    /** Desde el menú. La pantalla cambia al instante, antes de que termine el guardado. */
+    /** Cambia el rol al instante y lo guarda en segundo plano. */
     fun changeRole(role: Role) {
         currentRole.value = role
-        viewModelScope.launch { roleRepository.setRole(role) }
+        viewModelScope.launch { repository.setRole(role) }
     }
 
     companion object {
+        /** Crea el ViewModel con el repositorio de AppContainer. */
         val Factory = viewModelFactory {
             initializer { RoleViewModel(VinilosApplication.container.roleRepository) }
         }

@@ -40,7 +40,7 @@ android {
     lint {
         // Las versiones están fijadas en las últimas que funcionan en Android 5.0, así que no se avisa de las nuevas.
         disable += setOf("GradleDependency", "NewerVersionAvailable")
-        // Accesibilidad.
+        // Reglas de accesibilidad que detienen la compilación en lugar de solo avisar
         error += setOf(
             "ContentDescription", "HardcodedText", "LabelFor", "SpUsage", "SmallSp",
             "ClickableViewAccessibility", "KeyboardInaccessibleWidget",

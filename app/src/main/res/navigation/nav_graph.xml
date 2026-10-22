@@ -4,6 +4,15 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/albumListFragment">
 
+    <action
+        android:id="@+id/action_global_roleSelect"
+        app:destination="@id/roleSelectFragment"
+        app:popUpTo="@id/albumListFragment" />
+
+    <fragment
+        android:id="@+id/roleSelectFragment"
+        android:name="com.equipo2.vinilos.ui.role.select.RoleSelectFragment" />
+
     <fragment
         android:id="@+id/albumListFragment"
         android:name="com.equipo2.vinilos.ui.albums.list.AlbumListFragment"

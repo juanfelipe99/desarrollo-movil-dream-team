@@ -8,8 +8,7 @@ import com.equipo2.vinilos.data.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-/** Guarda el tema en las preferencias del teléfono, como texto con el nombre del modo. */
-class ThemePreferences(private val dataStore: DataStore<Preferences>) {
+class ThemeModeLocalDataSource(private val dataStore: DataStore<Preferences>) {
 
     val themeMode: Flow<ThemeMode> = dataStore.data.map { prefs ->
         ThemeMode.entries.find { it.name == prefs[THEME_MODE_KEY] } ?: ThemeMode.SYSTEM

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Textos de Crear álbum (HU07). -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="album_create_title">Crear álbum</string>
 
-    <!-- Lectores de pantalla -->
     <string name="cd_create_album">Crear álbum</string>
     <string name="cd_close_without_saving">Cerrar sin guardar</string>
 </resources>

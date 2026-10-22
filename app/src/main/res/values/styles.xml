@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Componentes -->
     <style name="Widget.Vinilos.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/md_surface</item>
-        <!-- Título a 20 dp del borde, o justo después del botón de 56 dp cuando hay X o flecha -->
         <item name="contentInsetStart">20dp</item>
+        <!-- Sin el margen de 4 dp de AppCompat, el título queda a 20 dp o justo después de la X. -->
         <item name="titleMarginStart">0dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Vinilos.TitleLarge</item>
         <item name="navigationIconTint">@color/md_on_surface</item>
@@ -14,7 +13,9 @@
         <item name="backgroundTint">@color/md_surface_container</item>
         <item name="elevation">0dp</item>
         <item name="labelVisibilityMode">labeled</item>
-        <item name="itemActiveIndicatorStyle">@style/Widget.Vinilos.BottomNavigation.ActiveIndicator</item>
+        <item name="itemActiveIndicatorStyle">
+            @style/Widget.Vinilos.BottomNavigation.ActiveIndicator
+        </item>
         <item name="itemIconTint">@color/nav_item_icon</item>
         <item name="itemTextColor">@color/nav_item_text</item>
         <item name="itemTextAppearanceActive">@style/TextAppearance.Vinilos.LabelMedium.Bold</item>
@@ -38,7 +39,6 @@
         <item name="cornerRadius">24dp</item>
     </style>
 
-    <!-- Tarjeta base. -->
     <style name="Widget.Vinilos.Card" parent="Widget.Material3.CardView.Outlined">
         <item name="cardBackgroundColor">@color/md_surface_container_lowest</item>
         <item name="strokeColor">@color/md_outline_variant</item>
@@ -51,7 +51,6 @@
         <item name="android:layout_margin">16dp</item>
     </style>
 
-    <!-- Esqueletos de carga -->
     <style name="Widget.Vinilos.Skeleton.Block" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">120dp</item>
@@ -73,7 +72,6 @@
         <item name="android:background">@drawable/bg_skeleton_circle</item>
     </style>
 
-    <!-- Tipografía con la Roboto incluida en la app, con sus pesos reales desde Android 5.0. -->
     <style name="TextAppearance.Vinilos.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
@@ -125,7 +123,6 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!-- Nombre en tarjetas e ítems de lista -->
     <style name="TextAppearance.Vinilos.BodyLarge.SemiBold">
         <item name="android:fontFamily">@font/roboto_semibold</item>
         <item name="fontFamily">@font/roboto_semibold</item>
@@ -133,7 +130,6 @@
         <item name="android:lineHeight" tools:targetApi="28">22sp</item>
     </style>
 
-    <!-- Iniciales en las fotos de personas -->
     <style name="TextAppearance.Vinilos.BodyLarge.Bold">
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
@@ -162,7 +158,6 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <!-- Chips de tipo de artista y chip «Nuevo» -->
     <style name="TextAppearance.Vinilos.LabelMedium.SemiBold">
         <item name="android:fontFamily">@font/roboto_semibold</item>
         <item name="fontFamily">@font/roboto_semibold</item>

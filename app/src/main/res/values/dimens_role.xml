@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Menú de rol: ancho, separación con el chip y elevación. -->
     <dimen name="role_menu_width">280dp</dimen>
     <dimen name="role_menu_offset">4dp</dimen>
     <dimen name="role_menu_elevation">3dp</dimen>
 
-    <!-- Selección de rol en pantallas de menos de 720 dp de alto. -->
     <dimen name="role_select_logo">88dp</dimen>
     <dimen name="role_select_padding_vertical">8dp</dimen>
     <dimen name="role_select_block_gap">16dp</dimen>

@@ -12,7 +12,6 @@ data class Album(
     val recordLabel: String,
 )
 
-/** Datos para crear un álbum, antes de que la API le asigne un id. */
 data class NewAlbum(
     val name: String,
     val cover: String,
@@ -22,7 +21,7 @@ data class NewAlbum(
     val recordLabel: String,
 )
 
-/** Únicos géneros y sellos que acepta la API. Cualquier otro responde 400. */
+// Únicos géneros y sellos que acepta la API, cualquier otro responde 400
 object AlbumCatalog {
     val genres = listOf("Classical", "Salsa", "Rock", "Folk")
     val recordLabels = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
