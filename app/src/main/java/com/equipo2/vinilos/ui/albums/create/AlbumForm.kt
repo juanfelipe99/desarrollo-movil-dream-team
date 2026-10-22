@@ -3,6 +3,7 @@ package com.equipo2.vinilos.ui.albums.create
 import androidx.annotation.StringRes
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.AlbumCatalog
+import com.equipo2.vinilos.data.model.NewAlbum
 import java.time.LocalDate
 
 /** Lo que lleva escrito y elegido el formulario de Crear álbum. */
@@ -39,3 +40,13 @@ private fun AlbumForm.coverError(): Int? = when {
     !isValidCoverUrl(cover) -> R.string.error_cover_invalid
     else -> null
 }
+
+/** Álbum para enviar a la API, y solo se llama con el formulario válido. */
+fun AlbumForm.toNewAlbum() = NewAlbum(
+    name = name.trim(),
+    cover = cover.trim(),
+    releaseDate = checkNotNull(releaseDate),
+    description = description.trim(),
+    genre = checkNotNull(genre),
+    recordLabel = checkNotNull(recordLabel),
+)

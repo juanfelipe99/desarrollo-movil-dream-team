@@ -3,6 +3,7 @@ package com.equipo2.vinilos.ui.albums.create
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import com.equipo2.vinilos.ui.common.reconnectDatePicker
 import com.equipo2.vinilos.ui.common.showError
 import com.equipo2.vinilos.ui.common.showPastDatePicker
 import com.equipo2.vinilos.ui.common.toShortText
+import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
+import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -26,7 +29,7 @@ import java.time.LocalDate
 /** Formulario para crear un álbum (HU07). */
 class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
 
-    private val viewModel: AlbumCreateViewModel by viewModels()
+    private val viewModel: AlbumCreateViewModel by viewModels { AlbumCreateViewModel.Factory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,6 +40,7 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         setUpReleaseDate(binding)
         setUpDropdowns(binding)
         setUpErrors(binding)
+        setUpSaving(binding)
 
         // Cancelar cierra la pantalla igual que la X
         binding.cancelButton.setOnClickListener { findNavController().navigateUp() }
@@ -96,9 +100,32 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         }
     }
 
-    /** Con errores lleva la pantalla al primero, y si es un campo de texto le pasa el foco. */
+    /** Mientras guarda aparece la barra de progreso y Guardar queda deshabilitado con «Guardando…». */
+    private fun setUpSaving(binding: FragmentAlbumCreateBinding) {
+        val progress = buttonProgress()
+
+        viewLifecycleOwner.collectWhileVisible(viewModel.isSaving) { saving ->
+            binding.savingProgress.isVisible = saving
+            binding.saveButton.isEnabled = !saving
+            binding.saveButton.icon = progress.takeIf { saving }
+            binding.saveButton.setText(if (saving) R.string.album_create_saving else R.string.action_save)
+        }
+    }
+
+    /** Círculo de carga de 20 dp para el botón. */
+    private fun buttonProgress(): IndeterminateDrawable<CircularProgressIndicatorSpec> {
+        val context = requireContext()
+        val spec = CircularProgressIndicatorSpec(context, null)
+        spec.indicatorSize = resources.getDimensionPixelSize(R.dimen.button_progress)
+        spec.trackThickness = resources.getDimensionPixelSize(R.dimen.button_progress_thickness)
+        spec.indicatorInset = 0
+        spec.indicatorColors = intArrayOf(ContextCompat.getColor(context, R.color.md_on_surface_variant))
+        return IndeterminateDrawable.createCircularDrawable(context, spec)
+    }
+
+    /** Envía el álbum, y con errores lleva la pantalla al primero y si es un campo de texto le pasa el foco. */
     private fun save(binding: FragmentAlbumCreateBinding) {
-        if (viewModel.validate()) return
+        if (viewModel.save()) return
 
         val first = binding.fieldOf(viewModel.errors.value.keys.first())
         binding.formScroll.post { binding.formScroll.smoothScrollTo(0, first.top) }
