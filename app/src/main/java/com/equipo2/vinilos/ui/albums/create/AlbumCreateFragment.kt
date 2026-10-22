@@ -1,6 +1,7 @@
 package com.equipo2.vinilos.ui.albums.create
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -13,8 +14,14 @@ import com.equipo2.vinilos.data.model.AlbumCatalog
 import com.equipo2.vinilos.databinding.FragmentAlbumCreateBinding
 import com.equipo2.vinilos.ui.common.collectWhileVisible
 import com.equipo2.vinilos.ui.common.reconnectDatePicker
+import com.equipo2.vinilos.ui.common.showError
 import com.equipo2.vinilos.ui.common.showPastDatePicker
 import com.equipo2.vinilos.ui.common.toShortText
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 
 /** Formulario para crear un álbum (HU07). */
 class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
@@ -25,12 +32,22 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentAlbumCreateBinding.bind(view)
+        setUpTextFields(binding)
         setUpCoverPreview(binding)
         setUpReleaseDate(binding)
         setUpDropdowns(binding)
+        setUpErrors(binding)
 
         // Cancelar cierra la pantalla igual que la X
         binding.cancelButton.setOnClickListener { findNavController().navigateUp() }
+        binding.saveButton.setOnClickListener { save(binding) }
+    }
+
+    /** Lo que se escribe pasa al formulario del ViewModel. */
+    private fun setUpTextFields(binding: FragmentAlbumCreateBinding) {
+        binding.nameInput.doAfterTextChanged { text -> viewModel.update { copy(name = text.toString()) } }
+        binding.coverInput.doAfterTextChanged { text -> viewModel.update { copy(cover = text.toString()) } }
+        binding.descriptionInput.doAfterTextChanged { text -> viewModel.update { copy(description = text.toString()) } }
     }
 
     /** Con una URL válida aparece debajo la portada, o el marcador si no se puede cargar. */
@@ -49,22 +66,52 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
 
     /** El campo de fecha y su ícono abren el selector, y el campo muestra la fecha elegida. */
     private fun setUpReleaseDate(binding: FragmentAlbumCreateBinding) {
+        val onPicked = { date: LocalDate -> viewModel.update { copy(releaseDate = date) } }
         val openPicker = {
-            showPastDatePicker(DATE_PICKER_TAG, R.string.release_date_picker_title, viewModel.releaseDate.value, viewModel::setReleaseDate)
+            showPastDatePicker(DATE_PICKER_TAG, R.string.release_date_picker_title, viewModel.form.value.releaseDate, onPicked)
         }
         binding.releaseDateInput.setOnClickListener { openPicker() }
         binding.releaseDateField.setEndIconOnClickListener { openPicker() }
-        reconnectDatePicker(DATE_PICKER_TAG, viewModel::setReleaseDate)
+        reconnectDatePicker(DATE_PICKER_TAG, onPicked)
 
-        viewLifecycleOwner.collectWhileVisible(viewModel.releaseDate) { date ->
-            binding.releaseDateInput.setText(date?.toShortText())
-        }
+        val releaseDate = viewModel.form.map { it.releaseDate }.distinctUntilChanged()
+        viewLifecycleOwner.collectWhileVisible(releaseDate) { date -> binding.releaseDateInput.setText(date?.toShortText()) }
     }
 
     /** Género y sello solo ofrecen los valores que acepta la API. */
     private fun setUpDropdowns(binding: FragmentAlbumCreateBinding) {
-        binding.genreInput.setSimpleItems(AlbumCatalog.genres.toTypedArray())
-        binding.recordLabelInput.setSimpleItems(AlbumCatalog.recordLabels.toTypedArray())
+        binding.genreInput.bindOptions(AlbumCatalog.genres) { genre -> viewModel.update { copy(genre = genre) } }
+        binding.recordLabelInput.bindOptions(AlbumCatalog.recordLabels) { label -> viewModel.update { copy(recordLabel = label) } }
+    }
+
+    private fun MaterialAutoCompleteTextView.bindOptions(options: List<String>, onSelected: (String) -> Unit) {
+        setSimpleItems(options.toTypedArray())
+        setOnItemClickListener { _, _, position, _ -> onSelected(options[position]) }
+    }
+
+    /** Cada campo muestra su error debajo, o nada si cumple su regla. */
+    private fun setUpErrors(binding: FragmentAlbumCreateBinding) {
+        viewLifecycleOwner.collectWhileVisible(viewModel.errors) { errors ->
+            AlbumField.entries.forEach { field -> binding.fieldOf(field).showError(errors[field]) }
+        }
+    }
+
+    /** Con errores lleva la pantalla al primero, y si es un campo de texto le pasa el foco. */
+    private fun save(binding: FragmentAlbumCreateBinding) {
+        if (viewModel.validate()) return
+
+        val first = binding.fieldOf(viewModel.errors.value.keys.first())
+        binding.formScroll.post { binding.formScroll.smoothScrollTo(0, first.top) }
+        first.editText?.takeIf { it.inputType != InputType.TYPE_NULL }?.requestFocus()
+    }
+
+    private fun FragmentAlbumCreateBinding.fieldOf(field: AlbumField): TextInputLayout = when (field) {
+        AlbumField.NAME -> nameField
+        AlbumField.COVER -> coverField
+        AlbumField.RELEASE_DATE -> releaseDateField
+        AlbumField.GENRE -> genreField
+        AlbumField.RECORD_LABEL -> recordLabelField
+        AlbumField.DESCRIPTION -> descriptionField
     }
 
     private companion object {

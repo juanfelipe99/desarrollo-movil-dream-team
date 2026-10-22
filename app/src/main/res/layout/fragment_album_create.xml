@@ -46,7 +46,8 @@
                         android:id="@+id/nameInput"
                         style="@style/Widget.Vinilos.FormField.Input"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapSentences" />
+                        android:inputType="textCapSentences"
+                        android:maxLength="100" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -176,6 +177,7 @@
                         android:gravity="top|start"
                         android:inputType="textMultiLine|textCapSentences"
                         android:minHeight="120dp"
+                        android:maxLength="1000"
                         android:minLines="4" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

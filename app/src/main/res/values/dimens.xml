@@ -3,4 +3,9 @@
     <dimen name="touch_target">48dp</dimen>
     <dimen name="snackbar_icon">20dp</dimen>
     <dimen name="snackbar_icon_padding">12dp</dimen>
+
+    <dimen name="field_stroke">1dp</dimen>
+    <dimen name="field_stroke_error">2dp</dimen>
+    <dimen name="field_error_icon">16dp</dimen>
+    <dimen name="field_error_icon_padding">8dp</dimen>
 </resources>

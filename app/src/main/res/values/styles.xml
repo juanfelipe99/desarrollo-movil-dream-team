@@ -56,6 +56,9 @@
         <item name="boxCornerRadiusTopEnd">4dp</item>
         <item name="boxCornerRadiusBottomStart">4dp</item>
         <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
+        <item name="helperTextTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
     </style>
 
     <style name="Widget.Vinilos.FormField.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
@@ -68,6 +71,9 @@
         <item name="boxCornerRadiusBottomStart">4dp</item>
         <item name="boxCornerRadiusBottomEnd">4dp</item>
         <item name="endIconDrawable">@drawable/ic_expand_more</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
+        <item name="helperTextTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
     </style>
 
     <!-- Con 15 dp arriba y abajo el campo mide 52 dp como en el prototipo, en lugar de los 56 dp de Material. -->
@@ -196,6 +202,15 @@
     <style name="TextAppearance.Vinilos.BodySmall" parent="TextAppearance.Material3.BodySmall">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <!-- Ayuda y errores debajo de los campos. -->
+    <style name="TextAppearance.Vinilos.Supporting" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">18sp</item>
     </style>
 
     <style name="TextAppearance.Vinilos.LabelLarge" parent="TextAppearance.Material3.LabelLarge">

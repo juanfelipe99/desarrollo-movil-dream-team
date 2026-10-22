@@ -3,17 +3,30 @@ package com.equipo2.vinilos.ui.albums.create
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDate
+import kotlinx.coroutines.flow.update
 
-/** Datos del formulario de Crear álbum que no guardan los campos de texto, y se conservan al girar la pantalla. */
+/** Estado del formulario de Crear álbum y sus errores, que se conservan al girar la pantalla. */
 class AlbumCreateViewModel : ViewModel() {
 
-    private val currentReleaseDate = MutableStateFlow<LocalDate?>(null)
+    private val currentForm = MutableStateFlow(AlbumForm())
+    private val currentErrors = MutableStateFlow<Map<AlbumField, Int>>(emptyMap())
 
-    val releaseDate: StateFlow<LocalDate?> = currentReleaseDate
+    val form: StateFlow<AlbumForm> = currentForm
+    val errors: StateFlow<Map<AlbumField, Int>> = currentErrors
 
-    /** Guarda la fecha elegida en el selector. */
-    fun setReleaseDate(date: LocalDate) {
-        currentReleaseDate.value = date
+    // Los errores aparecen al tocar Guardar, y desde ahí se actualizan con cada cambio
+    private var validateOnChange = false
+
+    /** Aplica un cambio del formulario. */
+    fun update(change: AlbumForm.() -> AlbumForm) {
+        currentForm.update(change)
+        if (validateOnChange) currentErrors.value = currentForm.value.errors()
+    }
+
+    /** Muestra los errores del formulario y devuelve si se puede guardar. */
+    fun validate(): Boolean {
+        validateOnChange = true
+        currentErrors.value = currentForm.value.errors()
+        return currentErrors.value.isEmpty()
     }
 }
