@@ -39,6 +39,52 @@
         <item name="cornerRadius">24dp</item>
     </style>
 
+    <style name="Widget.Vinilos.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- La etiqueta queda siempre arriba y el texto de ejemplo siempre visible, como en el prototipo. -->
+    <style name="Widget.Vinilos.FormField" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+    </style>
+
+    <style name="Widget.Vinilos.FormField.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="endIconDrawable">@drawable/ic_expand_more</item>
+    </style>
+
+    <!-- Con 15 dp arriba y abajo el campo mide 52 dp como en el prototipo, en lugar de los 56 dp de Material. -->
+    <style name="Widget.Vinilos.FormField.Input" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="Widget.Vinilos.FormField.DropdownInput" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
     <style name="Widget.Vinilos.Card" parent="Widget.Material3.CardView.Outlined">
         <item name="cardBackgroundColor">@color/md_surface_container_lowest</item>
         <item name="strokeColor">@color/md_outline_variant</item>

@@ -2,6 +2,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="album_create_title">Crear álbum</string>
 
+    <string name="field_album_name">Nombre del álbum *</string>
+    <string name="field_cover_url">URL de la portada *</string>
+    <string name="field_release_date">Fecha de lanzamiento *</string>
+    <string name="field_genre">Género *</string>
+    <string name="field_record_label">Sello discográfico *</string>
+    <string name="field_description">Descripción *</string>
+
+    <string name="placeholder_album_name">Ej. Buscando América</string>
+    <string name="placeholder_cover_url">https://…/portada.jpg</string>
+    <string name="placeholder_release_date">dd/mm/aaaa</string>
+    <string name="placeholder_genre">Selecciona un género</string>
+    <string name="placeholder_record_label">Selecciona un sello</string>
+    <string name="placeholder_description">Cuenta de qué trata el álbum…</string>
+
+    <string name="help_release_date">Toca el campo para abrir el selector de fecha.</string>
+
     <string name="cd_create_album">Crear álbum</string>
     <string name="cd_close_without_saving">Cerrar sin guardar</string>
+    <string name="cd_open_date_picker">Abrir el selector de fecha</string>
 </resources>
