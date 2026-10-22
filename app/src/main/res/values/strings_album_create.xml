@@ -18,6 +18,9 @@
 
     <string name="help_release_date">Toca el campo para abrir el selector de fecha.</string>
 
+    <string name="cover_preview_title">Vista previa de la portada</string>
+    <string name="release_date_picker_title">Fecha de lanzamiento</string>
+
     <string name="cd_create_album">Crear álbum</string>
     <string name="cd_close_without_saving">Cerrar sin guardar</string>
     <string name="cd_open_date_picker">Abrir el selector de fecha</string>
