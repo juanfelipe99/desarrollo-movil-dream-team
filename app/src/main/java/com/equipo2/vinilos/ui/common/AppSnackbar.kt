@@ -32,6 +32,7 @@ object AppSnackbar {
     private fun Snackbar.customize(isError: Boolean) {
         // El texto del aviso es una vista interna de Material, por eso se busca por su id
         val text = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        text.maxLines = Int.MAX_VALUE
         text.addStatusIcon(isError)
         text.addCloseButton { dismiss() }
     }
