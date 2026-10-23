@@ -6,9 +6,12 @@ import com.equipo2.vinilos.data.network.album.AlbumServiceAdapter
 
 interface AlbumRepository {
     suspend fun createAlbum(album: NewAlbum): Result<Album>
+    suspend fun getAlbumById(id: Int): Result<Album>
 }
 
 class AlbumRepositoryImpl(private val adapter: AlbumServiceAdapter) : AlbumRepository {
 
     override suspend fun createAlbum(album: NewAlbum): Result<Album> = resultOf { adapter.createAlbum(album) }
+
+    override suspend fun getAlbumById(id: Int): Result<Album> = resultOf { adapter.getAlbumById(id) }
 }

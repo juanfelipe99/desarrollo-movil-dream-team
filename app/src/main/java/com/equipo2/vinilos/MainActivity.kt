@@ -43,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         val navController = binding.navHost.getFragment<NavHostFragment>().navController
         binding.toolbar.setupWithNavController(navController, AppBarConfiguration(binding.bottomNav.menu))
         binding.bottomNav.setupWithNavController(navController)
+        /*
+        En MainActivity se puso navController.navigate(R.id.albumDetailFragment)para que se cargue detalle albumes por defecto
+        en el archivo AlbumDetailFragment.kt se puso el llamado por defecto con Id 4.
+         */
+        navController.navigate(R.id.albumDetailFragment)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
