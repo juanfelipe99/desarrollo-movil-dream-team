@@ -22,6 +22,8 @@ class FakeAlbumRepository : AlbumRepository {
         created += album
         return response.await()
     }
+
+    override suspend fun getAlbumById(id: Int): Result<Album> = Result.failure(UnsupportedOperationException())
 }
 
 /** Repositorio de rol en memoria. */

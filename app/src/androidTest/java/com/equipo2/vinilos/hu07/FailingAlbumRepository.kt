@@ -9,4 +9,6 @@ import java.io.IOException
 class FailingAlbumRepository : AlbumRepository {
 
     override suspend fun createAlbum(album: NewAlbum): Result<Album> = Result.failure(IOException("Sin conexión"))
+
+    override suspend fun getAlbumById(id: Int): Result<Album> = Result.failure(IOException("Sin conexión"))
 }

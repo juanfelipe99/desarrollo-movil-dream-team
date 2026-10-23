@@ -9,4 +9,5 @@ class AlbumServiceAdapter(apiClient: ApiClient) {
     private val api = apiClient.create(AlbumApi::class.java)
 
     suspend fun createAlbum(album: NewAlbum): Album = api.createAlbum(album.toRequest()).toAlbum()
+    suspend fun getAlbumById(id: Int): Album = api.getAlbumById(id).toAlbum()
 }
