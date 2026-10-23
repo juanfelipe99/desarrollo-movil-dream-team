@@ -13,6 +13,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.equipo2.vinilos.R
+import com.equipo2.vinilos.databinding.ViewLoadingBinding
+import com.equipo2.vinilos.databinding.ViewStateMessageBinding
+import com.equipo2.vinilos.ui.state.addEmptySection
+import com.equipo2.vinilos.ui.state.showError
+import com.equipo2.vinilos.ui.state.showLoading
 import com.equipo2.vinilos.data.model.Track
 import com.equipo2.vinilos.data.model.AlbumComment
 import com.google.android.material.card.MaterialCardView
@@ -34,46 +39,35 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val statusContainer =
-            view.findViewById<LinearLayout>(R.id.albumStatusContainer)
-        val loadingContent =
-            view.findViewById<LinearLayout>(R.id.albumLoadingContent)
-        val errorContent =
-            view.findViewById<LinearLayout>(R.id.albumErrorContent)
+        val loading = ViewLoadingBinding.bind(view.findViewById(R.id.albumLoading))
+        val error = ViewStateMessageBinding.bind(view.findViewById(R.id.albumError))
         val albumContent =
             view.findViewById<LinearLayout>(R.id.albumContentContainer)
-
-        val retryButton =
-            view.findViewById<View>(R.id.retryAlbumButton)
-
-        retryButton.setOnClickListener {
-            viewModel.loadAlbum()
-        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.isLoading.collect { isLoading ->
                         if (isLoading) {
-                            statusContainer.visibility = View.VISIBLE
-                            loadingContent.visibility = View.VISIBLE
-                            errorContent.visibility = View.GONE
+                            loading.showLoading(getString(R.string.album_detail_loading), R.layout.view_skeleton_detail)
+                            loading.root.visibility = View.VISIBLE
+                            error.root.visibility = View.GONE
                             albumContent.visibility = View.GONE
                         } else if (viewModel.error.value == null &&
                             viewModel.album.value != null
                         ) {
-                            statusContainer.visibility = View.GONE
+                            loading.root.visibility = View.GONE
                             albumContent.visibility = View.VISIBLE
                         }
                     }
                 }
 
                 launch {
-                    viewModel.error.collect { error ->
-                        if (error != null) {
-                            statusContainer.visibility = View.VISIBLE
-                            loadingContent.visibility = View.GONE
-                            errorContent.visibility = View.VISIBLE
+                    viewModel.error.collect { message ->
+                        if (message != null) {
+                            error.showError(getString(R.string.album_detail_object)) { viewModel.loadAlbum() }
+                            loading.root.visibility = View.GONE
+                            error.root.visibility = View.VISIBLE
                             albumContent.visibility = View.GONE
                         }
                     }
@@ -129,10 +123,18 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
                             albumData.description
 
                         view.findViewById<TextView>(R.id.tracksCount).text =
-                            albumData.tracks.size.toString()
+                            resources.getQuantityString(
+                                R.plurals.album_detail_tracks_count,
+                                albumData.tracks.size,
+                                albumData.tracks.size,
+                            )
 
                         view.findViewById<TextView>(R.id.commentsCount).text =
-                            albumData.comments.size.toString()
+                            resources.getQuantityString(
+                                R.plurals.album_detail_comments_count,
+                                albumData.comments.size,
+                                albumData.comments.size,
+                            )
 
                         renderTracks(
                             view.findViewById(R.id.tracksContainer),
@@ -156,74 +158,11 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         container.removeAllViews()
 
         if (tracks.isEmpty()) {
-            val card = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-                setPadding(dp(12), dp(10), dp(12), dp(10))
-                background = android.graphics.drawable.GradientDrawable().apply {
-                    shape = android.graphics.drawable.GradientDrawable.RECTANGLE
-                    cornerRadius = dp(8).toFloat()
-                    setColor(android.graphics.Color.TRANSPARENT)
-                    setStroke(
-                        dp(1),
-                        android.graphics.Color.rgb(165, 145, 190),
-                        dp(4).toFloat(),
-                        dp(3).toFloat()
-                    )
-                }
-                layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            }
-
-            val icon = TextView(requireContext()).apply {
-                text = "♫"
-                textSize = 20f
-                gravity = Gravity.CENTER
-                setTextColor(android.graphics.Color.rgb(92, 78, 115))
-                layoutParams = LinearLayout.LayoutParams(
-                    dp(28),
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            }
-
-            val textContainer = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.VERTICAL
-                setPadding(dp(8), 0, 0, 0)
-                layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1f
-                )
-            }
-
-            val title = TextView(requireContext()).apply {
-                text = "Este álbum aún no tiene tracks"
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodySmall
-                )
-                setTextColor(android.graphics.Color.rgb(35, 31, 40))
-            }
-
-            val message = TextView(requireContext()).apply {
-                text = "Las canciones aparecerán aquí cuando se registren."
-                setPadding(0, dp(2), 0, 0)
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodySmall
-                )
-                setTextColor(android.graphics.Color.rgb(100, 94, 108))
-            }
-
-            textContainer.addView(title)
-            textContainer.addView(message)
-            card.addView(icon)
-            card.addView(textContainer)
-            container.addView(card)
+            container.addEmptySection(
+                R.drawable.ic_music_note,
+                getString(R.string.album_detail_tracks_empty_title),
+                getString(R.string.album_detail_tracks_empty_body),
+            )
             return
         }
 
@@ -321,74 +260,11 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         container.removeAllViews()
 
         if (comments.isEmpty()) {
-            val card = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-                setPadding(dp(12), dp(10), dp(12), dp(10))
-                background = android.graphics.drawable.GradientDrawable().apply {
-                    shape = android.graphics.drawable.GradientDrawable.RECTANGLE
-                    cornerRadius = dp(8).toFloat()
-                    setColor(android.graphics.Color.TRANSPARENT)
-                    setStroke(
-                        dp(1),
-                        android.graphics.Color.rgb(165, 145, 190),
-                        dp(4).toFloat(),
-                        dp(3).toFloat()
-                    )
-                }
-                layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            }
-
-            val icon = TextView(requireContext()).apply {
-                text = "♧"
-                textSize = 20f
-                gravity = Gravity.CENTER
-                setTextColor(android.graphics.Color.rgb(92, 78, 115))
-                layoutParams = LinearLayout.LayoutParams(
-                    dp(28),
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            }
-
-            val textContainer = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.VERTICAL
-                setPadding(dp(8), 0, 0, 0)
-                layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1f
-                )
-            }
-
-            val title = TextView(requireContext()).apply {
-                text = "Sin comentarios"
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodySmall
-                )
-                setTextColor(android.graphics.Color.rgb(35, 31, 40))
-            }
-
-            val message = TextView(requireContext()).apply {
-                text = "Ningún coleccionista ha comentado este álbum todavía."
-                setPadding(0, dp(2), 0, 0)
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodySmall
-                )
-                setTextColor(android.graphics.Color.rgb(100, 94, 108))
-            }
-
-            textContainer.addView(title)
-            textContainer.addView(message)
-            card.addView(icon)
-            card.addView(textContainer)
-            container.addView(card)
+            container.addEmptySection(
+                R.drawable.ic_chat_bubble,
+                getString(R.string.album_detail_comments_empty_title),
+                getString(R.string.album_detail_comments_empty_body),
+            )
             return
         }
 
