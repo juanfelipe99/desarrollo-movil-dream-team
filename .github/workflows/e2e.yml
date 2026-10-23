@@ -48,6 +48,7 @@ jobs:
         run: ./gradlew assembleDebug assembleDebugAndroidTest
 
       - name: Ejecutar las pruebas en el emulador
+        id: emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api }}
@@ -56,21 +57,9 @@ jobs:
           disable-animations: true
           script: ./gradlew connectedDebugAndroidTest
 
-      - name: Resumen de resultados
-        if: always()
-        run: |
-          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import glob, xml.etree.ElementTree as ET
-          rows, failed = [], 0
-          for path in sorted(glob.glob("app/build/outputs/androidTest-results/connected/**/*.xml", recursive=True)):
-              for case in ET.parse(path).getroot().iter("testcase"):
-                  ok = case.find("failure") is None and case.find("error") is None
-                  failed += not ok
-                  rows.append(f"| {'✅' if ok else '❌'} | {case.get('classname').split('.')[-1]} | {case.get('name')} |")
-          print(f"## E2E en API ${{ matrix.api }}: {len(rows) - failed} de {len(rows)} pasaron\n")
-          print("| | Clase | Prueba |\n|---|---|---|")
-          print("\n".join(rows) or "| | | No se generaron resultados |")
-          PY
+      - name: Resultados de las pruebas
+        if: ${{ !cancelled() && steps.emulator.outcome != 'skipped' }}
+        run: python3 .github/scripts/test_report.py "E2E en API ${{ matrix.api }}" "app/build/outputs/androidTest-results/connected/**/*.xml"
 
       - name: Guardar el reporte
         if: always()

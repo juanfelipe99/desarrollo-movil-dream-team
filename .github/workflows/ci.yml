@@ -22,8 +22,21 @@ jobs:
       - name: Preparar Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Compilar, pruebas unitarias y lint
-        run: ./gradlew assembleDebug testDebugUnitTest lintDebug assembleDebugAndroidTest
+      - name: Compilar la app y las pruebas E2E
+        id: build
+        run: ./gradlew assembleDebug assembleDebugAndroidTest
+
+      - name: Pruebas unitarias
+        id: unit
+        run: ./gradlew testDebugUnitTest
+
+      - name: Resultados de las pruebas unitarias
+        if: ${{ !cancelled() && steps.unit.outcome != 'skipped' }}
+        run: python3 .github/scripts/test_report.py "Pruebas unitarias" "app/build/test-results/testDebugUnitTest/*.xml"
+
+      - name: Lint
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: ./gradlew lintDebug
 
       - name: Guardar reportes
         if: failure()
