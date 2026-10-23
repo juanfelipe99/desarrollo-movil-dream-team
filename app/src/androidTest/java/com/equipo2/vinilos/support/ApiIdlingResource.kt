@@ -1,4 +1,4 @@
-package com.equipo2.vinilos
+package com.equipo2.vinilos.support
 
 import androidx.test.espresso.IdlingResource
 import okhttp3.Dispatcher

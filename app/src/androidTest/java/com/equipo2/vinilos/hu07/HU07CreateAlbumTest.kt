@@ -1,4 +1,4 @@
-package com.equipo2.vinilos
+package com.equipo2.vinilos.hu07
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -13,7 +13,15 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.equipo2.vinilos.AppContainer
+import com.equipo2.vinilos.R
+import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.repository.AlbumRepository
+import com.equipo2.vinilos.support.BackVynils
+import com.equipo2.vinilos.support.VinilosRule
+import com.equipo2.vinilos.support.hasFieldError
+import com.equipo2.vinilos.support.pickOption
+import com.equipo2.vinilos.support.toolbarTitle
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Rule

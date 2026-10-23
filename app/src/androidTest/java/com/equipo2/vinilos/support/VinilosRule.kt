@@ -1,9 +1,11 @@
-package com.equipo2.vinilos
+package com.equipo2.vinilos.support
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.IdlingRegistry
+import com.equipo2.vinilos.MainActivity
+import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.ThemeMode
 import kotlinx.coroutines.runBlocking
 import org.junit.rules.ExternalResource

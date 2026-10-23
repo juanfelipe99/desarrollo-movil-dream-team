@@ -1,4 +1,4 @@
-package com.equipo2.vinilos
+package com.equipo2.vinilos.hu07
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
@@ -16,6 +16,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.equipo2.vinilos.R
+import com.equipo2.vinilos.support.VinilosRule
+import com.equipo2.vinilos.support.chooseInRoleMenu
+import com.equipo2.vinilos.support.enterAs
+import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.waitForNightMode
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

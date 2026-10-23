@@ -1,5 +1,6 @@
-package com.equipo2.vinilos
+package com.equipo2.vinilos.support
 
+import com.equipo2.vinilos.BuildConfig
 import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
