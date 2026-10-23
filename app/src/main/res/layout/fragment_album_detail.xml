@@ -2,318 +2,232 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorSurface">
+    android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/albumScroll"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="12dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="24dp">
+            android:layout_height="wrap_content">
 
-            <!-- Contenido normal del álbum -->
             <LinearLayout
-                android:id="@+id/albumContentContainer"
-                android:layout_width="match_parent"
+                android:id="@+id/albumContent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:paddingBottom="32dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_max="528dp">
 
-                <!-- Portada -->
-                <ImageView
-                    android:id="@+id/albumCover"
-                    android:layout_width="164dp"
-                    android:layout_height="164dp"
+                <!-- El marcador queda detrás y se ve mientras la portada carga o si falla -->
+                <FrameLayout
+                    android:layout_width="228dp"
+                    android:layout_height="228dp"
                     android:layout_gravity="center_horizontal"
-                    android:contentDescription="@string/album_cover_description"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_album" />
-
-                <!-- Nombre del álbum -->
-                <TextView
-                    android:id="@+id/albumName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/album_example_name"
-                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
-                    android:textColor="?attr/colorOnSurface" />
-
-                <!-- Acceso al artista -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/albumArtist"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="6dp"
-                    android:minHeight="40dp"
-                    android:text="@string/album_example_artist"
-                    android:textAllCaps="false"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
-                    app:icon="@drawable/ic_chevron_right"
-                    app:iconGravity="end"
-                    app:iconPadding="8dp"
-                    app:cornerRadius="24dp"
-                    app:strokeColor="?attr/colorOutline" />
-
-                <!-- Información general -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/albumInfoCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:strokeColor="?attr/colorOutlineVariant"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <!-- Fecha -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp">
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_calendar"
-                                app:tint="?attr/colorOnSurfaceVariant" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/album_detail_release_date_label"
-                                    android:textAppearance="?attr/textAppearanceLabelSmall"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                                <TextView
-                                    android:id="@+id/albumReleaseDate"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/album_example_release_date_value"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurface" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?attr/colorOutlineVariant" />
-
-                        <!-- Género -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp">
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_music"
-                                app:tint="?attr/colorOnSurfaceVariant" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/album_detail_genre_label"
-                                    android:textAppearance="?attr/textAppearanceLabelSmall"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                                <TextView
-                                    android:id="@+id/albumGenre"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/album_example_genre_value"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurface" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?attr/colorOutlineVariant" />
-
-                        <!-- Sello discográfico -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp">
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_label"
-                                app:tint="?attr/colorOnSurfaceVariant" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/album_detail_record_label_label"
-                                    android:textAppearance="?attr/textAppearanceLabelSmall"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                                <TextView
-                                    android:id="@+id/albumRecordLabel"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/album_example_record_label_value"
-                                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurface" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Descripción -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/album_detail_description_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:background="@drawable/bg_album_cover">
 
-                <TextView
-                    android:id="@+id/albumDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:maxLines="4"
-                    android:ellipsize="end"
-                    android:text="@string/album_example_description"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnSurface" />
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        app:srcCompat="@drawable/ic_album"
+                        app:tint="@color/placeholder_icon" />
 
-                <TextView
-                    android:id="@+id/expandDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/album_detail_expand"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
-                    android:textColor="?attr/colorPrimary" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/albumCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/album_cover_description"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Vinilos.AlbumCover" />
+                </FrameLayout>
 
-                <!-- Tracks y contador -->
+                <!-- Cabecera -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:id="@+id/albumName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.Vinilos.HeadlineMedium" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/albumPerformers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:chipSpacingHorizontal="8dp"
+                        app:chipSpacingVertical="8dp" />
+
+                    <TextView
+                        android:id="@+id/albumNoPerformers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/album_detail_no_performers"
+                        android:textAppearance="@style/TextAppearance.Vinilos.BodyMedium"
+                        android:textColor="@color/md_on_surface_variant"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include
+                                android:id="@+id/albumReleaseDate"
+                                layout="@layout/item_album_info" />
+
+                            <View style="@style/Widget.Vinilos.Divider" />
+
+                            <include
+                                android:id="@+id/albumGenre"
+                                layout="@layout/item_album_info" />
+
+                            <View style="@style/Widget.Vinilos.Divider" />
+
+                            <include
+                                android:id="@+id/albumRecordLabel"
+                                layout="@layout/item_album_info" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- Descripción -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/album_detail_description_title"
+                        android:textAppearance="@style/TextAppearance.Vinilos.TitleMedium"
+                        android:textColor="@color/md_on_surface" />
+
+                    <TextView
+                        android:id="@+id/albumDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/TextAppearance.Vinilos.BodyLarge"
+                        android:textColor="@color/md_on_surface" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/albumDescriptionToggle"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="0dp"
+                        android:minHeight="48dp"
+                        android:paddingHorizontal="4dp"
+                        android:text="@string/album_detail_expand"
+                        android:textAppearance="@style/TextAppearance.Vinilos.LabelLarge"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- Tracks -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:baselineAligned="true"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:minHeight="48dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/album_detail_tracks_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface" />
+                        android:textAppearance="@style/TextAppearance.Vinilos.TitleMedium"
+                        android:textColor="@color/md_on_surface" />
 
                     <TextView
                         android:id="@+id/tracksCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="@string/album_example_tracks_count"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        android:textColor="?attr/colorOnSurfaceVariant" />
+                        android:layout_marginStart="4dp"
+                        android:textAppearance="@style/TextAppearance.Vinilos.BodyMedium"
+                        android:textColor="@color/md_on_surface_variant" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/tracksContainer"
+                    android:id="@+id/tracksList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:orientation="vertical" />
 
-                <!-- Comentarios y contador -->
+                <View
+                    android:id="@+id/tracksListEnd"
+                    style="@style/Widget.Vinilos.Divider" />
+
+                <FrameLayout
+                    android:id="@+id/tracksEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp" />
+
+                <!-- Comentarios -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="24dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/album_detail_comments_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/commentsCount"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/album_detail_comments_title"
+                            android:textAppearance="@style/TextAppearance.Vinilos.TitleMedium"
+                            android:textColor="@color/md_on_surface" />
+
+                        <TextView
+                            android:id="@+id/commentsCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:textAppearance="@style/TextAppearance.Vinilos.BodyMedium"
+                            android:textColor="@color/md_on_surface_variant" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/commentsList"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="@string/album_example_comments_count"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        android:textColor="?attr/colorOnSurfaceVariant" />
+                        android:orientation="vertical" />
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/commentsContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical" />
-
             </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <include
         android:id="@+id/albumLoading"

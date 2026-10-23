@@ -23,7 +23,7 @@ object AppSnackbar {
     fun show(root: View, message: CharSequence, isError: Boolean = false, anchor: View? = null) {
         val snackbar = Snackbar.make(root, message, DURATION_MS)
         snackbar.anchorView = anchor
-        // Material mide el ancla sin descontar el padding de root, que ya incluye las barras
+        // Material mide el anchor sin descontar el padding de root, que ya incluye las barras
         if (anchor != null) snackbar.view.updateLayoutParams<ViewGroup.MarginLayoutParams> { bottomMargin -= root.paddingBottom }
         snackbar.customize(isError)
         snackbar.show()

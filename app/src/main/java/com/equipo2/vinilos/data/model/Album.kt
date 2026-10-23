@@ -12,6 +12,7 @@ data class AlbumComment(
     val id: Int,
     val description: String,
     val rating: Int,
+    val author: String? = null,
 )
 
 data class Performer(

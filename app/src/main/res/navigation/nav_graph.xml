@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/albumDetailFragment"
         android:name="com.equipo2.vinilos.ui.albums.detail.AlbumDetailFragment"
-        android:label="Álbum" />
+        android:label="@string/album_detail_title" />
 
     <fragment
         android:id="@+id/artistListFragment"

@@ -1,31 +1,33 @@
-
 package com.equipo2.vinilos.ui.albums.detail
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import coil3.load
 import com.equipo2.vinilos.R
-import com.equipo2.vinilos.databinding.ViewLoadingBinding
-import com.equipo2.vinilos.databinding.ViewStateMessageBinding
+import com.equipo2.vinilos.data.model.Album
+import com.equipo2.vinilos.data.model.AlbumComment
+import com.equipo2.vinilos.data.model.Performer
+import com.equipo2.vinilos.data.model.Track
+import com.equipo2.vinilos.databinding.FragmentAlbumDetailBinding
+import com.equipo2.vinilos.databinding.ItemAlbumCommentBinding
+import com.equipo2.vinilos.databinding.ItemAlbumInfoBinding
+import com.equipo2.vinilos.databinding.ItemTrackBinding
+import com.equipo2.vinilos.databinding.ViewPerformerChipBinding
+import com.equipo2.vinilos.ui.common.collectWhileVisible
+import com.equipo2.vinilos.ui.common.toLongText
 import com.equipo2.vinilos.ui.state.addEmptySection
 import com.equipo2.vinilos.ui.state.showError
 import com.equipo2.vinilos.ui.state.showLoading
-import com.equipo2.vinilos.data.model.Track
-import com.equipo2.vinilos.data.model.AlbumComment
-import com.google.android.material.card.MaterialCardView
-import kotlinx.coroutines.launch
 
-/**
- * Pantalla de detalle de álbum (HU02).
- */
+/** Pantalla de detalle de álbum (HU02). */
 class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
 
     private val viewModel: AlbumDetailViewModel by viewModels {
@@ -33,132 +35,93 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         AlbumDetailViewModel.factory(albumId)
     }
 
-    private var tracksExpanded = false
-    private var commentsExpanded = false
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loading = ViewLoadingBinding.bind(view.findViewById(R.id.albumLoading))
-        val error = ViewStateMessageBinding.bind(view.findViewById(R.id.albumError))
-        val albumContent =
-            view.findViewById<LinearLayout>(R.id.albumContentContainer)
+        val binding = FragmentAlbumDetailBinding.bind(view)
+        setUpStates(binding)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.isLoading.collect { isLoading ->
-                        if (isLoading) {
-                            loading.showLoading(getString(R.string.album_detail_loading), R.layout.view_skeleton_detail)
-                            loading.root.visibility = View.VISIBLE
-                            error.root.visibility = View.GONE
-                            albumContent.visibility = View.GONE
-                        } else if (viewModel.error.value == null &&
-                            viewModel.album.value != null
-                        ) {
-                            loading.root.visibility = View.GONE
-                            albumContent.visibility = View.VISIBLE
-                        }
-                    }
-                }
-
-                launch {
-                    viewModel.error.collect { message ->
-                        if (message != null) {
-                            error.showError(getString(R.string.album_detail_object)) { viewModel.loadAlbum() }
-                            loading.root.visibility = View.GONE
-                            error.root.visibility = View.VISIBLE
-                            albumContent.visibility = View.GONE
-                        }
-                    }
-                }
-            }
-        }
-
-        val cover =
-            view.findViewById<android.widget.ImageView>(R.id.albumCover)
-        cover.setBackgroundColor(android.graphics.Color.rgb(230, 223, 240))
-        cover.setPadding(dp(28), dp(28), dp(28), dp(28))
-        cover.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
-        cover.setColorFilter(android.graphics.Color.rgb(125, 109, 148))
-
+        viewLifecycleOwner.collectWhileVisible(viewModel.album) { album -> album?.let { showAlbum(binding, it) } }
         viewModel.loadAlbum()
+    }
 
-        val description =
-            view.findViewById<TextView>(R.id.albumDescription)
-        val expandDescription =
-            view.findViewById<TextView>(R.id.expandDescription)
-
-        expandDescription.setOnClickListener {
-            val expanded = description.maxLines == 4
-            description.maxLines = if (expanded) Int.MAX_VALUE else 4
-            expandDescription.setText(
-                if (expanded) R.string.album_detail_collapse
-                else R.string.album_detail_expand
-            )
-        }
-
-        android.util.Log.d(
-            "AlbumDetail",
-            "Consultando álbum desde el Fragment"
-        )
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.album.collect { album ->
-                    album?.let { albumData ->
-                        view.findViewById<TextView>(R.id.albumName).text =
-                            albumData.name
-
-                        view.findViewById<TextView>(R.id.albumReleaseDate).text =
-                            albumData.releaseDate.toString()
-
-                        view.findViewById<TextView>(R.id.albumGenre).text =
-                            albumData.genre
-
-                        view.findViewById<TextView>(R.id.albumRecordLabel).text =
-                            albumData.recordLabel
-
-                        view.findViewById<TextView>(R.id.albumDescription).text =
-                            albumData.description
-
-                        view.findViewById<TextView>(R.id.tracksCount).text =
-                            resources.getQuantityString(
-                                R.plurals.album_detail_tracks_count,
-                                albumData.tracks.size,
-                                albumData.tracks.size,
-                            )
-
-                        view.findViewById<TextView>(R.id.commentsCount).text =
-                            resources.getQuantityString(
-                                R.plurals.album_detail_comments_count,
-                                albumData.comments.size,
-                                albumData.comments.size,
-                            )
-
-                        renderTracks(
-                            view.findViewById(R.id.tracksContainer),
-                            albumData.tracks
-                        )
-
-                        renderComments(
-                            view.findViewById(R.id.commentsContainer),
-                            albumData.comments
-                        )
-                    }
-                }
+    /** Cargando y error usan los estados compartidos de la app. */
+    private fun setUpStates(binding: FragmentAlbumDetailBinding) {
+        viewLifecycleOwner.collectWhileVisible(viewModel.isLoading) { isLoading ->
+            if (isLoading) {
+                binding.albumLoading.showLoading(getString(R.string.album_detail_loading), R.layout.view_skeleton_detail)
             }
+            binding.albumLoading.root.isVisible = isLoading
+            binding.albumContent.isVisible = !isLoading && viewModel.error.value == null && viewModel.album.value != null
+        }
+        viewLifecycleOwner.collectWhileVisible(viewModel.error) { message ->
+            if (message != null) binding.albumError.showError(getString(R.string.album_detail_object)) { viewModel.loadAlbum() }
+            binding.albumError.root.isVisible = message != null
+            if (message != null) binding.albumContent.isVisible = false
         }
     }
 
-    private fun renderTracks(
-        container: LinearLayout,
-        tracks: List<Track>
-    ) {
-        container.removeAllViews()
+    private fun showAlbum(binding: FragmentAlbumDetailBinding, album: Album) {
+        binding.albumCover.load(album.cover)
+        binding.albumName.text = album.name
+        showPerformers(binding, album.performers)
+
+        val releaseDate = album.releaseDate.toLongText()
+        binding.albumReleaseDate.show(R.drawable.ic_calendar_today, R.string.album_detail_release_date_label, releaseDate)
+        binding.albumGenre.show(R.drawable.ic_music_note, R.string.album_detail_genre_label, album.genre)
+        binding.albumRecordLabel.show(R.drawable.ic_sell, R.string.album_detail_record_label_label, album.recordLabel)
+
+        showDescription(binding, album.description)
+        showTracks(binding, album.tracks)
+        showComments(binding, album.comments)
+    }
+
+    private fun ItemAlbumInfoBinding.show(@DrawableRes icon: Int, @StringRes label: Int, value: String) {
+        infoIcon.setImageResource(icon)
+        infoLabel.setText(label)
+        infoValue.text = value
+    }
+
+    /** Un chip por intérprete, con su foto o sus iniciales. */
+    private fun showPerformers(binding: FragmentAlbumDetailBinding, performers: List<Performer>) {
+        binding.albumPerformers.removeAllViews()
+        binding.albumNoPerformers.isVisible = performers.isEmpty()
+
+        performers.forEach { performer ->
+            val chip = ViewPerformerChipBinding.inflate(layoutInflater, binding.albumPerformers, true)
+            chip.performerInitials.text = initialsOf(performer.name)
+            chip.performerName.text = performer.name
+            chip.performerPhoto.load(performer.image)
+        }
+    }
+
+    /** Los textos largos se cortan en la última palabra antes de 170 caracteres, y «Ver más» los muestra completos. */
+    private fun showDescription(binding: FragmentAlbumDetailBinding, description: String) {
+        val isLong = description.length > DESCRIPTION_PREVIEW_LENGTH
+        val preview = description.take(DESCRIPTION_PREVIEW_LENGTH).substringBeforeLast(' ').trimEnd() + "…"
+        var expanded = false
+
+        fun render() {
+            binding.albumDescription.text = if (expanded || !isLong) description else preview
+            binding.albumDescriptionToggle.setText(if (expanded) R.string.album_detail_collapse else R.string.album_detail_expand)
+        }
+
+        binding.albumDescriptionToggle.isVisible = isLong
+        binding.albumDescriptionToggle.setOnClickListener {
+            expanded = !expanded
+            render()
+        }
+        render()
+    }
+
+    private fun showTracks(binding: FragmentAlbumDetailBinding, tracks: List<Track>) {
+        binding.tracksCount.text = resources.getQuantityString(R.plurals.album_detail_tracks_count, tracks.size, tracks.size)
+        binding.tracksList.removeAllViews()
+        binding.tracksEmpty.removeAllViews()
+        binding.tracksListEnd.isVisible = tracks.isNotEmpty()
 
         if (tracks.isEmpty()) {
-            container.addEmptySection(
+            binding.tracksEmpty.addEmptySection(
                 R.drawable.ic_music_note,
                 getString(R.string.album_detail_tracks_empty_title),
                 getString(R.string.album_detail_tracks_empty_body),
@@ -166,101 +129,21 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
             return
         }
 
-        val visibleTracks =
-            if (tracksExpanded) tracks else tracks.take(3)
-
-        visibleTracks.forEachIndexed { index, track ->
-            val row = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-                setPadding(dp(10), 0, dp(10), 0)
-                layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    dp(40)
-                )
-            }
-
-            val number = TextView(requireContext()).apply {
-                text = (index + 1).toString()
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodySmall
-                )
-            }
-
-            val name = TextView(requireContext()).apply {
-                text = track.name
-                layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1f
-                )
-                setPadding(dp(10), 0, dp(8), 0)
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodyMedium
-                )
-            }
-
-            val duration = TextView(requireContext()).apply {
-                text = track.duration
-                setTextAppearance(
-                    requireContext(),
-                    com.google.android.material.R.style
-                        .TextAppearance_Material3_BodySmall
-                )
-            }
-
-            row.addView(
-                number,
-                LinearLayout.LayoutParams(
-                    dp(20),
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            )
-            row.addView(name)
-            row.addView(duration)
-            container.addView(row)
-
-            if (index < visibleTracks.lastIndex) {
-                val divider = View(requireContext()).apply {
-                    setBackgroundColor(0xFFE0E0E0.toInt())
-                }
-
-                container.addView(
-                    divider,
-                    LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        dp(1)
-                    )
-                )
-            }
-        }
-
-        if (tracks.size > 3) {
-            container.addView(
-                createListToggle(
-                    expanded = tracksExpanded,
-                    expandText = "Ver todas",
-                    collapseText = "Ver menos"
-                ) {
-                    tracksExpanded = !tracksExpanded
-                    renderTracks(container, tracks)
-                }
-            )
+        tracks.forEachIndexed { index, track ->
+            val row = ItemTrackBinding.inflate(layoutInflater, binding.tracksList, true)
+            row.trackNumber.text = getString(R.string.album_detail_track_number, index + 1)
+            row.trackName.text = track.name
+            row.trackDuration.text = track.duration
         }
     }
 
-    private fun renderComments(
-        container: LinearLayout,
-        comments: List<AlbumComment>
-    ) {
-        container.removeAllViews()
+    private fun showComments(binding: FragmentAlbumDetailBinding, comments: List<AlbumComment>) {
+        binding.commentsCount.text = resources.getQuantityString(R.plurals.album_detail_comments_count, comments.size, comments.size)
+        binding.commentsList.removeAllViews()
 
         if (comments.isEmpty()) {
-            container.addEmptySection(
+            binding.commentsList.addSectionSpacing()
+            binding.commentsList.addEmptySection(
                 R.drawable.ic_chat_bubble,
                 getString(R.string.album_detail_comments_empty_title),
                 getString(R.string.album_detail_comments_empty_body),
@@ -268,85 +151,43 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
             return
         }
 
-        val visibleComments =
-            if (commentsExpanded) comments else comments.take(3)
-
-        visibleComments.forEach { comment ->
-            val card = MaterialCardView(requireContext()).apply {
-                radius = dp(12).toFloat()
-                cardElevation = 0f
-                layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    bottomMargin = dp(8)
-                }
-            }
-
-            val content = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.VERTICAL
-                setPadding(dp(12), dp(12), dp(12), dp(12))
-            }
-
-            val rating = TextView(requireContext()).apply {
-                val stars = "★".repeat(comment.rating.coerceIn(0, 5))
-                text = "$stars  ${comment.rating}/5"
-                setTextColor(android.graphics.Color.rgb(211, 84, 0))
-            }
-
-            val description = TextView(requireContext()).apply {
-                text = comment.description
-                setPadding(0, dp(8), 0, 0)
-            }
-
-            content.addView(rating)
-            content.addView(description)
-            card.addView(content)
-            container.addView(card)
-        }
-
-        if (comments.size > 3) {
-            container.addView(
-                createListToggle(
-                    expanded = commentsExpanded,
-                    expandText = "Ver todos",
-                    collapseText = "Ver menos"
-                ) {
-                    commentsExpanded = !commentsExpanded
-                    renderComments(container, comments)
-                }
-            )
+        comments.forEach { comment ->
+            binding.commentsList.addSectionSpacing()
+            val card = ItemAlbumCommentBinding.inflate(layoutInflater, binding.commentsList, true)
+            val author = comment.author ?: getString(R.string.album_detail_comment_author_unknown)
+            card.commentInitials.text = initialsOf(author)
+            card.commentAuthor.text = author
+            card.commentRating.text = getString(R.string.album_detail_comment_rating, comment.rating)
+            card.commentRatingRow.contentDescription = getString(R.string.cd_album_detail_comment_rating, comment.rating)
+            card.commentText.text = getString(R.string.album_detail_comment_text, comment.description)
+            showStars(card.commentStars, comment.rating)
         }
     }
 
-    private fun createListToggle(
-        expanded: Boolean,
-        expandText: String,
-        collapseText: String,
-        onClick: () -> Unit
-    ): TextView {
-        return TextView(requireContext()).apply {
-            text = if (expanded) collapseText else expandText
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                dp(48)
-            )
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(10), 0, dp(10), 0)
-            setTextAppearance(
-                requireContext(),
-                com.google.android.material.R.style
-                    .TextAppearance_Material3_BodyMedium
-            )
-            setTextColor(android.graphics.Color.rgb(125, 109, 148))
-            setOnClickListener { onClick() }
+    /** Cinco estrellas de 16 dp, rellenas hasta la calificación. */
+    private fun showStars(container: LinearLayout, rating: Int) {
+        val size = resources.getDimensionPixelSize(R.dimen.rating_star)
+        val gap = resources.getDimensionPixelSize(R.dimen.rating_star_gap)
+        repeat(MAX_RATING) { index ->
+            val star = ImageView(requireContext())
+            star.setImageResource(R.drawable.ic_star)
+            val color = if (index < rating) R.color.md_tertiary else R.color.md_outline_variant
+            star.setColorFilter(ContextCompat.getColor(requireContext(), color))
+            container.addView(star, LinearLayout.LayoutParams(size, size).apply { if (index > 0) marginStart = gap })
         }
     }
 
-    private fun dp(value: Int): Int =
-        (value * resources.displayMetrics.density).toInt()
+    private fun LinearLayout.addSectionSpacing() {
+        addView(View(context), LinearLayout.LayoutParams(0, resources.getDimensionPixelSize(R.dimen.detail_section_gap)))
+    }
+
+    /** Primera letra de las dos primeras palabras, por ejemplo «MB» para Manolo Bellon. */
+    private fun initialsOf(name: String): String =
+        name.split(' ').filter { it.isNotBlank() }.take(2).joinToString("") { it.first().uppercase() }
 
     companion object {
         private const val ARG_ALBUM_ID = "albumId"
+        private const val DESCRIPTION_PREVIEW_LENGTH = 170
+        private const val MAX_RATING = 5
     }
 }

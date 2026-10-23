@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chip de intérprete: foto o iniciales, nombre y flecha. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_performer_chip"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingStart="6dp"
+    android:paddingEnd="12dp">
+
+    <!-- Las iniciales quedan detrás y se ven mientras la foto carga o si falla -->
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_circle_surface_variant">
+
+        <TextView
+            android:id="@+id/performerInitials"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:textAppearance="@style/TextAppearance.Vinilos.LabelMedium.Bold"
+            android:textColor="@color/md_on_surface_variant"
+            tools:text="RB" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/performerPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Vinilos.Circle" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/performerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textAppearance="@style/TextAppearance.Vinilos.LabelLarge"
+        android:textColor="@color/md_on_surface"
+        tools:text="Rubén Blades" />
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="4dp"
+        android:importantForAccessibility="no"
+        app:srcCompat="@drawable/ic_chevron_right"
+        app:tint="@color/md_on_surface" />
+</LinearLayout>

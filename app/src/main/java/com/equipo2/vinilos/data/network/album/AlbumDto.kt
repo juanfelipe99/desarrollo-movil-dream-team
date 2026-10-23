@@ -55,6 +55,15 @@ data class CommentDto(
     val rating: Int,
 )
 
+@Serializable
+data class CommentAuthorDto(
+    val name: String,
+    val comments: List<CommentIdDto> = emptyList(),
+)
+
+@Serializable
+data class CommentIdDto(val id: Int)
+
 
 internal fun NewAlbum.toRequest() = CreateAlbumRequest(
     name = name,
@@ -66,7 +75,7 @@ internal fun NewAlbum.toRequest() = CreateAlbumRequest(
 )
 
 
-internal fun AlbumDto.toAlbum() = Album(
+internal fun AlbumDto.toAlbum(commentAuthors: Map<Int, String> = emptyMap()) = Album(
     id = id,
     name = name,
     cover = cover,
@@ -95,6 +104,7 @@ internal fun AlbumDto.toAlbum() = Album(
             id = comment.id,
             description = comment.description,
             rating = comment.rating,
+            author = commentAuthors[comment.id],
         )
     },
 )
