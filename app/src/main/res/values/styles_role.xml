@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Estilos de la selección de rol y del menú de rol. -->
 <resources>
-    <!-- Botones grandes de la selección de rol -->
     <style name="Widget.Vinilos.RoleButton" parent="Widget.Material3.CardView.Outlined">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -43,7 +41,6 @@
         <item name="android:src">@drawable/ic_chevron_right</item>
     </style>
 
-    <!-- Filas del menú de rol -->
     <style name="Widget.Vinilos.MenuRow" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

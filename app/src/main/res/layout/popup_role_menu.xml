@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Menú del chip de rol. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -79,37 +78,90 @@
 
         <View style="@style/Widget.Vinilos.MenuDivider" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="@string/theme_mode_header"
+            android:textAllCaps="true"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/md_on_surface_variant" />
+
         <LinearLayout
+            android:id="@+id/optionLight"
             style="@style/Widget.Vinilos.MenuRow"
-            android:background="@null"
-            android:clickable="false"
-            android:focusable="false"
-            android:minHeight="56dp">
+            android:minHeight="48dp">
+
+            <ImageView
+                style="@style/Widget.Vinilos.MenuRow.Icon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_light_mode" />
+
+            <TextView
+                style="@style/Widget.Vinilos.MenuRow.Title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/theme_mode_light" />
+
+            <ImageView
+                android:id="@+id/checkLight"
+                style="@style/Widget.Vinilos.MenuRow.Check"
+                android:importantForAccessibility="no" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/optionDark"
+            style="@style/Widget.Vinilos.MenuRow"
+            android:minHeight="48dp">
 
             <ImageView
                 style="@style/Widget.Vinilos.MenuRow.Icon"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_dark_mode" />
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/darkModeSwitch"
+            <TextView
+                style="@style/Widget.Vinilos.MenuRow.Title"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:minHeight="@dimen/touch_target"
-                android:text="@string/role_menu_dark_mode"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="@color/md_on_surface" />
+                android:text="@string/theme_mode_dark" />
+
+            <ImageView
+                android:id="@+id/checkDark"
+                style="@style/Widget.Vinilos.MenuRow.Check"
+                android:importantForAccessibility="no" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/optionSystem"
+            style="@style/Widget.Vinilos.MenuRow"
+            android:minHeight="48dp">
+
+            <ImageView
+                style="@style/Widget.Vinilos.MenuRow.Icon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_contrast" />
+
+            <TextView
+                style="@style/Widget.Vinilos.MenuRow.Title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/theme_mode_system" />
+
+            <ImageView
+                android:id="@+id/checkSystem"
+                style="@style/Widget.Vinilos.MenuRow.Check"
+                android:importantForAccessibility="no" />
         </LinearLayout>
 
         <View style="@style/Widget.Vinilos.MenuDivider" />
 
         <TextView
-            android:id="@+id/optionGoHome"
+            android:id="@+id/optionRoleSelect"
             style="@style/Widget.Vinilos.MenuRow"
             android:drawablePadding="12dp"
             android:minHeight="48dp"
-            android:text="@string/role_menu_go_home"
+            android:text="@string/role_menu_role_select"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="@color/md_on_surface"
             app:drawableStartCompat="@drawable/ic_home"

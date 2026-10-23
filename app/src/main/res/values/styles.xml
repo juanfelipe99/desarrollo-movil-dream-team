@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Componentes -->
     <style name="Widget.Vinilos.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/md_surface</item>
         <item name="contentInsetStart">20dp</item>
+        <!-- Sin el margen de 4 dp de AppCompat, el título queda a 20 dp o justo después de la X. -->
+        <item name="titleMarginStart">0dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Vinilos.TitleLarge</item>
         <item name="navigationIconTint">@color/md_on_surface</item>
     </style>
@@ -12,7 +13,9 @@
         <item name="backgroundTint">@color/md_surface_container</item>
         <item name="elevation">0dp</item>
         <item name="labelVisibilityMode">labeled</item>
-        <item name="itemActiveIndicatorStyle">@style/Widget.Vinilos.BottomNavigation.ActiveIndicator</item>
+        <item name="itemActiveIndicatorStyle">
+            @style/Widget.Vinilos.BottomNavigation.ActiveIndicator
+        </item>
         <item name="itemIconTint">@color/nav_item_icon</item>
         <item name="itemTextColor">@color/nav_item_text</item>
         <item name="itemTextAppearanceActive">@style/TextAppearance.Vinilos.LabelMedium.Bold</item>
@@ -36,7 +39,74 @@
         <item name="cornerRadius">24dp</item>
     </style>
 
-    <!-- Tarjeta base. -->
+    <style name="Widget.Vinilos.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- Etiqueta siempre arriba y texto de ejemplo siempre visible, como en el prototipo. -->
+    <style name="Widget.Vinilos.FormField" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
+        <item name="helperTextTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
+    </style>
+
+    <style name="Widget.Vinilos.FormField.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="endIconDrawable">@drawable/ic_expand_more</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
+        <item name="helperTextTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
+    </style>
+
+    <!-- 15 dp arriba y abajo para que el campo mida 52 dp, como en el prototipo. -->
+    <style name="Widget.Vinilos.FormField.Input" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="Widget.Vinilos.FormField.DropdownInput" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="simpleItemSelectedColor">@color/md_primary_container</item>
+    </style>
+
+    <style name="ShapeAppearance.Vinilos.Cover" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Vinilos.AlbumCover" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Vinilos.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="Widget.Vinilos.Card" parent="Widget.Material3.CardView.Outlined">
         <item name="cardBackgroundColor">@color/md_surface_container_lowest</item>
         <item name="strokeColor">@color/md_outline_variant</item>
@@ -49,7 +119,6 @@
         <item name="android:layout_margin">16dp</item>
     </style>
 
-    <!-- Esqueletos de carga -->
     <style name="Widget.Vinilos.Skeleton.Block" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">120dp</item>
@@ -71,7 +140,6 @@
         <item name="android:background">@drawable/bg_skeleton_circle</item>
     </style>
 
-    <!-- Tipografía con la Roboto incluida en la app, con sus pesos reales desde Android 5.0. -->
     <style name="TextAppearance.Vinilos.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
@@ -123,7 +191,6 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!-- Nombre en tarjetas e ítems de lista -->
     <style name="TextAppearance.Vinilos.BodyLarge.SemiBold">
         <item name="android:fontFamily">@font/roboto_semibold</item>
         <item name="fontFamily">@font/roboto_semibold</item>
@@ -131,7 +198,6 @@
         <item name="android:lineHeight" tools:targetApi="28">22sp</item>
     </style>
 
-    <!-- Iniciales en las fotos de personas -->
     <style name="TextAppearance.Vinilos.BodyLarge.Bold">
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
@@ -148,6 +214,15 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
+    <!-- Ayuda y errores debajo de los campos. -->
+    <style name="TextAppearance.Vinilos.Supporting" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="28">18sp</item>
+    </style>
+
     <style name="TextAppearance.Vinilos.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
         <item name="android:fontFamily">@font/roboto_semibold</item>
         <item name="fontFamily">@font/roboto_semibold</item>
@@ -160,7 +235,6 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <!-- Chips de tipo de artista y chip «Nuevo» -->
     <style name="TextAppearance.Vinilos.LabelMedium.SemiBold">
         <item name="android:fontFamily">@font/roboto_semibold</item>
         <item name="fontFamily">@font/roboto_semibold</item>

@@ -20,6 +20,13 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"https://backvynils-q6yc.onrender.com/\"")
     }
 
+    signingConfigs {
+        // Llave compartida para que los APK de cualquier computador o workflow se actualicen entre sí
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+        }
+    }
+
     buildTypes {
         release {
             optimization {
@@ -33,14 +40,17 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
+    testOptions {
+        animationsDisabled = true
+    }
     buildFeatures {
         buildConfig = true
         viewBinding = true
     }
     lint {
-        // Las versiones están fijadas en las últimas que funcionan en Android 5.0, así que no se avisa de las nuevas.
+        // Versiones fijadas en las últimas compatibles con Android 5.0
         disable += setOf("GradleDependency", "NewerVersionAvailable")
-        // Accesibilidad.
+        // Reglas de accesibilidad que detienen la compilación
         error += setOf(
             "ContentDescription", "HardcodedText", "LabelFor", "SpUsage", "SmallSp",
             "ClickableViewAccessibility", "KeyboardInaccessibleWidget",
@@ -74,4 +84,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+}
+
+tasks.withType<com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask>().configureEach {
+    additionalTestOutputDir.set(layout.buildDirectory.dir("outputs/connected_android_test_additional_output"))
 }

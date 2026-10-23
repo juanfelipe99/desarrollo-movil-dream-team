@@ -1,21 +1,24 @@
 package com.equipo2.vinilos
 
 import android.content.Context
+import com.equipo2.vinilos.data.local.RoleLocalDataSource
+import com.equipo2.vinilos.data.local.ThemeModeLocalDataSource
+import com.equipo2.vinilos.data.local.appDataStore
 import com.equipo2.vinilos.data.network.ApiClient
 import com.equipo2.vinilos.data.network.album.AlbumServiceAdapter
 import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.data.repository.AlbumRepositoryImpl
 import com.equipo2.vinilos.data.repository.RoleRepository
 import com.equipo2.vinilos.data.repository.RoleRepositoryImpl
-import com.equipo2.vinilos.data.repository.ThemeRepository
-import com.equipo2.vinilos.data.repository.ThemeRepositoryImpl
+import com.equipo2.vinilos.data.repository.ThemeModeRepository
+import com.equipo2.vinilos.data.repository.ThemeModeRepositoryImpl
 
-/** Crea cada repositorio la primera vez que se pide y lo comparte. Las pruebas heredan de esta clase para cambiar alguno por uno falso. */
+/** Crea cada repositorio la primera vez que se pide y lo comparte con toda la app. */
 open class AppContainer(context: Context) {
 
-    private val apiClient by lazy { ApiClient(BuildConfig.API_BASE_URL) }
+    val apiClient by lazy { ApiClient(BuildConfig.API_BASE_URL) }
 
     open val albumRepository: AlbumRepository by lazy { AlbumRepositoryImpl(AlbumServiceAdapter(apiClient)) }
-    open val roleRepository: RoleRepository by lazy { RoleRepositoryImpl(context) }
-    open val themeRepository: ThemeRepository by lazy { ThemeRepositoryImpl(context) }
+    open val roleRepository: RoleRepository by lazy { RoleRepositoryImpl(RoleLocalDataSource(context.appDataStore)) }
+    open val themeModeRepository: ThemeModeRepository by lazy { ThemeModeRepositoryImpl(ThemeModeLocalDataSource(context.appDataStore)) }
 }

@@ -12,4 +12,7 @@ interface AlbumApi {
 
     @GET("albums/{id}")
     suspend fun getAlbumById(@Path("id") id: Int): AlbumDto
+
+    @GET("collectors")
+    suspend fun getCommentAuthors(): List<CommentAuthorDto>
 }

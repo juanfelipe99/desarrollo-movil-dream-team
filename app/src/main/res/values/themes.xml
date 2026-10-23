@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Base.Theme.Vinilos" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorOnPrimary">@color/md_on_primary</item>
@@ -34,7 +35,8 @@
         <item name="android:windowBackground">@color/md_background</item>
 
         <item name="textAppearanceDisplaySmall">@style/TextAppearance.Vinilos.DisplaySmall</item>
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Vinilos.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Vinilos.HeadlineMedium
+        </item>
         <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Vinilos.HeadlineSmall</item>
         <item name="textAppearanceTitleLarge">@style/TextAppearance.Vinilos.TitleLarge</item>
         <item name="textAppearanceTitleMedium">@style/TextAppearance.Vinilos.TitleMedium</item>
@@ -49,6 +51,7 @@
         <item name="toolbarStyle">@style/Widget.Vinilos.Toolbar</item>
         <item name="bottomNavigationStyle">@style/Widget.Vinilos.BottomNavigation</item>
         <item name="materialButtonStyle">@style/Widget.Vinilos.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.Vinilos.Button.Outlined</item>
         <item name="materialCardViewStyle">@style/Widget.Vinilos.Card</item>
         <item name="snackbarStyle">@style/Widget.Vinilos.Snackbar</item>
     </style>

@@ -9,9 +9,9 @@ interface AlbumRepository {
     suspend fun getAlbumById(id: Int): Result<Album>
 }
 
-class AlbumRepositoryImpl(private val adapter: AlbumServiceAdapter) : AlbumRepository {
+class AlbumRepositoryImpl(private val serviceAdapter: AlbumServiceAdapter) : AlbumRepository {
 
-    override suspend fun createAlbum(album: NewAlbum): Result<Album> = resultOf { adapter.createAlbum(album) }
+    override suspend fun createAlbum(album: NewAlbum): Result<Album> = resultOf { serviceAdapter.createAlbum(album) }
 
-    override suspend fun getAlbumById(id: Int): Result<Album> = resultOf { adapter.getAlbumById(id) }
+    override suspend fun getAlbumById(id: Int): Result<Album> = resultOf { serviceAdapter.getAlbumById(id) }
 }
