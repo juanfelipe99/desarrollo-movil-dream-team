@@ -1,0 +1,138 @@
+package com.equipo2.vinilos
+
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.Visibility
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.equipo2.vinilos.data.repository.AlbumRepository
+import org.junit.After
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+/** Pruebas E2E de HU07: el formulario de Crear álbum, sus validaciones y la creación en la API. */
+@RunWith(AndroidJUnit4::class)
+class HU07CreateAlbumTest {
+
+    @get:Rule
+    val app = VinilosRule()
+
+    @After
+    fun deleteTestAlbums() {
+        BackVynils.deleteAlbumsStartingWith(TEST_ALBUM_PREFIX)
+    }
+
+    @Test
+    fun alAbrir_noHayErrores() {
+        app.launch()
+        openCreateAlbum()
+
+        listOf(R.id.nameField, R.id.coverField, R.id.releaseDateField, R.id.genreField, R.id.recordLabelField, R.id.descriptionField)
+            .forEach { field -> onView(withId(field)).check(matches(hasFieldError(null))) }
+    }
+
+    @Test
+    fun guardarVacio_muestraElErrorDeCadaCampo() {
+        app.launch()
+        openCreateAlbum()
+
+        onView(withId(R.id.saveButton)).perform(click())
+
+        onView(withId(R.id.nameField)).check(matches(hasFieldError(R.string.error_album_name_required)))
+        onView(withId(R.id.coverField)).check(matches(hasFieldError(R.string.error_cover_required)))
+        onView(withId(R.id.releaseDateField)).check(matches(hasFieldError(R.string.error_release_date_required)))
+        onView(withId(R.id.genreField)).check(matches(hasFieldError(R.string.error_genre_required)))
+        onView(withId(R.id.recordLabelField)).check(matches(hasFieldError(R.string.error_record_label_required)))
+        onView(withId(R.id.descriptionField)).check(matches(hasFieldError(R.string.error_description_required)))
+        onView(withText(R.string.error_album_name_required)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun despuesDeGuardar_cadaErrorDesapareceAlCorregirSuCampo() {
+        app.launch()
+        openCreateAlbum()
+        onView(withId(R.id.saveButton)).perform(click())
+
+        onView(withId(R.id.nameInput)).perform(replaceText("$TEST_ALBUM_PREFIX nombre"), closeSoftKeyboard())
+        onView(withId(R.id.nameField)).check(matches(hasFieldError(null)))
+
+        pickOption(R.id.genreInput, "Salsa")
+        onView(withId(R.id.genreField)).check(matches(hasFieldError(null)))
+
+        onView(withId(R.id.descriptionField)).check(matches(hasFieldError(R.string.error_description_required)))
+    }
+
+    @Test
+    fun urlSinHttp_muestraElErrorDeFormato_yUnaValidaMuestraLaVistaPrevia() {
+        app.launch()
+        openCreateAlbum()
+
+        onView(withId(R.id.coverInput)).perform(replaceText("portada-amor-y-control"), closeSoftKeyboard())
+        onView(withId(R.id.coverPreview)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.saveButton)).perform(click())
+        onView(withId(R.id.coverField)).check(matches(hasFieldError(R.string.error_cover_invalid)))
+
+        onView(withId(R.id.coverInput)).perform(replaceText(TEST_COVER_URL), closeSoftKeyboard())
+        onView(withId(R.id.coverField)).check(matches(hasFieldError(null)))
+        onView(withId(R.id.coverPreview)).check(matches(isDisplayed()))
+        onView(withId(R.id.coverPreviewUrl)).check(matches(withText(TEST_COVER_URL)))
+    }
+
+    @Test
+    fun selectorDeFecha_muestraLaFechaElegida_yQuitaSuError() {
+        app.launch()
+        openCreateAlbum()
+        onView(withId(R.id.saveButton)).perform(click())
+
+        pickTodayAsReleaseDate()
+
+        val today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        onView(withId(R.id.releaseDateInput)).check(matches(withText(today)))
+        onView(withId(R.id.releaseDateField)).check(matches(hasFieldError(null)))
+    }
+
+    @Test
+    fun crearAlbumValido_vuelveAAlbumesConElAviso_yQuedaEnLaApi() {
+        val name = "$TEST_ALBUM_PREFIX ${System.currentTimeMillis()}"
+        app.launch()
+        openCreateAlbum()
+        fillAlbumForm(name)
+
+        onView(withId(R.id.saveButton)).perform(click())
+
+        onView(toolbarTitle(R.string.album_list_title)).check(matches(isDisplayed()))
+        onView(withText(R.string.snackbar_album_created)).check(matches(isDisplayed()))
+        assertTrue("El álbum $name no está en la API", name in BackVynils.albumNames())
+    }
+
+    @Test
+    fun siFallaElGuardado_conservaLosDatos_yAvisaQueNoSePudoCrear() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        VinilosApplication.container = object : AppContainer(context) {
+            override val albumRepository: AlbumRepository = FailingAlbumRepository()
+        }
+        val name = "$TEST_ALBUM_PREFIX sin guardar"
+        app.launch()
+        openCreateAlbum()
+        fillAlbumForm(name)
+
+        onView(withId(R.id.saveButton)).perform(click())
+
+        onView(withText(R.string.error_album_create_failed)).check(matches(isDisplayed()))
+        onView(toolbarTitle(R.string.album_create_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.nameInput)).perform(scrollTo()).check(matches(withText(name)))
+        onView(withId(R.id.saveButton)).check(matches(withText(R.string.action_save)))
+    }
+}
