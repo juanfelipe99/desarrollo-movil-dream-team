@@ -18,7 +18,7 @@
     <string name="album_detail_description_title">Descripción</string>
     <string name="album_example_description">Buscando América es el primer álbum de la banda de Rubén Blades y Seis del Solar, lanzado en 1984. La producción, bajo el sello Elektra, fusiona diferentes ritmos.</string>
     <string name="album_detail_expand">Ver más</string>
-
+    <string name="album_detail_collapse">Ver menos</string>
     <!-- Tracks -->
     <string name="album_detail_tracks_title">Tracks</string>
     <string name="album_example_tracks_count">· 2 canciones</string>
@@ -39,4 +39,9 @@
     <string name="album_example_comment_rating">★★★★★  5/5</string>
     <string name="album_example_comment_text">“The most relevant album of Ruben Blades”</string>
 
+    <!-- Estados de carga y error -->
+    <string name="album_detail_loading">Cargando álbum...</string>
+    <string name="album_detail_error">No pudimos cargar el álbum</string>
+    <string name="album_detail_connection_error">Revisa tu conexión a internet e inténtalo de nuevo.</string>
+    <string name="album_detail_retry">Reintentar</string>
 </resources>

@@ -2,6 +2,26 @@ package com.equipo2.vinilos.data.model
 
 import java.time.LocalDate
 
+data class Track(
+    val id: Int,
+    val name: String,
+    val duration: String,
+)
+
+data class AlbumComment(
+    val id: Int,
+    val description: String,
+    val rating: Int,
+)
+
+data class Performer(
+    val id: Int,
+    val name: String,
+    val image: String,
+    val description: String,
+    val birthDate: String,
+)
+
 data class Album(
     val id: Int,
     val name: String,
@@ -10,6 +30,9 @@ data class Album(
     val description: String,
     val genre: String,
     val recordLabel: String,
+    val tracks: List<Track> = emptyList(),
+    val performers: List<Performer> = emptyList(),
+    val comments: List<AlbumComment> = emptyList(),
 )
 
 /** Datos para crear un álbum, antes de que la API le asigne un id. */
