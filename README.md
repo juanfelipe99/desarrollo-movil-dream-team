@@ -19,16 +19,7 @@ Los datos que crean las pruebas en la API se borran al terminar.
 
 ### Preparación
 
-1. Abrir un emulador o conectar un teléfono con Android 5.0 (API 21) o superior, con la depuración USB activa, y revisar que aparezca con `adb devices`.
-2. Desactivar las animaciones, porque pueden hacer fallar las pruebas:
-
-   ```
-   adb shell settings put global window_animation_scale 0
-   adb shell settings put global transition_animation_scale 0
-   adb shell settings put global animator_duration_scale 0
-   ```
-
-   Al terminar se pueden volver a activar con los mismos comandos y el valor `1`.
+Abrir un emulador o conectar un teléfono con Android 5.0 (API 21) o superior, con la depuración USB activa, y revisar que aparezca con `adb devices`. Las pruebas apagan las animaciones del dispositivo mientras corren y al terminar las dejan como estaban.
 
 ### Desde Android Studio
 

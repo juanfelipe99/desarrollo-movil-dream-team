@@ -1,9 +1,11 @@
 package com.equipo2.vinilos.support
 
+import android.os.ParcelFileDescriptor
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import com.equipo2.vinilos.MainActivity
 import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.ThemeMode
@@ -11,14 +13,21 @@ import kotlinx.coroutines.runBlocking
 import org.junit.rules.ExternalResource
 import java.util.concurrent.TimeUnit
 
-/** Prepara cada prueba E2E: espera a la API, abre la app y al final deja el tema y los repositorios como estaban. */
+/** Prepara cada prueba E2E: apaga las animaciones, espera a la API, abre la app y al final deja todo como estaba. */
 class VinilosRule : ExternalResource() {
 
     private val originalContainer = VinilosApplication.container
     private val apiIdling = ApiIdlingResource(originalContainer.apiClient.httpClient.dispatcher)
     private var scenario: ActivityScenario<MainActivity>? = null
+    private val originalAnimationScales = mutableMapOf<String, String>()
 
     override fun before() {
+        // Con animaciones Espresso puede tocar una vista mientras todavía se mueve
+        ANIMATION_SCALES.forEach { scale ->
+            originalAnimationScales[scale] = shell("settings get global $scale")
+            shell("settings put global $scale 0")
+        }
+
         // Render puede tardar casi un minuto en despertar, más que la espera por defecto de Espresso
         IdlingPolicies.setIdlingResourceTimeout(2, TimeUnit.MINUTES)
         IdlingPolicies.setMasterPolicyTimeout(2, TimeUnit.MINUTES)
@@ -31,6 +40,8 @@ class VinilosRule : ExternalResource() {
         IdlingRegistry.getInstance().unregister(apiIdling)
         VinilosApplication.container = originalContainer
         runBlocking { originalContainer.themeModeRepository.setThemeMode(ThemeMode.SYSTEM) }
+        // Un valor que nunca se cambió se lee como null, y su valor por defecto es 1
+        originalAnimationScales.forEach { (scale, value) -> shell("settings put global $scale ${value.toFloatOrNull() ?: 1f}") }
     }
 
     /** Abre la app, que siempre empieza en la selección de rol. */
@@ -41,4 +52,13 @@ class VinilosRule : ExternalResource() {
     /** Estado de la actividad, por ejemplo para comprobar que Atrás cerró la app. */
     val state: Lifecycle.State
         get() = checkNotNull(scenario).state
+
+    private fun shell(command: String): String {
+        val output = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command)
+        return ParcelFileDescriptor.AutoCloseInputStream(output).bufferedReader().use { it.readText().trim() }
+    }
+
+    private companion object {
+        val ANIMATION_SCALES = listOf("window_animation_scale", "transition_animation_scale", "animator_duration_scale")
+    }
 }

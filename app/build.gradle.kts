@@ -78,3 +78,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 }
+
+tasks.withType<com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask>().configureEach {
+    additionalTestOutputDir.set(layout.buildDirectory.dir("outputs/connected_android_test_additional_output"))
+}

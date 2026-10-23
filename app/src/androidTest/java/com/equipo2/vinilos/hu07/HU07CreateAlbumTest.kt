@@ -1,7 +1,6 @@
 package com.equipo2.vinilos.hu07
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -56,7 +55,7 @@ class HU07CreateAlbumTest {
         app.launch()
         openCreateAlbum()
 
-        onView(withId(R.id.saveButton)).perform(click())
+        tapSave()
 
         onView(withId(R.id.nameField)).check(matches(hasFieldError(R.string.error_album_name_required)))
         onView(withId(R.id.coverField)).check(matches(hasFieldError(R.string.error_cover_required)))
@@ -71,7 +70,7 @@ class HU07CreateAlbumTest {
     fun despuesDeGuardar_cadaErrorDesapareceAlCorregirSuCampo() {
         app.launch()
         openCreateAlbum()
-        onView(withId(R.id.saveButton)).perform(click())
+        tapSave()
 
         onView(withId(R.id.nameInput)).perform(replaceText("$TEST_ALBUM_PREFIX nombre"), closeSoftKeyboard())
         onView(withId(R.id.nameField)).check(matches(hasFieldError(null)))
@@ -89,7 +88,7 @@ class HU07CreateAlbumTest {
 
         onView(withId(R.id.coverInput)).perform(replaceText("portada-amor-y-control"), closeSoftKeyboard())
         onView(withId(R.id.coverPreview)).check(matches(withEffectiveVisibility(Visibility.GONE)))
-        onView(withId(R.id.saveButton)).perform(click())
+        tapSave()
         onView(withId(R.id.coverField)).check(matches(hasFieldError(R.string.error_cover_invalid)))
 
         onView(withId(R.id.coverInput)).perform(replaceText(TEST_COVER_URL), closeSoftKeyboard())
@@ -102,7 +101,7 @@ class HU07CreateAlbumTest {
     fun selectorDeFecha_muestraLaFechaElegida_yQuitaSuError() {
         app.launch()
         openCreateAlbum()
-        onView(withId(R.id.saveButton)).perform(click())
+        tapSave()
 
         pickTodayAsReleaseDate()
 
@@ -118,7 +117,7 @@ class HU07CreateAlbumTest {
         openCreateAlbum()
         fillAlbumForm(name)
 
-        onView(withId(R.id.saveButton)).perform(click())
+        tapSave()
 
         onView(toolbarTitle(R.string.album_list_title)).check(matches(isDisplayed()))
         onView(withText(R.string.snackbar_album_created)).check(matches(isDisplayed()))
@@ -136,7 +135,7 @@ class HU07CreateAlbumTest {
         openCreateAlbum()
         fillAlbumForm(name)
 
-        onView(withId(R.id.saveButton)).perform(click())
+        tapSave()
 
         onView(withText(R.string.error_album_create_failed)).check(matches(isDisplayed()))
         onView(toolbarTitle(R.string.album_create_title)).check(matches(isDisplayed()))

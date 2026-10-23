@@ -1,6 +1,7 @@
 package com.equipo2.vinilos.hu07
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
@@ -11,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.pickOption
+import com.equipo2.vinilos.support.waitUntil
 
 /** Portada que existe y carga en todas las versiones de Android. */
 const val TEST_COVER_URL = "https://www.gstatic.com/webp/gallery/1.jpg"
@@ -38,4 +40,22 @@ fun fillAlbumForm(name: String) {
 fun pickTodayAsReleaseDate() {
     onView(withId(R.id.releaseDateInput)).perform(scrollTo(), click())
     onView(withText(R.string.action_accept)).inRoot(isDialog()).perform(click())
+}
+
+/** Toca Guardar y espera a que el formulario termine de desplazarse al primer error, o a que se cierre. */
+fun tapSave() {
+    onView(withId(R.id.saveButton)).perform(click())
+    var lastScroll: Int? = -1
+    waitUntil {
+        val scroll = formScrollY()
+        (scroll == null || scroll == lastScroll).also { lastScroll = scroll }
+    }
+}
+
+private fun formScrollY(): Int? = try {
+    var scroll = 0
+    onView(withId(R.id.formScroll)).check { view, noView -> scroll = view?.scrollY ?: throw noView }
+    scroll
+} catch (e: NoMatchingViewException) {
+    null
 }
