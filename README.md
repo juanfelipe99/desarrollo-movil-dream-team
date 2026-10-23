@@ -38,6 +38,13 @@ adb shell am instrument -w com.equipo2.vinilos.test/androidx.test.runner.Android
 
 En Windows se usa `gradlew.bat` en lugar de `./gradlew`.
 
+## Pruebas unitarias
+
+Las pruebas unitarias están en `app/src/test/java/com/equipo2/vinilos`, en las mismas carpetas que el código que prueban, y `support/` tiene lo que comparten, como los repositorios falsos. Se ejecutan en el computador, sin emulador ni conexión a la API:
+
+- **Desde Android Studio:** clic derecho sobre `app/src/test/java/com.equipo2.vinilos` → *Run 'Tests in com.equipo2.vinilos'*.
+- **Por línea de comandos:** `./gradlew testDebugUnitTest` desde la carpeta del proyecto (en Windows, `gradlew.bat testDebugUnitTest`). El reporte queda en `app/build/reports/tests/testDebugUnitTest/index.html`.
+
 ## Integrantes
 
 - Juan Pablo Vargas
