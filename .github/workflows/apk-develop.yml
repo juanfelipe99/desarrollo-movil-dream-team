@@ -1,0 +1,44 @@
+name: APK de develop
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk-develop
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compilar el APK
+        run: |
+          ./gradlew assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk vinilos-develop.apk
+
+      - name: Publicar en el pre-release develop
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete develop-latest --yes --cleanup-tag || true
+          gh release create develop-latest vinilos-develop.apk \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "develop" \
+            --notes "APK de prueba con lo último de develop, commit ${GITHUB_SHA::7} del $(date -u '+%Y-%m-%d %H:%M') UTC."

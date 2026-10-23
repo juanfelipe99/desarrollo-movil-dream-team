@@ -1,0 +1,80 @@
+name: E2E
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    name: E2E (API ${{ matrix.api }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - api: 21
+            arch: x86
+          - api: 34
+            arch: x86_64
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Habilitar la virtualización para el emulador
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Compilar la app y las pruebas
+        run: ./gradlew assembleDebug assembleDebugAndroidTest
+
+      - name: Ejecutar las pruebas en el emulador
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          arch: ${{ matrix.arch }}
+          target: default
+          disable-animations: true
+          script: ./gradlew connectedDebugAndroidTest
+
+      - name: Resumen de resultados
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import glob, xml.etree.ElementTree as ET
+          rows, failed = [], 0
+          for path in sorted(glob.glob("app/build/outputs/androidTest-results/connected/**/*.xml", recursive=True)):
+              for case in ET.parse(path).getroot().iter("testcase"):
+                  ok = case.find("failure") is None and case.find("error") is None
+                  failed += not ok
+                  rows.append(f"| {'✅' if ok else '❌'} | {case.get('classname').split('.')[-1]} | {case.get('name')} |")
+          print(f"## E2E en API ${{ matrix.api }}: {len(rows) - failed} de {len(rows)} pasaron\n")
+          print("| | Clase | Prueba |\n|---|---|---|")
+          print("\n".join(rows) or "| | | No se generaron resultados |")
+          PY
+
+      - name: Guardar el reporte
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-e2e-api-${{ matrix.api }}
+          path: app/build/reports/androidTests/connected/

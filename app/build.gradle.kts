@@ -20,6 +20,13 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"https://backvynils-q6yc.onrender.com/\"")
     }
 
+    signingConfigs {
+        // Llave de debug compartida para que los APK de Android Studio y de los workflows se actualicen entre sí
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+        }
+    }
+
     buildTypes {
         release {
             optimization {
