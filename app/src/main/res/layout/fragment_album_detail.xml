@@ -111,7 +111,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:gravity="center"
-                    android:text="☁"
+                    android:text="@string/album_detail_error_icon"
                     android:textSize="32sp"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:background="?attr/colorSurfaceContainerHighest" />
