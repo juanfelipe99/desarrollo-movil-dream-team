@@ -50,14 +50,13 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         binding.saveButton.setOnClickListener { save(binding) }
     }
 
-    /** Lo que se escribe pasa al formulario del ViewModel. */
     private fun setUpTextFields(binding: FragmentAlbumCreateBinding) {
         binding.nameInput.doAfterTextChanged { text -> viewModel.update { copy(name = text.toString()) } }
         binding.coverInput.doAfterTextChanged { text -> viewModel.update { copy(cover = text.toString()) } }
         binding.descriptionInput.doAfterTextChanged { text -> viewModel.update { copy(description = text.toString()) } }
     }
 
-    /** Con una URL válida aparece debajo la portada, o el marcador si no se puede cargar. */
+    /** Con una URL válida muestra la portada, o el marcador si no carga. */
     private fun setUpCoverPreview(binding: FragmentAlbumCreateBinding) {
         binding.coverInput.doAfterTextChanged { text ->
             val url = text.toString().trim()
@@ -71,7 +70,7 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         }
     }
 
-    /** El campo de fecha y su ícono abren el selector, y el campo muestra la fecha elegida. */
+    /** El campo y su ícono abren el selector, y el campo muestra la fecha elegida. */
     private fun setUpReleaseDate(binding: FragmentAlbumCreateBinding) {
         val onPicked = { date: LocalDate -> viewModel.update { copy(releaseDate = date) } }
         val openPicker = {
@@ -96,14 +95,13 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         setOnItemClickListener { _, _, position, _ -> onSelected(options[position]) }
     }
 
-    /** Cada campo muestra su error debajo, o nada si cumple su regla. */
     private fun setUpErrors(binding: FragmentAlbumCreateBinding) {
         viewLifecycleOwner.collectWhileVisible(viewModel.errors) { errors ->
             AlbumField.entries.forEach { field -> binding.fieldOf(field).showError(errors[field]) }
         }
     }
 
-    /** Mientras guarda aparece la barra de progreso y Guardar queda deshabilitado con «Guardando…». */
+    /** Mientras guarda: barra de progreso y Guardar deshabilitado con «Guardando…». */
     private fun setUpSaving(binding: FragmentAlbumCreateBinding) {
         val progress = buttonProgress()
 
@@ -115,7 +113,7 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         }
     }
 
-    /** Si se creó vuelve a Álbumes con el id del álbum nuevo, y si falló avisa encima de los botones. */
+    /** Si se creó vuelve a Álbumes con el id nuevo, y si falló avisa encima de los botones. */
     private fun setUpResults(binding: FragmentAlbumCreateBinding) {
         keepSnackbarsAbove(binding.actionBar)
 
@@ -131,7 +129,6 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         }
     }
 
-    /** Círculo de carga de 20 dp para el botón. */
     private fun buttonProgress(): IndeterminateDrawable<CircularProgressIndicatorSpec> {
         val context = requireContext()
         val spec = CircularProgressIndicatorSpec(context, null)
@@ -142,7 +139,7 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         return IndeterminateDrawable.createCircularDrawable(context, spec)
     }
 
-    /** Envía el álbum, y con errores lleva la pantalla al primero y si es un campo de texto le pasa el foco. */
+    /** Envía el álbum, o lleva la pantalla al primer error y le da el foco si es de texto. */
     private fun save(binding: FragmentAlbumCreateBinding) {
         if (viewModel.save()) return
 

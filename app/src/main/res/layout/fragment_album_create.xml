@@ -80,7 +80,7 @@
                         android:visibility="gone"
                         tools:visibility="visible">
 
-                        <!-- El marcador queda detrás y se ve mientras la portada carga o si no se puede cargar -->
+                        <!-- El marcador queda detrás y se ve mientras la portada carga o si falla -->
                         <FrameLayout
                             android:layout_width="68dp"
                             android:layout_height="68dp"
@@ -188,7 +188,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <!-- Mientras guarda, la barra queda bajo la barra superior sin mover el formulario -->
+        <!-- Encima del formulario para no moverlo al aparecer -->
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/savingProgress"
             android:layout_width="match_parent"

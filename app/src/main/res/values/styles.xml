@@ -46,7 +46,7 @@
         <item name="cornerRadius">24dp</item>
     </style>
 
-    <!-- La etiqueta queda siempre arriba y el texto de ejemplo siempre visible, como en el prototipo. -->
+    <!-- Etiqueta siempre arriba y texto de ejemplo siempre visible, como en el prototipo. -->
     <style name="Widget.Vinilos.FormField" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -76,7 +76,7 @@
         <item name="helperTextTextAppearance">@style/TextAppearance.Vinilos.Supporting</item>
     </style>
 
-    <!-- Con 15 dp arriba y abajo el campo mide 52 dp como en el prototipo, en lugar de los 56 dp de Material. -->
+    <!-- 15 dp arriba y abajo para que el campo mida 52 dp, como en el prototipo. -->
     <style name="Widget.Vinilos.FormField.Input" parent="Widget.Material3.TextInputEditText.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

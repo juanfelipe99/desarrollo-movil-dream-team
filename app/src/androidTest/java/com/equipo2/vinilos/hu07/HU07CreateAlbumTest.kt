@@ -29,7 +29,7 @@ import org.junit.runner.RunWith
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-/** Pruebas E2E de HU07: el formulario de Crear álbum, sus validaciones y la creación en la API. */
+/** E2E de HU07: formulario de Crear álbum, validaciones y creación en la API. */
 @RunWith(AndroidJUnit4::class)
 class HU07CreateAlbumTest {
 

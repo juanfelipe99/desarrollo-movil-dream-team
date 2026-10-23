@@ -34,7 +34,6 @@ class RoleChip(
     init {
         binding.root.setOnClickListener { openMenu() }
 
-        // El chip se actualiza cada vez que cambia el rol
         activity.collectWhileVisible(roleViewModel.role, binding::show)
     }
 

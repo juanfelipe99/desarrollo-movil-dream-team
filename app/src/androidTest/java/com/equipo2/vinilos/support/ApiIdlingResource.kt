@@ -3,7 +3,7 @@ package com.equipo2.vinilos.support
 import androidx.test.espresso.IdlingResource
 import okhttp3.Dispatcher
 
-/** Hace que Espresso espere mientras haya llamadas a la API en curso, sin pausas fijas. */
+/** Espresso espera mientras haya llamadas a la API en curso. */
 class ApiIdlingResource(private val dispatcher: Dispatcher) : IdlingResource {
 
     @Volatile

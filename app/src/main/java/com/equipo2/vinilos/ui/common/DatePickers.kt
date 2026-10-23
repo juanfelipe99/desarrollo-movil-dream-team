@@ -10,7 +10,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
-/** Abre el selector de fecha de Material sin días futuros, con la fecha elegida o la de hoy marcada. */
+/** Selector de fecha sin días futuros, con la fecha elegida o la de hoy marcada. */
 fun Fragment.showPastDatePicker(tag: String, @StringRes title: Int, selected: LocalDate?, onPicked: (LocalDate) -> Unit) {
     // Un segundo toque mientras se abre no abre otro selector
     if (childFragmentManager.findFragmentByTag(tag) != null) return
@@ -33,7 +33,7 @@ fun Fragment.showPastDatePicker(tag: String, @StringRes title: Int, selected: Lo
     picker.show(childFragmentManager, tag)
 }
 
-/** Al girar la pantalla el selector abierto se recrea sin su acción, y esto se la vuelve a dar. */
+/** Al girar, el selector abierto se recrea sin su acción, y esto se la devuelve. */
 fun Fragment.reconnectDatePicker(tag: String, onPicked: (LocalDate) -> Unit) {
     @Suppress("UNCHECKED_CAST")
     val picker = childFragmentManager.findFragmentByTag(tag) as? MaterialDatePicker<Long> ?: return

@@ -23,7 +23,7 @@ object AppSnackbar {
     fun show(root: View, message: CharSequence, isError: Boolean = false, anchor: View? = null) {
         val snackbar = Snackbar.make(root, message, DURATION_MS)
         snackbar.anchorView = anchor
-        // Material mide el ancla sin descontar el padding de root, que ya deja el espacio de las barras del sistema
+        // Material mide el ancla sin descontar el padding de root, que ya incluye las barras
         if (anchor != null) snackbar.view.updateLayoutParams<ViewGroup.MarginLayoutParams> { bottomMargin -= root.paddingBottom }
         snackbar.customize(isError)
         snackbar.show()
@@ -53,7 +53,6 @@ object AppSnackbar {
         val close = LayoutInflater.from(context).inflate(R.layout.view_snackbar_close, content, false) as ImageView
         ImageViewCompat.setImageTintList(close, ColorStateList.valueOf(currentTextColor))
         close.setOnClickListener { onClick() }
-        // Se agrega al final del contenido del aviso, a la derecha del texto
         content.addView(close)
     }
 }

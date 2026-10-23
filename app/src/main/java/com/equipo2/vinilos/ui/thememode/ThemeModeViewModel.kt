@@ -30,7 +30,6 @@ class ThemeModeViewModel(private val repository: ThemeModeRepository) : ViewMode
     }
 
     companion object {
-        /** Crea el ViewModel con el repositorio de AppContainer. */
         val Factory = viewModelFactory {
             initializer { ThemeModeViewModel(VinilosApplication.container.themeModeRepository) }
         }

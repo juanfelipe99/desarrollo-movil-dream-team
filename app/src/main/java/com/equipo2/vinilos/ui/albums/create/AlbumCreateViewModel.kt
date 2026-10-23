@@ -23,7 +23,7 @@ sealed interface AlbumCreateEvent {
     data object Failed : AlbumCreateEvent
 }
 
-/** Estado del formulario de Crear álbum, sus errores y el guardado, que se conservan al girar la pantalla. */
+/** Formulario de Crear álbum, sus errores y el guardado, que se conservan al girar. */
 class AlbumCreateViewModel(private val repository: AlbumRepository) : ViewModel() {
 
     private val currentForm = MutableStateFlow(AlbumForm())
@@ -35,19 +35,18 @@ class AlbumCreateViewModel(private val repository: AlbumRepository) : ViewModel(
     val errors: StateFlow<Map<AlbumField, Int>> = currentErrors
     val isSaving: StateFlow<Boolean> = currentSaving
 
-    /** Resultado de cada guardado, que la pantalla recibe una sola vez aunque se gire. */
+    /** Resultado de cada guardado, que la pantalla recibe una sola vez. */
     val events: Flow<AlbumCreateEvent> = pendingEvents.receiveAsFlow()
 
-    // Los errores aparecen al tocar Guardar, y desde ahí se actualizan con cada cambio
+    // Los errores aparecen al tocar Guardar y desde ahí se actualizan con cada cambio
     private var validateOnChange = false
 
-    /** Aplica un cambio del formulario. */
     fun update(change: AlbumForm.() -> AlbumForm) {
         currentForm.update(change)
         if (validateOnChange) currentErrors.value = currentForm.value.errors()
     }
 
-    /** Envía el álbum si el formulario es válido, y si no muestra los errores y devuelve false. */
+    /** Envía el álbum si es válido, y si no muestra los errores y devuelve false. */
     fun save(): Boolean {
         validateOnChange = true
         currentErrors.value = currentForm.value.errors()
@@ -63,7 +62,6 @@ class AlbumCreateViewModel(private val repository: AlbumRepository) : ViewModel(
     }
 
     companion object {
-        /** Crea el ViewModel con el repositorio de AppContainer. */
         val Factory = viewModelFactory {
             initializer { AlbumCreateViewModel(VinilosApplication.container.albumRepository) }
         }

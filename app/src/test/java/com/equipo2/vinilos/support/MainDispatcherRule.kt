@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-/** Reemplaza el hilo principal de Android, que no existe en las pruebas unitarias, para que funcione viewModelScope. */
+/** Reemplaza el hilo principal de Android para usar viewModelScope en pruebas unitarias. */
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainDispatcherRule(val dispatcher: TestDispatcher = UnconfinedTestDispatcher()) : TestWatcher() {
 

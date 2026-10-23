@@ -21,7 +21,7 @@ android {
     }
 
     signingConfigs {
-        // Llave de debug compartida para que los APK de Android Studio y de los workflows se actualicen entre sí
+        // Llave compartida para que los APK de cualquier computador o workflow se actualicen entre sí
         getByName("debug") {
             storeFile = file("debug.keystore")
         }
@@ -48,9 +48,9 @@ android {
         viewBinding = true
     }
     lint {
-        // Las versiones están fijadas en las últimas que funcionan en Android 5.0, así que no se avisa de las nuevas.
+        // Versiones fijadas en las últimas compatibles con Android 5.0
         disable += setOf("GradleDependency", "NewerVersionAvailable")
-        // Reglas de accesibilidad que detienen la compilación en lugar de solo avisar
+        // Reglas de accesibilidad que detienen la compilación
         error += setOf(
             "ContentDescription", "HardcodedText", "LabelFor", "SpUsage", "SmallSp",
             "ClickableViewAccessibility", "KeyboardInaccessibleWidget",

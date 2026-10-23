@@ -29,7 +29,7 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
         showCreatedAlbumMessage()
     }
 
-    /** Botón «+»: solo lo ve el coleccionista, abre Crear álbum y los avisos aparecen encima de él. */
+    /** Botón «+»: solo para el coleccionista, abre Crear álbum y los avisos quedan encima. */
     private fun setUpCreateAlbumButton(binding: FragmentAlbumListBinding) {
         val button = binding.createAlbumButton
 
@@ -47,7 +47,7 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
         viewLifecycleOwner.collectWhileVisible(savedState.getStateFlow<Int?>(AlbumCreateFragment.CREATED_ALBUM_ID, null)) { albumId ->
             if (albumId == null) return@collectWhileVisible
             showSnackbar(getString(R.string.snackbar_album_created))
-            // Se quita para que el aviso no vuelva a salir al girar o al regresar a la pestaña
+            // Se quita para que el aviso no se repita al girar o volver a la pestaña
             savedState.remove<Int>(AlbumCreateFragment.CREATED_ALBUM_ID)
         }
     }

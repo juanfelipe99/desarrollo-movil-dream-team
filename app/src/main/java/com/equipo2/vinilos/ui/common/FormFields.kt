@@ -6,10 +6,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import com.equipo2.vinilos.R
 import com.google.android.material.textfield.TextInputLayout
 
-/** Muestra debajo del campo el mensaje con el ícono de error y el borde de 2 dp, o lo quita con null. */
+/** Muestra el error debajo del campo con su ícono y borde de 2 dp, o lo quita con null. */
 fun TextInputLayout.showError(@StringRes message: Int?) {
     if (message == null) {
-        // Sin error tampoco queda reservado su espacio, y vuelve la ayuda si el campo tiene
+        // Sin error no reserva su espacio y vuelve la ayuda, si el campo la tiene
         isErrorEnabled = false
         boxStrokeWidth = resources.getDimensionPixelSize(R.dimen.field_stroke)
         return

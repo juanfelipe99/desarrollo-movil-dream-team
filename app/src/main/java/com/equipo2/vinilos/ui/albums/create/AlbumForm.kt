@@ -6,7 +6,7 @@ import com.equipo2.vinilos.data.model.AlbumCatalog
 import com.equipo2.vinilos.data.model.NewAlbum
 import java.time.LocalDate
 
-/** Lo que lleva escrito y elegido el formulario de Crear álbum. */
+/** Lo escrito y elegido en el formulario de Crear álbum. */
 data class AlbumForm(
     val name: String = "",
     val cover: String = "",
@@ -21,7 +21,7 @@ enum class AlbumField { NAME, COVER, RELEASE_DATE, GENRE, RECORD_LABEL, DESCRIPT
 
 private val COVER_URL = Regex("""^https?://[^\s/]+\.\S+$""", RegexOption.IGNORE_CASE)
 
-/** La URL de la portada es válida si empieza por http:// o https:// y sigue un dominio con punto. */
+/** Válida si empieza por http:// o https:// y sigue un dominio con punto. */
 fun isValidCoverUrl(url: String): Boolean = COVER_URL.matches(url.trim())
 
 /** Mensaje de error de cada campo que no cumple su regla, en el orden de la pantalla. */
@@ -41,7 +41,7 @@ private fun AlbumForm.coverError(): Int? = when {
     else -> null
 }
 
-/** Álbum para enviar a la API, y solo se llama con el formulario válido. */
+/** Álbum para la API, que solo se pide con el formulario válido. */
 fun AlbumForm.toNewAlbum() = NewAlbum(
     name = name.trim(),
     cover = cover.trim(),

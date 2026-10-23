@@ -5,23 +5,22 @@ import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
 
-/** Llamadas directas a BackVynils para preparar y limpiar los datos de las pruebas. */
+/** Llamadas directas a BackVynils para preparar y limpiar datos de prueba. */
 object BackVynils {
 
     private const val TIMEOUT_MS = 90_000
 
-    /** Despierta el servidor, que en Render puede tardar casi un minuto en responder la primera vez. */
+    /** Despierta el servidor de Render, que puede tardar casi un minuto. */
     fun wakeUp() {
         request("albums", "GET")
     }
 
-    /** Nombres de todos los álbumes guardados. */
     fun albumNames(): List<String> {
         val albums = JSONArray(request("albums", "GET"))
         return List(albums.length()) { albums.getJSONObject(it).getString("name") }
     }
 
-    /** Borra los álbumes cuyo nombre empieza así, para no dejar datos de prueba en la API del equipo. */
+    /** Borra los álbumes con este prefijo para no dejar datos de prueba. */
     fun deleteAlbumsStartingWith(prefix: String) {
         val albums = JSONArray(request("albums", "GET"))
         for (i in 0 until albums.length()) {

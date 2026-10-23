@@ -19,10 +19,10 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 
-/** Título de la barra superior, para no confundirlo con otros textos iguales de la pantalla. */
+/** Título de la barra superior, sin confundirlo con textos iguales de la pantalla. */
 fun toolbarTitle(@StringRes title: Int): Matcher<View> = allOf(withText(title), isDescendantOfA(withId(R.id.toolbar)))
 
-/** Campo del formulario que muestra este mensaje de error, o ninguno si es null. */
+/** Campo que muestra este error, o ninguno si es null. */
 fun hasFieldError(@StringRes message: Int?): Matcher<View> = object : TypeSafeMatcher<View>() {
     private val expected = message?.let { InstrumentationRegistry.getInstrumentation().targetContext.getString(it) }
 
@@ -33,24 +33,23 @@ fun hasFieldError(@StringRes message: Int?): Matcher<View> = object : TypeSafeMa
     override fun matchesSafely(view: View): Boolean = view is TextInputLayout && view.error?.toString() == expected
 }
 
-/** Entra con el rol elegido desde la selección de rol. */
 fun enterAs(collector: Boolean) {
     onView(withId(if (collector) R.id.collectorButton else R.id.visitorButton)).perform(click())
 }
 
-/** Elige una opción del menú de rol, que se abre como ventana aparte. */
+/** Elige una opción del menú de rol, que es una ventana aparte. */
 fun chooseInRoleMenu(@IdRes optionId: Int) {
     onView(withId(R.id.roleChip)).perform(click())
     onView(withId(optionId)).inRoot(isPlatformPopup()).perform(click())
 }
 
-/** Abre el desplegable y elige la opción, que aparece en una ventana aparte. */
+/** Elige una opción del desplegable, que es una ventana aparte. */
 fun pickOption(@IdRes inputId: Int, option: String) {
     onView(withId(inputId)).perform(scrollTo(), click())
     onView(withText(option)).inRoot(isPlatformPopup()).perform(click())
 }
 
-/** Espera a que se cumpla algo que pasa fuera de lo que Espresso vigila, como guardar el tema en DataStore. */
+/** Espera algo que Espresso no vigila, como un guardado en DataStore. */
 fun waitUntil(timeoutMs: Long = 10_000, condition: () -> Boolean) {
     val deadline = System.currentTimeMillis() + timeoutMs
     while (!condition()) {
@@ -59,5 +58,4 @@ fun waitUntil(timeoutMs: Long = 10_000, condition: () -> Boolean) {
     }
 }
 
-/** Espera a que la app aplique este modo de tema. */
 fun waitForNightMode(mode: Int) = waitUntil { AppCompatDelegate.getDefaultNightMode() == mode }

@@ -27,7 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** Pruebas E2E de HU07: selección de rol, menú de rol, tema y el botón «+» de Álbumes. */
+/** E2E de HU07: selección de rol, menú de rol, tema y botón «+». */
 @RunWith(AndroidJUnit4::class)
 class HU07RolesTest {
 

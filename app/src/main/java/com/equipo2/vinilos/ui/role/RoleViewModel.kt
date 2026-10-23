@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-/** Rol de la app, compartido por la selección de rol, el chip y las pantallas que dependen del rol. */
+/** Rol de la app, compartido por la selección de rol, el chip y las pantallas. */
 class RoleViewModel(private val repository: RoleRepository) : ViewModel() {
 
     private val currentRole = MutableStateFlow<Role?>(null)
@@ -30,7 +30,6 @@ class RoleViewModel(private val repository: RoleRepository) : ViewModel() {
     }
 
     companion object {
-        /** Crea el ViewModel con el repositorio de AppContainer. */
         val Factory = viewModelFactory {
             initializer { RoleViewModel(VinilosApplication.container.roleRepository) }
         }

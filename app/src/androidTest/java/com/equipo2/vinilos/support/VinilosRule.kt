@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.rules.ExternalResource
 import java.util.concurrent.TimeUnit
 
-/** Prepara cada prueba E2E: apaga las animaciones, espera a la API, abre la app y al final deja todo como estaba. */
+/** Prepara cada E2E y al terminar deja el dispositivo y la app como estaban. */
 class VinilosRule : ExternalResource() {
 
     private val originalContainer = VinilosApplication.container
@@ -22,13 +22,13 @@ class VinilosRule : ExternalResource() {
     private val originalAnimationScales = mutableMapOf<String, String>()
 
     override fun before() {
-        // Con animaciones Espresso puede tocar una vista mientras todavía se mueve
+        // Con animaciones, Espresso puede tocar una vista que todavía se mueve
         ANIMATION_SCALES.forEach { scale ->
             originalAnimationScales[scale] = shell("settings get global $scale")
             shell("settings put global $scale 0")
         }
 
-        // Render puede tardar casi un minuto en despertar, más que la espera por defecto de Espresso
+        // Render puede tardar en despertar más de lo que Espresso espera por defecto
         IdlingPolicies.setIdlingResourceTimeout(2, TimeUnit.MINUTES)
         IdlingPolicies.setMasterPolicyTimeout(2, TimeUnit.MINUTES)
         IdlingRegistry.getInstance().register(apiIdling)
@@ -40,16 +40,16 @@ class VinilosRule : ExternalResource() {
         IdlingRegistry.getInstance().unregister(apiIdling)
         VinilosApplication.container = originalContainer
         runBlocking { originalContainer.themeModeRepository.setThemeMode(ThemeMode.SYSTEM) }
-        // Un valor que nunca se cambió se lee como null, y su valor por defecto es 1
+        // Una escala que nunca se cambió se lee como null y vale 1
         originalAnimationScales.forEach { (scale, value) -> shell("settings put global $scale ${value.toFloatOrNull() ?: 1f}") }
     }
 
-    /** Abre la app, que siempre empieza en la selección de rol. */
+    /** Abre la app, que empieza en la selección de rol. */
     fun launch() {
         scenario = ActivityScenario.launch(MainActivity::class.java)
     }
 
-    /** Estado de la actividad, por ejemplo para comprobar que Atrás cerró la app. */
+    /** Estado de la actividad, por ejemplo para ver si Atrás cerró la app. */
     val state: Lifecycle.State
         get() = checkNotNull(scenario).state
 

@@ -29,14 +29,12 @@ class RoleMenu(
         lifecycle.doOnDestroy(::dismiss)
     }
 
-    /** Abre el menú con el rol y el tema actuales marcados. */
     fun show(role: Role, themeMode: ThemeMode) {
         val binding = PopupRoleMenuBinding.inflate(LayoutInflater.from(context))
         bind(binding, role, themeMode)
         popup = showDropdown(anchor, binding.root)
     }
 
-    /** Cierra el menú si está abierto. */
     fun dismiss() {
         popup?.dismiss()
         popup = null

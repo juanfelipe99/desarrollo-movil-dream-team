@@ -14,19 +14,18 @@ import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.pickOption
 import com.equipo2.vinilos.support.waitUntil
 
-/** Portada que existe y carga en todas las versiones de Android. */
+/** Portada que carga en todas las versiones de Android. */
 const val TEST_COVER_URL = "https://www.gstatic.com/webp/gallery/1.jpg"
 
-/** Prefijo de los álbumes que crean las pruebas, para borrarlos al terminar. */
+/** Prefijo de los álbumes de prueba, que se borran al terminar. */
 const val TEST_ALBUM_PREFIX = "E2E HU07"
 
-/** Entra como coleccionista y abre Crear álbum con el botón «+». */
+/** Entra como coleccionista y abre Crear álbum. */
 fun openCreateAlbum() {
     enterAs(collector = true)
     onView(withId(R.id.createAlbumButton)).perform(click())
 }
 
-/** Llena todos los campos del formulario con datos válidos. */
 fun fillAlbumForm(name: String) {
     onView(withId(R.id.nameInput)).perform(replaceText(name), closeSoftKeyboard())
     onView(withId(R.id.coverInput)).perform(replaceText(TEST_COVER_URL), closeSoftKeyboard())
@@ -36,13 +35,12 @@ fun fillAlbumForm(name: String) {
     onView(withId(R.id.descriptionInput)).perform(scrollTo(), replaceText("Álbum creado por la prueba E2E de HU07."), closeSoftKeyboard())
 }
 
-/** Abre el selector de fecha y acepta la fecha de hoy, que viene marcada. */
 fun pickTodayAsReleaseDate() {
     onView(withId(R.id.releaseDateInput)).perform(scrollTo(), click())
     onView(withText(R.string.action_accept)).inRoot(isDialog()).perform(click())
 }
 
-/** Toca Guardar y espera a que el formulario termine de desplazarse al primer error, o a que se cierre. */
+/** Toca Guardar y espera a que el formulario deje de desplazarse o se cierre. */
 fun tapSave() {
     onView(withId(R.id.saveButton)).perform(click())
     var lastScroll: Int? = -1

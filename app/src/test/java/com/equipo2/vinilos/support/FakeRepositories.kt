@@ -10,12 +10,12 @@ import com.equipo2.vinilos.data.repository.ThemeModeRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 
-/** Repositorio de álbumes que guarda lo que recibe y responde con el resultado que se le dé. */
+/** Guarda lo que recibe y responde lo que la prueba le indique. */
 class FakeAlbumRepository : AlbumRepository {
 
     val created = mutableListOf<NewAlbum>()
 
-    /** Respuesta de la próxima creación, que la prueba puede completar cuando quiera. */
+    /** Respuesta de la próxima creación, que la prueba completa cuando quiera. */
     var response = CompletableDeferred<Result<Album>>()
 
     override suspend fun createAlbum(album: NewAlbum): Result<Album> {

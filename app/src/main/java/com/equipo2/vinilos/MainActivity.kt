@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         RoleChip(this, binding.roleChip, onRoleChanged = { role -> showSnackbar(getString(role.changedMessageRes)) })
     }
 
-    /** Muestra un aviso encima de la primera vista visible entre anchor, snackbarAnchor y la barra inferior. */
+    /** Muestra un aviso encima de anchor, snackbarAnchor o la barra inferior, el primero visible. */
     fun showSnackbar(message: CharSequence, isError: Boolean = false, anchor: View? = null) {
         val target = listOf(anchor, snackbarAnchor, binding.bottomNav).firstOrNull { it?.isShown == true }
         AppSnackbar.show(binding.root, message, isError, target)
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ -> updateBars(destination.id) }
 
-        // La app abre en la selección de rol, y al recrearse la navegación recuerda dónde estaba
+        // Al abrir va a la selección de rol, y al recrearse se queda donde estaba
         if (firstLaunch) navController.navigate(R.id.action_global_roleSelect)
     }
 
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.isVisible = !roleSelect && !albumCreate
         binding.bottomNavDivider.isVisible = binding.bottomNav.isVisible
 
-        // La navegación pone una flecha de volver, y Crear álbum lleva una X en su lugar
+        // Crear álbum lleva una X en lugar de la flecha de volver
         if (albumCreate) {
             binding.toolbar.setNavigationIcon(R.drawable.ic_close)
             binding.toolbar.setNavigationContentDescription(R.string.cd_close_without_saving)

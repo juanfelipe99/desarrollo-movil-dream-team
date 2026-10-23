@@ -22,7 +22,7 @@ class VinilosApplication : Application() {
     private fun applySavedThemeMode() {
         val themeMode = container.themeModeRepository.themeMode
 
-        // El primero se aplica antes de la primera pantalla para no ver un instante el tema equivocado
+        // Antes de la primera pantalla, para no mostrar un instante el tema equivocado
         applyThemeMode(runBlocking { themeMode.first() })
 
         // Después se aplica cada vez que se guarda uno nuevo
