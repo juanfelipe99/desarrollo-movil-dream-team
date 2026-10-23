@@ -33,6 +33,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
+    testOptions {
+        animationsDisabled = true
+    }
     buildFeatures {
         buildConfig = true
         viewBinding = true

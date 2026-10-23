@@ -16,7 +16,7 @@ import com.equipo2.vinilos.data.repository.ThemeModeRepositoryImpl
 /** Crea cada repositorio la primera vez que se pide y lo comparte con toda la app. */
 open class AppContainer(context: Context) {
 
-    private val apiClient by lazy { ApiClient(BuildConfig.API_BASE_URL) }
+    val apiClient by lazy { ApiClient(BuildConfig.API_BASE_URL) }
 
     open val albumRepository: AlbumRepository by lazy { AlbumRepositoryImpl(AlbumServiceAdapter(apiClient)) }
     open val roleRepository: RoleRepository by lazy { RoleRepositoryImpl(RoleLocalDataSource(context.appDataStore)) }
