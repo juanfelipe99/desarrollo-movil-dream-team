@@ -23,10 +23,17 @@ class FakeAlbumRepository : AlbumRepository {
         return response.await()
     }
 
-    /** Respuesta del catálogo, que la prueba puede cambiar. */
-    var albums: Result<List<Album>> = Result.success(emptyList())
+    /** Cuántas veces se pidió el catálogo. */
+    var albumRequests = 0
+        private set
 
-    override suspend fun getAlbums(): Result<List<Album>> = albums
+    /** Respuesta del catálogo; puede esperar un CompletableDeferred para probar la carga. */
+    var albums: suspend () -> Result<List<Album>> = { Result.success(emptyList()) }
+
+    override suspend fun getAlbums(): Result<List<Album>> {
+        albumRequests++
+        return albums()
+    }
 
     override suspend fun getAlbumById(id: Int): Result<Album> = Result.failure(UnsupportedOperationException())
 }
