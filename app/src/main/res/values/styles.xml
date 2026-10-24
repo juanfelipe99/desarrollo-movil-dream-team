@@ -92,6 +92,13 @@
         <item name="simpleItemSelectedColor">@color/md_primary_container</item>
     </style>
 
+    <!-- Filtro de una sola opción: el elegido lleva fondo y ✓, los demás solo borde. -->
+    <style name="Widget.Vinilos.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textAppearance">@style/TextAppearance.Vinilos.LabelLarge</item>
+        <item name="checkedIcon">@drawable/ic_check</item>
+        <item name="checkedIconTint">@color/md_on_secondary_container</item>
+    </style>
+
     <style name="ShapeAppearance.Vinilos.Cover" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
