@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,8 +32,7 @@ import com.equipo2.vinilos.ui.state.showLoading
 class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
 
     private val viewModel: AlbumDetailViewModel by viewModels {
-        val albumId = arguments?.getInt(ARG_ALBUM_ID) ?: 4
-        AlbumDetailViewModel.factory(albumId)
+        AlbumDetailViewModel.factory(requireArguments().getInt(ARG_ALBUM_ID))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -186,7 +186,12 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         name.split(' ').filter { it.isNotBlank() }.take(2).joinToString("") { it.first().uppercase() }
 
     companion object {
+        /** Debe coincidir con el argumento de albumDetailFragment en nav_graph.xml. */
         private const val ARG_ALBUM_ID = "albumId"
+
+        /** Argumentos para abrir el detalle del álbum con este id. */
+        fun args(albumId: Int): Bundle = bundleOf(ARG_ALBUM_ID to albumId)
+
         private const val DESCRIPTION_PREVIEW_LENGTH = 170
         private const val MAX_RATING = 5
     }

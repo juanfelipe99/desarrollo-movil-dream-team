@@ -11,6 +11,8 @@ class AlbumServiceAdapter(apiClient: ApiClient) {
 
     private val api = apiClient.create(AlbumApi::class.java)
 
+    suspend fun getAlbums(): List<Album> = api.getAlbums().map { it.toAlbum() }
+
     suspend fun createAlbum(album: NewAlbum): Album = api.createAlbum(album.toRequest()).toAlbum()
 
     suspend fun getAlbumById(id: Int): Album = coroutineScope {

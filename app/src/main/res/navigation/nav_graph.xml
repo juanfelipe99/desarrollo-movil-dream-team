@@ -21,6 +21,10 @@
         <action
             android:id="@+id/action_albumList_to_albumCreate"
             app:destination="@id/albumCreateFragment" />
+
+        <action
+            android:id="@+id/action_albumList_to_albumDetail"
+            app:destination="@id/albumDetailFragment" />
     </fragment>
 
     <fragment
@@ -31,7 +35,12 @@
     <fragment
         android:id="@+id/albumDetailFragment"
         android:name="com.equipo2.vinilos.ui.albums.detail.AlbumDetailFragment"
-        android:label="@string/album_detail_title" />
+        android:label="@string/album_detail_title">
+
+        <argument
+            android:name="albumId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/artistListFragment"

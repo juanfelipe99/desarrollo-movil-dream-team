@@ -15,10 +15,12 @@ class ResultOfTest {
     }
 
     @Test
-    fun siHayUnError_loDevuelveComoFallo() = runTest {
+    fun siHayUnError_loDevuelveTraducidoComoFallo() = runTest {
         val result = resultOf { throw IOException("Sin conexión") }
 
-        assertTrue(result.exceptionOrNull() is IOException)
+        val error = result.exceptionOrNull()
+        assertTrue(error is DataError.Network)
+        assertTrue(error?.cause is IOException)
     }
 
     @Test(expected = CancellationException::class)

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="album_list_loading">Cargando álbumes…</string>
+    <!-- Completa «No pudimos cargar %1$s» del estado de error. -->
+    <string name="album_list_object">los álbumes</string>
 
+    <string name="album_list_empty_title">Aún no hay álbumes</string>
+    <string name="album_list_empty_body">Cuando se agreguen álbumes al catálogo, aparecerán aquí.</string>
+
+    <string name="album_list_new_badge">Nuevo</string>
+    <!-- Año de lanzamiento y género, por ejemplo «1984 · Salsa». -->
+    <string name="album_list_subtitle">%1$d · %2$s</string>
 </resources>

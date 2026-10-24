@@ -1,8 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!-- Las tarjetas suman su margen al padding para quedar a 16 dp del borde y a 12 dp entre sí.
+         Abajo queda espacio para que el botón «+» no tape la última fila. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/albumGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/album_grid_padding"
+        android:paddingTop="@dimen/album_grid_padding"
+        android:paddingBottom="88dp"
+        android:visibility="gone"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_album"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/albumsLoading"
+        layout="@layout/view_loading"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/albumsMessage"
+        layout="@layout/view_state_message"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createAlbumButton"
