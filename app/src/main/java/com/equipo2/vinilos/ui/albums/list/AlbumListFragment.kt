@@ -12,6 +12,7 @@ import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.Role
 import com.equipo2.vinilos.databinding.FragmentAlbumListBinding
 import com.equipo2.vinilos.ui.albums.create.AlbumCreateFragment
+import com.equipo2.vinilos.ui.albums.detail.AlbumDetailFragment
 import com.equipo2.vinilos.ui.common.collectWhileVisible
 import com.equipo2.vinilos.ui.common.keepSnackbarsAbove
 import com.equipo2.vinilos.ui.common.navigateIfPossible
@@ -39,9 +40,11 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
         showCreatedAlbumMessage()
     }
 
-    /** Cuadrícula de álbumes y los estados de carga, vacío y error con «Reintentar». */
+    /** Cuadrícula de álbumes, que abre el detalle al tocar uno, y los estados de carga, vacío y error con «Reintentar». */
     private fun setUpCatalog(binding: FragmentAlbumListBinding) {
-        val adapter = AlbumAdapter()
+        val adapter = AlbumAdapter { album ->
+            findNavController().navigateIfPossible(R.id.action_albumList_to_albumDetail, AlbumDetailFragment.args(album.id))
+        }
         binding.albumGrid.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.album_grid_columns))
         binding.albumGrid.adapter = adapter
 
