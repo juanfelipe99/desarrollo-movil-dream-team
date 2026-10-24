@@ -7,6 +7,9 @@ import retrofit2.http.Path
 
 interface AlbumApi {
 
+    @GET("albums")
+    suspend fun getAlbums(): List<AlbumDto>
+
     @POST("albums")
     suspend fun createAlbum(@Body request: CreateAlbumRequest): AlbumDto
 
