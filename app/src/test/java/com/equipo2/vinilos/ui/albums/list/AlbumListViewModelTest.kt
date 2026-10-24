@@ -65,6 +65,38 @@ class AlbumListViewModelTest {
     }
 
     @Test
+    fun cualquierTipoDeFallo_quedaEnError() {
+        val failures = listOf(
+            DataError.Network(),
+            DataError.Timeout(),
+            DataError.NotFound(),
+            DataError.Request(400),
+            DataError.Server(500),
+            DataError.InvalidData(),
+            DataError.Unknown(),
+        )
+
+        failures.forEach { failure ->
+            repository.albums = { Result.failure(failure) }
+
+            val viewModel = AlbumListViewModel(repository)
+
+            assertEquals("Con ${failure::class.simpleName}", UiState.Error, viewModel.state.value)
+        }
+    }
+
+    @Test
+    fun alReintentarDesdeVacio_muestraLosAlbumesQueLlegaron() {
+        repository.albums = { Result.success(emptyList()) }
+        val viewModel = AlbumListViewModel(repository)
+
+        repository.albums = { Result.success(listOf(album(100))) }
+        viewModel.retry()
+
+        assertEquals(UiState.Success(listOf(AlbumItem(album(100), isNew = false))), viewModel.state.value)
+    }
+
+    @Test
     fun alReintentar_vuelveACargarYMuestraElCatalogo() {
         repository.albums = { Result.failure(DataError.Server(500)) }
         val viewModel = AlbumListViewModel(repository)

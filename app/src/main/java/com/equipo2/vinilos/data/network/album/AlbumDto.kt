@@ -45,7 +45,9 @@ data class PerformerDto(
     val name: String,
     val image: String,
     val description: String,
-    val birthDate: String,
+    // Los músicos traen birthDate y las bandas creationDate
+    val birthDate: String? = null,
+    val creationDate: String? = null,
 )
 
 @Serializable
@@ -97,6 +99,7 @@ internal fun AlbumDto.toAlbum(commentAuthors: Map<Int, String> = emptyMap()) = A
             image = performer.image,
             description = performer.description,
             birthDate = performer.birthDate,
+            creationDate = performer.creationDate,
         )
     },
     comments = comments.map { comment ->
