@@ -20,6 +20,15 @@ object BackVynils {
         return List(albums.length()) { albums.getJSONObject(it).getString("name") }
     }
 
+    fun musicianNames(): List<String> = names("musicians")
+
+    fun bandNames(): List<String> = names("bands")
+
+    private fun names(path: String): List<String> {
+        val items = JSONArray(request(path, "GET"))
+        return List(items.length()) { items.getJSONObject(it).getString("name") }
+    }
+
     /** Borra los álbumes con este prefijo para no dejar datos de prueba. */
     fun deleteAlbumsStartingWith(prefix: String) {
         val albums = JSONArray(request("albums", "GET"))

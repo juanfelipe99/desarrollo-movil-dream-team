@@ -44,8 +44,27 @@
 
     <fragment
         android:id="@+id/artistListFragment"
-        android:name="com.equipo2.vinilos.ui.artists.ArtistListFragment"
-        android:label="@string/artist_list_title" />
+        android:name="com.equipo2.vinilos.ui.artists.list.ArtistListFragment"
+        android:label="@string/artist_list_title">
+
+        <action
+            android:id="@+id/action_artistList_to_artistDetail"
+            app:destination="@id/artistDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artistDetailFragment"
+        android:name="com.equipo2.vinilos.ui.artists.detail.ArtistDetailFragment"
+        android:label="@string/artist_detail_title">
+
+        <argument
+            android:name="artistId"
+            app:argType="integer" />
+
+        <argument
+            android:name="artistType"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/collectorListFragment"
