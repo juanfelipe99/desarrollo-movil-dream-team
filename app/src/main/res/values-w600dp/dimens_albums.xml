@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- En horizontal y en tabletas caben más columnas. -->
+    <integer name="album_grid_columns">3</integer>
+</resources>

@@ -1,5 +1,6 @@
 package com.equipo2.vinilos.ui.albums.list
 
+import androidx.lifecycle.SavedStateHandle
 import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.data.repository.DataError
 import com.equipo2.vinilos.support.FakeAlbumRepository
@@ -42,7 +43,7 @@ class AlbumListViewModelTest {
 
         val viewModel = AlbumListViewModel(repository)
 
-        assertEquals(UiState.Success(albums), viewModel.state.value)
+        assertEquals(UiState.Success(albums.map { AlbumItem(it, isNew = false) }), viewModel.state.value)
     }
 
     @Test
@@ -77,7 +78,7 @@ class AlbumListViewModelTest {
         val albums = listOf(album(100))
         response.complete(Result.success(albums))
 
-        assertEquals(UiState.Success(albums), viewModel.state.value)
+        assertEquals(UiState.Success(albums.map { AlbumItem(it, isNew = false) }), viewModel.state.value)
     }
 
     @Test
@@ -100,6 +101,64 @@ class AlbumListViewModelTest {
         viewModel.retry()
 
         assertEquals(1, repository.albumRequests)
+    }
+
+    @Test
+    fun alCrearUnAlbum_recargaYLoMuestraPrimeroComoNuevo() {
+        repository.albums = { Result.success(listOf(album(100), album(101))) }
+        val viewModel = AlbumListViewModel(repository)
+
+        repository.albums = { Result.success(listOf(album(100), album(101), album(102))) }
+        viewModel.onAlbumCreated(102)
+
+        assertEquals(2, repository.albumRequests)
+        assertEquals(
+            UiState.Success(
+                listOf(
+                    AlbumItem(album(102), isNew = true),
+                    AlbumItem(album(100), isNew = false),
+                    AlbumItem(album(101), isNew = false),
+                ),
+            ),
+            viewModel.state.value,
+        )
+    }
+
+    @Test
+    fun conVariosAlbumesCreados_elMasRecienteVaPrimero() {
+        repository.albums = { Result.success(listOf(album(100), album(101), album(102))) }
+        val viewModel = AlbumListViewModel(repository)
+
+        viewModel.onAlbumCreated(101)
+        viewModel.onAlbumCreated(102)
+
+        val items = (viewModel.state.value as UiState.Success).data
+        assertEquals(listOf(102, 101, 100), items.map { it.album.id })
+        assertEquals(listOf(true, true, false), items.map { it.isNew })
+    }
+
+    @Test
+    fun alCrearMientrasCarga_lanzaUnaPeticionNuevaConElAlbum() {
+        pendingResponse()
+        val viewModel = AlbumListViewModel(repository)
+
+        repository.albums = { Result.success(listOf(album(100))) }
+        viewModel.onAlbumCreated(100)
+
+        assertEquals(2, repository.albumRequests)
+        assertEquals(UiState.Success(listOf(AlbumItem(album(100), isNew = true))), viewModel.state.value)
+    }
+
+    @Test
+    fun losAlbumesNuevos_seConservanSiSeRecreaLaPantalla() {
+        repository.albums = { Result.success(listOf(album(100), album(101))) }
+        val savedState = SavedStateHandle()
+        AlbumListViewModel(repository, savedState).onAlbumCreated(101)
+
+        val recreated = AlbumListViewModel(repository, savedState)
+
+        val items = (recreated.state.value as UiState.Success).data
+        assertEquals(AlbumItem(album(101), isNew = true), items.first())
     }
 
     private fun album(id: Int) = Album(
