@@ -9,6 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isPlatformPopup
 import androidx.test.espresso.matcher.ViewMatchers.Visibility
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isSelected
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
@@ -101,15 +102,20 @@ class HU07RolesTest {
     }
 
     @Test
-    fun menuDeRol_eligeElTemaOscuro_yLuegoDelSistema() {
+    fun menuDeRol_controlDeTema_cambiaEntreOscuroClaroYDelSistema_yMarcaElElegido() {
         app.launch()
         enterAs(collector = false)
 
-        chooseInRoleMenu(R.id.optionDark)
+        chooseInRoleMenu(R.id.themeDark)
         onView(toolbarTitle(R.string.album_list_title)).check(matches(isDisplayed()))
         waitForNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-        chooseInRoleMenu(R.id.optionSystem)
+        onView(withId(R.id.roleChip)).perform(click())
+        onView(withId(R.id.themeDark)).inRoot(isPlatformPopup()).check(matches(isChecked()))
+        onView(withId(R.id.themeLight)).inRoot(isPlatformPopup()).perform(click())
+        waitForNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        chooseInRoleMenu(R.id.themeSystem)
         onView(toolbarTitle(R.string.album_list_title)).check(matches(isDisplayed()))
         waitForNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }

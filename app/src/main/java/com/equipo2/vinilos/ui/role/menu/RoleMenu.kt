@@ -46,13 +46,28 @@ class RoleMenu(
         bindOption(binding.optionVisitor, binding.checkVisitor, role == Role.VISITOR) { onRoleSelected(Role.VISITOR) }
         bindOption(binding.optionCollector, binding.checkCollector, role == Role.COLLECTOR) { onRoleSelected(Role.COLLECTOR) }
 
-        bindOption(binding.optionLight, binding.checkLight, themeMode == ThemeMode.LIGHT) { onThemeModeSelected(ThemeMode.LIGHT) }
-        bindOption(binding.optionDark, binding.checkDark, themeMode == ThemeMode.DARK) { onThemeModeSelected(ThemeMode.DARK) }
-        bindOption(binding.optionSystem, binding.checkSystem, themeMode == ThemeMode.SYSTEM) { onThemeModeSelected(ThemeMode.SYSTEM) }
+        bindThemeMode(binding, themeMode)
 
         binding.optionRoleSelect.setOnClickListener {
             dismiss()
             onOpenRoleSelect()
+        }
+    }
+
+    /** Claro, del sistema u oscuro en un solo control. Elegir otro cierra el menú y cambia el tema. */
+    private fun bindThemeMode(binding: PopupRoleMenuBinding, themeMode: ThemeMode) {
+        val buttons = mapOf(
+            ThemeMode.LIGHT to binding.themeLight,
+            ThemeMode.SYSTEM to binding.themeSystem,
+            ThemeMode.DARK to binding.themeDark,
+        )
+        binding.themeModeGroup.check(buttons.getValue(themeMode).id)
+
+        binding.themeModeGroup.addOnButtonCheckedListener { _, buttonId, isChecked ->
+            val mode = buttons.entries.first { it.value.id == buttonId }.key
+            if (!isChecked || mode == themeMode) return@addOnButtonCheckedListener
+            dismiss()
+            onThemeModeSelected(mode)
         }
     }
 
