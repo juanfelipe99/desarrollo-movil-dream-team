@@ -17,6 +17,7 @@ import com.equipo2.vinilos.data.repository.DataError
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useAlbumRepository
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test

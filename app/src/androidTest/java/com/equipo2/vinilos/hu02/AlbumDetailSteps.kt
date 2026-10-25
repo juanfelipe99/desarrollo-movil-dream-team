@@ -9,12 +9,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.equipo2.vinilos.R
 
-fun verifyAlbumDescriptionIsDisplayed() {
-    onView(withId(R.id.albumDescription))
-        .perform(scrollTo())
-        .check(matches(isDisplayed()))
-}
-
 fun expandAlbumDescription() {
     onView(withId(R.id.albumDescriptionToggle))
         .perform(scrollTo())
@@ -23,23 +17,11 @@ fun expandAlbumDescription() {
 }
 
 fun verifyTracksAndCommentsSections() {
+    onView(withId(R.id.tracksCount))
+        .perform(scrollTo())
+        .check(matches(isDisplayed()))
 
-    fun verifyTracksAndCommentsSections() {
-        onView(withId(R.id.tracksCount))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.tracksList))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.commentsCount))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.commentsList))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-    }
-
+    onView(withId(R.id.commentsCount))
+        .perform(scrollTo())
+        .check(matches(isDisplayed()))
 }

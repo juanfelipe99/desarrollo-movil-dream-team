@@ -8,6 +8,8 @@ import java.time.LocalDate
 
 class AlbumDtoTest {
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Test
     fun toRequest_enviaLaFechaEnElFormatoDeLaApi() {
         val request = NewAlbum(
@@ -64,9 +66,7 @@ class AlbumDtoTest {
             ]
         """.trimIndent()
 
-        val albums = Json { ignoreUnknownKeys = true }
-            .decodeFromString<List<AlbumDto>>(body)
-            .map { it.toAlbum() }
+        val albums = json.decodeFromString<List<AlbumDto>>(body).map { it.toAlbum() }
 
         assertEquals(listOf(100, 101), albums.map { it.id })
         assertEquals("Decisiones", albums[0].tracks.single().name)

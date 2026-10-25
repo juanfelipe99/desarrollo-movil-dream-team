@@ -12,12 +12,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.platform.app.InstrumentationRegistry
-import com.equipo2.vinilos.AppContainer
 import com.equipo2.vinilos.R
-import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Album
-import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.ui.albums.list.AlbumAdapter
 import com.equipo2.vinilos.ui.albums.list.AlbumItem
 import com.google.android.material.card.MaterialCardView
@@ -27,14 +23,6 @@ import java.time.LocalDate
 
 /** Prefijo de los álbumes que crean las pruebas de HU01, que se borran al terminar. */
 const val HU01_ALBUM_PREFIX = "E2E HU01"
-
-/** La app usa este repositorio de álbumes en lugar del real. */
-fun useAlbumRepository(repository: AlbumRepository) {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    VinilosApplication.container = object : AppContainer(context) {
-        override val albumRepository: AlbumRepository = repository
-    }
-}
 
 fun testAlbum(id: Int, name: String, year: Int, genre: String) = Album(
     id = id,

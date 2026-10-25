@@ -11,16 +11,13 @@ import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import com.equipo2.vinilos.AppContainer
 import com.equipo2.vinilos.R
-import com.equipo2.vinilos.VinilosApplication
-import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.support.BackVynils
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.hasFieldError
 import com.equipo2.vinilos.support.pickOption
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useAlbumRepository
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -126,10 +123,7 @@ class HU07CreateAlbumTest {
 
     @Test
     fun siFallaElGuardado_conservaLosDatos_yAvisaQueNoSePudoCrear() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        VinilosApplication.container = object : AppContainer(context) {
-            override val albumRepository: AlbumRepository = FailingAlbumRepository()
-        }
+        useAlbumRepository(FailingAlbumRepository())
         val name = "$TEST_ALBUM_PREFIX sin guardar"
         app.launch()
         openCreateAlbum()

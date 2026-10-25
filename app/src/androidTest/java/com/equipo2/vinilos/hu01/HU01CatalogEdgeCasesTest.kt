@@ -32,6 +32,7 @@ import com.equipo2.vinilos.support.BackVynils
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useAlbumRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Description
 import org.hamcrest.Matcher

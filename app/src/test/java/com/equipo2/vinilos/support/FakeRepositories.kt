@@ -35,7 +35,16 @@ class FakeAlbumRepository : AlbumRepository {
         return albums()
     }
 
-    override suspend fun getAlbumById(id: Int): Result<Album> = Result.failure(UnsupportedOperationException())
+    /** Ids pedidos al detalle, en orden. */
+    val detailRequests = mutableListOf<Int>()
+
+    /** Respuesta del detalle, que puede esperar un CompletableDeferred para probar la carga. */
+    var detail: suspend () -> Result<Album> = { Result.failure(UnsupportedOperationException()) }
+
+    override suspend fun getAlbumById(id: Int): Result<Album> {
+        detailRequests += id
+        return detail()
+    }
 }
 
 class FakeRoleRepository(initial: Role) : RoleRepository {

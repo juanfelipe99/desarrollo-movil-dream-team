@@ -19,11 +19,6 @@ data class Performer(
     val id: Int,
     val name: String,
     val image: String,
-    val description: String,
-    /** Solo para músicos. */
-    val birthDate: String? = null,
-    /** Solo para bandas. */
-    val creationDate: String? = null,
 )
 
 data class Album(
