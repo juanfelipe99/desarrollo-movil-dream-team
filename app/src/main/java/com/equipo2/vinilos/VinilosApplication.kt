@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-/** Arranque de la app: crea los repositorios, aplica el tema guardado y configura la carga de portadas. */
+/** Crea los repositorios, aplica el tema guardado y configura la carga de portadas. */
 class VinilosApplication : Application(), SingletonImageLoader.Factory {
 
     private val appScope = MainScope()
@@ -30,11 +30,10 @@ class VinilosApplication : Application(), SingletonImageLoader.Factory {
         // Antes de la primera pantalla, para no mostrar un instante el tema equivocado
         applyThemeMode(runBlocking { themeMode.first() })
 
-        // Después se aplica cada vez que se guarda uno nuevo
         appScope.launch { themeMode.collect { applyThemeMode(it) } }
     }
 
-    /** Coil usa este cargador en toda la app, con el cliente que acepta Let's Encrypt en Android viejos. */
+    /** Cargador de imágenes de toda la app, con el cliente de imageHttpClient. */
     override fun newImageLoader(context: PlatformContext): ImageLoader {
         // Se crea una sola vez y al descargar la primera portada, no al abrir la app
         val client by lazy { imageHttpClient(context) }

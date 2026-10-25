@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Las tarjetas suman su margen al padding para quedar a 16 dp del borde y a 12 dp entre sí.
-         Abajo queda espacio para que el botón «+» no tape la última fila. -->
+    <!-- Abajo queda espacio para que el botón «+» no tape la última fila. -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/albumGrid"
         android:layout_width="match_parent"

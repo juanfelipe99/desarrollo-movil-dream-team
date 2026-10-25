@@ -46,7 +46,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.atomic.AtomicInteger
 
-/** Casos límite del listado de álbumes (HU01): giro de pantalla, doble toque, posición del catálogo, nombres largos y portadas que no cargan. */
+/** Casos límite del catálogo (HU01), como girar la pantalla, el doble toque y las portadas que no cargan. */
 @RunWith(AndroidJUnit4::class)
 class HU01CatalogEdgeCasesTest {
 
@@ -130,7 +130,7 @@ class HU01CatalogEdgeCasesTest {
         app.launch()
         enterAs(collector = false)
 
-        // Coil carga fuera de la vista de Espresso: se confirma que esta portada falla antes de revisar la tarjeta
+        // Coil carga fuera de la vista de Espresso, así que primero se confirma que esta portada falla
         assertTrue("La portada de prueba debería fallar", coverFails(BROKEN_COVER_URL))
 
         onView(allOf(withId(R.id.albumCover), isDescendantOfA(albumCard("Portada rota")))).check(matches(hasNoImage()))
@@ -192,7 +192,6 @@ private fun coverFails(url: String): Boolean {
     return runBlocking { SingletonImageLoader.get(context).execute(request) } is ErrorResult
 }
 
-/** Ícono de disco que queda detrás de la portada de la tarjeta. */
 private fun coverPlaceholder(name: String): Matcher<View> = allOf(
     isAssignableFrom(ImageView::class.java),
     not(withId(R.id.albumCover)),

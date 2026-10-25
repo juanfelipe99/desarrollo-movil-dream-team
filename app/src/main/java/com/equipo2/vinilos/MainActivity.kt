@@ -15,7 +15,7 @@ import com.equipo2.vinilos.ui.common.applySystemBarsPadding
 import com.equipo2.vinilos.ui.role.changedMessageRes
 import com.equipo2.vinilos.ui.role.chip.RoleChip
 
-/** Única actividad de la app: contiene la barra superior, las pantallas y la barra inferior. */
+/** Única actividad de la app, con la barra superior, las pantallas y la barra inferior. */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         if (firstLaunch) navController.navigate(R.id.action_global_roleSelect)
     }
 
-    /** Oculta lo que no lleva cada pantalla */
+    /** Oculta las barras que no lleva cada pantalla. */
     private fun updateBars(@IdRes destinationId: Int) {
         val roleSelect = destinationId == R.id.roleSelectFragment
         val albumCreate = destinationId == R.id.albumCreateFragment

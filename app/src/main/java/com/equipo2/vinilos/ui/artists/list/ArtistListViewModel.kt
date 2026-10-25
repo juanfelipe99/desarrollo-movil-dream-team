@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import java.text.Collator
 import java.util.Locale
 
-/** Filtros del listado: Todos, Músicos o Bandas. */
 enum class ArtistFilter(private val type: ArtistType?) {
     ALL(null),
     MUSICIANS(ArtistType.MUSICIAN),
@@ -53,7 +52,6 @@ class ArtistListViewModel(
         load()
     }
 
-    /** Vuelve a pedir el listado, por ejemplo desde el botón «Reintentar». */
     fun retry() = load()
 
     fun selectFilter(filter: ArtistFilter) {

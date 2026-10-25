@@ -43,13 +43,11 @@ class RoleChip(
         menu.show(role, themeModeViewModel.themeMode.value ?: ThemeMode.SYSTEM)
     }
 
-    /** Opción Visitante o Coleccionista: cambia el rol y avisa con un mensaje. */
     private fun changeRole(role: Role) {
         roleViewModel.changeRole(role)
         onRoleChanged(role)
     }
 
-    /** Opción «Volver a la pantalla de inicio»: abre la selección de rol. */
     private fun openRoleSelect() {
         activity.findNavController(R.id.navHost).navigateIfPossible(R.id.action_global_roleSelect)
     }

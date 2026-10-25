@@ -46,7 +46,7 @@ class ArtistListFragment : Fragment(R.layout.fragment_artist_list) {
         }
     }
 
-    /** Filas de artistas, que abren el detalle al tocar una, el contador y los estados de carga, vacío y error con «Reintentar». */
+    /** Filas que abren el detalle al tocar una, el contador y los estados de carga, vacío y error. */
     private fun setUpList(binding: FragmentArtistListBinding) {
         val adapter = ArtistAdapter { artist ->
             findNavController().navigateIfPossible(R.id.action_artistList_to_artistDetail, ArtistDetailFragment.args(artist))

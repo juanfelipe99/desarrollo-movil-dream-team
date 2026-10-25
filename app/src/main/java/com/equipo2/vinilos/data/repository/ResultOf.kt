@@ -2,7 +2,7 @@ package com.equipo2.vinilos.data.repository
 
 import kotlin.coroutines.cancellation.CancellationException
 
-// Convierte los errores en Result con un DataError para que los ViewModels no tengan que atraparlos
+// Los ViewModels reciben un Result con un DataError en lugar de atrapar excepciones
 internal suspend fun <T> resultOf(block: suspend () -> T): Result<T> = try {
     Result.success(block())
 } catch (e: CancellationException) {

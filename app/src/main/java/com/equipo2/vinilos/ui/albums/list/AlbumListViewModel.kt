@@ -48,7 +48,6 @@ class AlbumListViewModel(
         load()
     }
 
-    /** Vuelve a pedir el catálogo, por ejemplo desde el botón «Reintentar». */
     fun retry() = load()
 
     /** Marca el álbum recién creado como «Nuevo» y recarga para que aparezca. */

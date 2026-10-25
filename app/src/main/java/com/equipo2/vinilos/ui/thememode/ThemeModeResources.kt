@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.ThemeMode
 
-/** Nombre del tema: «Claro», «Oscuro» o «Del sistema». */
 @get:StringRes
 val ThemeMode.nameRes: Int
     get() = when (this) {
@@ -14,7 +13,6 @@ val ThemeMode.nameRes: Int
         ThemeMode.SYSTEM -> R.string.theme_mode_system
     }
 
-/** Ícono del tema: sol, luna o contraste. */
 @get:DrawableRes
 val ThemeMode.iconRes: Int
     get() = when (this) {

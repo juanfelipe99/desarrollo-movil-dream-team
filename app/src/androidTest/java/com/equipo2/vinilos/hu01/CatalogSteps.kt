@@ -60,7 +60,6 @@ fun openAlbum(name: String) {
     onView(albumCardName(name)).perform(click())
 }
 
-/** Álbumes que muestra la cuadrícula, en orden. */
 fun shownAlbums(): List<AlbumItem> {
     var items = emptyList<AlbumItem>()
     onView(withId(R.id.albumGrid)).check { view, noView ->

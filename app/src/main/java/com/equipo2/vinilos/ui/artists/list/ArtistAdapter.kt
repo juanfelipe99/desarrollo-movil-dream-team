@@ -12,7 +12,7 @@ import com.equipo2.vinilos.data.model.ArtistType
 import com.equipo2.vinilos.databinding.ItemArtistBinding
 import com.equipo2.vinilos.ui.common.initialsOf
 
-/** Filas del listado: foto o iniciales, nombre, etiqueta Músico o Banda y año. Al tocar una avisa con su artista. */
+/** Filas del listado. Al tocar una avisa con su artista. */
 class ArtistAdapter(
     private val onArtistClick: (Artist) -> Unit,
 ) : ListAdapter<Artist, ArtistAdapter.ArtistViewHolder>(ArtistDiff) {
