@@ -105,6 +105,24 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
 }
 
+// Cada prueba unitaria aparece en el log con su resultado, y al final los totales
+tasks.withType<Test>().configureEach {
+    testLogging {
+        events("passed", "failed", "skipped")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+    addTestListener(object : TestListener {
+        override fun beforeSuite(suite: TestDescriptor) {}
+        override fun beforeTest(test: TestDescriptor) {}
+        override fun afterTest(test: TestDescriptor, result: TestResult) {}
+        override fun afterSuite(suite: TestDescriptor, result: TestResult) {
+            if (suite.parent == null) {
+                println("Total: ${result.testCount}  Pasaron: ${result.successfulTestCount}  Fallaron: ${result.failedTestCount}  Omitidas: ${result.skippedTestCount}")
+            }
+        }
+    })
+}
+
 tasks.withType<com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask>().configureEach {
     additionalTestOutputDir.set(layout.buildDirectory.dir("outputs/connected_android_test_additional_output"))
 }

@@ -47,23 +47,17 @@ jobs:
       - name: Compilar la app y las pruebas
         run: ./gradlew assembleDebug assembleDebugAndroidTest
 
+      # Cada prueba aparece en el log con ✅ o ❌, y al final los errores y los totales
       - name: Ejecutar las pruebas en el emulador
-        id: emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api }}
           arch: ${{ matrix.arch }}
           target: default
           disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest
-
-      - name: Resultados de las pruebas
-        if: ${{ !cancelled() && steps.emulator.outcome != 'skipped' }}
-        run: python3 .github/scripts/test_report.py "E2E en API ${{ matrix.api }}" "app/build/outputs/androidTest-results/connected/**/*.xml"
-
-      - name: Guardar el reporte
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reporte-e2e-api-${{ matrix.api }}
-          path: app/build/reports/androidTests/connected/
+          script: |
+            ./gradlew installDebug installDebugAndroidTest
+            adb shell am instrument -w -r com.equipo2.vinilos.test/androidx.test.runner.AndroidJUnitRunner > e2e.txt
+            tr -d '\r' < e2e.txt | awk -F= '/^INSTRUMENTATION_STATUS: class=/ { c = $2; sub(/.*\./, "", c) } /^INSTRUMENTATION_STATUS: test=/ { t = $2 } /^INSTRUMENTATION_STATUS_CODE: 0$/ { print "✅ " c " > " t } /^INSTRUMENTATION_STATUS_CODE: -[12]$/ { print "❌ " c " > " t }'
+            sed -n '/^INSTRUMENTATION_RESULT: stream=/,/^INSTRUMENTATION_CODE/p' e2e.txt
+            grep -q '^OK (' e2e.txt
