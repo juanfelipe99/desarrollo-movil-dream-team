@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.Role
@@ -40,28 +41,33 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
         showCreatedAlbumMessage()
     }
 
-    /** Cuadrícula de álbumes, que abre el detalle al tocar uno, y los estados de carga, vacío y error con «Reintentar». */
+    /** Cuadrícula con el conteo, que abre el detalle al tocar un álbum, y los estados de carga, vacío y error. */
     private fun setUpCatalog(binding: FragmentAlbumListBinding) {
+        val countAdapter = AlbumCountAdapter()
         val adapter = AlbumAdapter { album ->
             findNavController().navigateIfPossible(R.id.action_albumList_to_albumDetail, AlbumDetailFragment.args(album.id))
         }
-        binding.albumGrid.layoutManager = GridLayoutManager(requireContext(), resources.getInteger(R.integer.album_grid_columns))
-        binding.albumGrid.adapter = adapter
+        val columns = resources.getInteger(R.integer.album_grid_columns)
+        binding.albumGrid.layoutManager = GridLayoutManager(requireContext(), columns).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int) = if (position < countAdapter.itemCount) columns else 1
+            }
+        }
+        binding.albumGrid.adapter = ConcatAdapter(countAdapter, adapter)
 
         viewLifecycleOwner.collectWhileVisible(viewModel.state) { state ->
             when (state) {
                 UiState.Loading ->
                     binding.albumsLoading.showLoading(getString(R.string.album_list_loading), R.layout.view_skeleton_grid)
-                UiState.Empty -> binding.albumsMessage.showEmpty(
-                    getString(R.string.album_list_empty_title),
-                    getString(R.string.album_list_empty_body),
-                    R.drawable.ic_album,
-                )
+                UiState.Empty -> showEmptyCatalog(binding)
                 UiState.Error -> binding.albumsMessage.showError(getString(R.string.album_list_object)) { viewModel.retry() }
-                is UiState.Success -> adapter.submitList(state.data) {
-                    // El álbum recién creado queda primero, así que se sube para que se vea
-                    if (scrollToNewAlbum) binding.albumGrid.scrollToPosition(0)
-                    scrollToNewAlbum = false
+                is UiState.Success -> {
+                    countAdapter.count = state.data.size
+                    adapter.submitList(state.data) {
+                        // El álbum recién creado queda primero, así que se sube para que se vea
+                        if (scrollToNewAlbum) binding.albumGrid.scrollToPosition(0)
+                        scrollToNewAlbum = false
+                    }
                 }
             }
 
@@ -71,11 +77,20 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
         }
     }
 
+    /** Al coleccionista el vacío le recuerda que puede crear el primer álbum. */
+    private fun showEmptyCatalog(binding: FragmentAlbumListBinding) {
+        val body = if (roleViewModel.role.value == Role.COLLECTOR) R.string.album_list_empty_body_collector else R.string.album_list_empty_body
+        binding.albumsMessage.showEmpty(getString(R.string.album_list_empty_title), getString(body), R.drawable.ic_album)
+    }
+
     /** Botón «+»: solo para el coleccionista, abre Crear álbum y los avisos quedan encima. */
     private fun setUpCreateAlbumButton(binding: FragmentAlbumListBinding) {
         val button = binding.createAlbumButton
 
-        viewLifecycleOwner.collectWhileVisible(roleViewModel.role) { role -> button.isVisible = role == Role.COLLECTOR }
+        viewLifecycleOwner.collectWhileVisible(roleViewModel.role) { role ->
+            button.isVisible = role == Role.COLLECTOR
+            if (viewModel.state.value == UiState.Empty) showEmptyCatalog(binding)
+        }
 
         button.setOnClickListener { findNavController().navigateIfPossible(R.id.action_albumList_to_albumCreate) }
 

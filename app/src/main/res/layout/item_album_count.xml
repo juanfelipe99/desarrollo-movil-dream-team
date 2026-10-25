@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Con el padding de la cuadrícula queda a 16 dp del borde y a 12 dp de las tarjetas. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/albumCount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/album_grid_item_margin"
+    android:layout_marginTop="@dimen/album_grid_item_margin"
+    android:layout_marginBottom="@dimen/album_grid_item_margin"
+    android:textAppearance="@style/TextAppearance.Vinilos.BodyMedium"
+    android:textColor="@color/md_on_surface_variant"
+    tools:text="4 álbumes en el catálogo" />

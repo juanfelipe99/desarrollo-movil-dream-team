@@ -1,6 +1,7 @@
 package com.equipo2.vinilos.hu01
 
 import android.view.View
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
@@ -77,10 +78,12 @@ private fun scrollToAlbum(name: String) = object : ViewAction {
         val grid = view as RecyclerView
         val position = grid.albumAdapter.currentList.indexOfFirst { it.album.name == name }
         check(position >= 0) { "El catálogo no tiene el álbum «$name»" }
-        grid.scrollToPosition(position)
+        // Antes de las tarjetas va la fila del conteo
+        val headerRows = grid.adapter!!.itemCount - grid.albumAdapter.itemCount
+        grid.scrollToPosition(position + headerRows)
         uiController.loopMainThreadUntilIdle()
     }
 }
 
 private val RecyclerView.albumAdapter: AlbumAdapter
-    get() = adapter as AlbumAdapter
+    get() = (adapter as ConcatAdapter).adapters.filterIsInstance<AlbumAdapter>().single()
