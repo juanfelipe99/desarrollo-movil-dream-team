@@ -34,7 +34,8 @@ fun hasFieldError(@StringRes message: Int?): Matcher<View> = object : TypeSafeMa
 }
 
 fun enterAs(collector: Boolean) {
-    onView(withId(if (collector) R.id.collectorButton else R.id.visitorButton)).perform(click())
+    // Con la fuente grande el botón puede quedar debajo del borde de la pantalla
+    onView(withId(if (collector) R.id.collectorButton else R.id.visitorButton)).perform(scrollTo(), click())
 }
 
 /** Elige una opción del menú de rol, que es una ventana aparte. */

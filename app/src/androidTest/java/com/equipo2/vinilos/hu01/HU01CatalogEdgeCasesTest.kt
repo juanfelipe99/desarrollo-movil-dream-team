@@ -214,7 +214,8 @@ private fun rotateScreen() {
         override fun getConstraints(): Matcher<View> = isRoot()
         override fun getDescription() = "girar la pantalla"
         override fun perform(uiController: UiController, view: View) {
-            var context = view.context
+            // En las versiones nuevas de Android la raíz no tiene la actividad como contexto, pero el contenido sí
+            var context = view.findViewById<View>(android.R.id.content).context
             while (context !is Activity) context = (context as ContextWrapper).baseContext
             context.recreate()
             uiController.loopMainThreadUntilIdle()
