@@ -5,6 +5,7 @@ import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.data.repository.DataError
 import com.equipo2.vinilos.support.FakeAlbumRepository
 import com.equipo2.vinilos.support.MainDispatcherRule
+import com.equipo2.vinilos.ui.state.ErrorReason
 import com.equipo2.vinilos.ui.state.UiState
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
@@ -61,27 +62,27 @@ class AlbumListViewModelTest {
 
         val viewModel = AlbumListViewModel(repository)
 
-        assertEquals(UiState.Error, viewModel.state.value)
+        assertEquals(UiState.Error(ErrorReason.CONNECTION), viewModel.state.value)
     }
 
     @Test
-    fun cualquierTipoDeFallo_quedaEnError() {
-        val failures = listOf(
-            DataError.Network(),
-            DataError.Timeout(),
-            DataError.NotFound(),
-            DataError.Request(400),
-            DataError.Server(500),
-            DataError.InvalidData(),
-            DataError.Unknown(),
+    fun cadaTipoDeFallo_quedaEnError_conSuMotivo() {
+        val failures = mapOf(
+            DataError.Network() to ErrorReason.CONNECTION,
+            DataError.Timeout() to ErrorReason.CONNECTION,
+            DataError.NotFound() to ErrorReason.SERVER,
+            DataError.Request(400) to ErrorReason.SERVER,
+            DataError.Server(500) to ErrorReason.SERVER,
+            DataError.InvalidData() to ErrorReason.SERVER,
+            DataError.Unknown() to ErrorReason.SERVER,
         )
 
-        failures.forEach { failure ->
+        failures.forEach { (failure, reason) ->
             repository.albums = { Result.failure(failure) }
 
             val viewModel = AlbumListViewModel(repository)
 
-            assertEquals("Con ${failure::class.simpleName}", UiState.Error, viewModel.state.value)
+            assertEquals("Con ${failure::class.simpleName}", UiState.Error(reason), viewModel.state.value)
         }
     }
 
@@ -120,7 +121,7 @@ class AlbumListViewModelTest {
 
         viewModel.retry()
 
-        assertEquals(UiState.Error, viewModel.state.value)
+        assertEquals(UiState.Error(ErrorReason.CONNECTION), viewModel.state.value)
         assertEquals(2, repository.albumRequests)
     }
 

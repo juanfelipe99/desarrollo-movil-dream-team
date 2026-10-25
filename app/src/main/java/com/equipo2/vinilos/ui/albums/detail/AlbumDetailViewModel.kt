@@ -8,6 +8,7 @@ import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.ui.state.UiState
+import com.equipo2.vinilos.ui.state.toErrorReason
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,7 @@ class AlbumDetailViewModel(
         loading = viewModelScope.launch {
             _state.value = repository.getAlbumById(albumId).fold(
                 onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error },
+                onFailure = { UiState.Error(it.toErrorReason()) },
             )
         }
     }

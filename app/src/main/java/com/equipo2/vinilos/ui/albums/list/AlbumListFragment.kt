@@ -60,7 +60,7 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
                 UiState.Loading ->
                     binding.albumsLoading.showLoading(getString(R.string.album_list_loading), R.layout.view_skeleton_grid)
                 UiState.Empty -> showEmptyCatalog(binding)
-                UiState.Error -> binding.albumsMessage.showError(getString(R.string.album_list_object)) { viewModel.retry() }
+                is UiState.Error -> binding.albumsMessage.showError(getString(R.string.album_list_object), state.reason) { viewModel.retry() }
                 is UiState.Success -> {
                     countAdapter.count = state.data.size
                     adapter.submitList(state.data) {
@@ -72,7 +72,7 @@ class AlbumListFragment : Fragment(R.layout.fragment_album_list) {
             }
 
             binding.albumsLoading.root.isVisible = state == UiState.Loading
-            binding.albumsMessage.root.isVisible = state == UiState.Empty || state == UiState.Error
+            binding.albumsMessage.root.isVisible = state == UiState.Empty || state is UiState.Error
             binding.albumGrid.isVisible = state is UiState.Success
         }
     }

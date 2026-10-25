@@ -46,13 +46,13 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
             when (state) {
                 UiState.Loading ->
                     binding.albumLoading.showLoading(getString(R.string.album_detail_loading), R.layout.view_skeleton_detail)
-                UiState.Error -> binding.albumError.showError(getString(R.string.album_detail_object)) { viewModel.retry() }
+                is UiState.Error -> binding.albumError.showError(getString(R.string.album_detail_object), state.reason) { viewModel.retry() }
                 is UiState.Success -> showAlbum(binding, state.data)
                 UiState.Empty -> Unit
             }
 
             binding.albumLoading.root.isVisible = state == UiState.Loading
-            binding.albumError.root.isVisible = state == UiState.Error
+            binding.albumError.root.isVisible = state is UiState.Error
             binding.albumContent.isVisible = state is UiState.Success
         }
     }

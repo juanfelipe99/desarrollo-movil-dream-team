@@ -11,6 +11,7 @@ import com.equipo2.vinilos.data.model.Artist
 import com.equipo2.vinilos.data.model.ArtistType
 import com.equipo2.vinilos.data.repository.ArtistRepository
 import com.equipo2.vinilos.ui.state.UiState
+import com.equipo2.vinilos.ui.state.toErrorReason
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -66,7 +67,7 @@ class ArtistListViewModel(
         loading = viewModelScope.launch {
             artists.value = repository.getArtists().fold(
                 onSuccess = { artists -> if (artists.isEmpty()) UiState.Empty else UiState.Success(sortedByName(artists)) },
-                onFailure = { UiState.Error },
+                onFailure = { UiState.Error(it.toErrorReason()) },
             )
         }
     }

@@ -10,6 +10,7 @@ import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.ui.state.UiState
+import com.equipo2.vinilos.ui.state.toErrorReason
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,7 +39,7 @@ class AlbumListViewModel(
             is UiState.Success -> UiState.Success(itemsOf(catalog.data, newIds))
             UiState.Loading -> UiState.Loading
             UiState.Empty -> UiState.Empty
-            UiState.Error -> UiState.Error
+            is UiState.Error -> catalog
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState.Loading)
 
@@ -65,7 +66,7 @@ class AlbumListViewModel(
         loading = viewModelScope.launch {
             catalog.value = repository.getAlbums().fold(
                 onSuccess = { albums -> if (albums.isEmpty()) UiState.Empty else UiState.Success(albums) },
-                onFailure = { UiState.Error },
+                onFailure = { UiState.Error(it.toErrorReason()) },
             )
         }
     }

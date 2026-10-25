@@ -5,6 +5,7 @@ import com.equipo2.vinilos.support.FakeArtistRepository
 import com.equipo2.vinilos.support.MainDispatcherRule
 import com.equipo2.vinilos.support.band
 import com.equipo2.vinilos.support.musician
+import com.equipo2.vinilos.ui.state.ErrorReason
 import com.equipo2.vinilos.ui.state.UiState
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
@@ -56,7 +57,7 @@ class ArtistListViewModelTest {
 
         repository.response.complete(Result.failure(IOException("Sin conexión")))
 
-        assertEquals(UiState.Error, viewModel.state.value)
+        assertEquals(UiState.Error(ErrorReason.CONNECTION), viewModel.state.value)
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.data.repository.DataError
 import com.equipo2.vinilos.support.FakeAlbumRepository
 import com.equipo2.vinilos.support.MainDispatcherRule
+import com.equipo2.vinilos.ui.state.ErrorReason
 import com.equipo2.vinilos.ui.state.UiState
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
@@ -53,7 +54,7 @@ class AlbumDetailViewModelTest {
 
         val viewModel = AlbumDetailViewModel(repository, albumId = 100)
 
-        assertEquals(UiState.Error, viewModel.state.value)
+        assertEquals(UiState.Error(ErrorReason.CONNECTION), viewModel.state.value)
     }
 
     @Test

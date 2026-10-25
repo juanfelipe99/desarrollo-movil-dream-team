@@ -88,6 +88,7 @@ class HU01CatalogStatesTest {
 
         val errorTitle = context.getString(R.string.error_load_title, context.getString(R.string.album_list_object))
         onView(withText(errorTitle)).check(matches(isDisplayed()))
+        onView(withText(R.string.error_network_body)).check(matches(isDisplayed()))
         onView(withId(R.id.albumGrid)).check(matches(withEffectiveVisibility(Visibility.GONE)))
 
         onView(withId(R.id.stateRetry)).perform(click())
@@ -97,7 +98,7 @@ class HU01CatalogStatesTest {
     }
 
     @Test
-    fun siElReintentoTambienFalla_sigueMostrandoElError() {
+    fun siElServidorFalla_avisaQueNoEstaDisponible_yReintentarSigueMostrandoElError() {
         useAlbumRepository(CatalogAlbumRepository(Result.failure(DataError.Server(500))))
         app.launch()
         enterAs(collector = false)
@@ -106,6 +107,7 @@ class HU01CatalogStatesTest {
 
         val errorTitle = context.getString(R.string.error_load_title, context.getString(R.string.album_list_object))
         onView(withText(errorTitle)).check(matches(isDisplayed()))
+        onView(withText(R.string.error_server_body)).check(matches(isDisplayed()))
         onView(withId(R.id.stateRetry)).check(matches(isDisplayed()))
     }
 

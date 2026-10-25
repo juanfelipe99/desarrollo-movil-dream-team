@@ -17,6 +17,7 @@
 
     <string name="error_load_title">No pudimos cargar %1$s</string>
     <string name="error_network_body">Revisa tu conexión a internet e inténtalo de nuevo.</string>
+    <string name="error_server_body">El servidor no está disponible en este momento. Inténtalo más tarde.</string>
     <string name="error_network_retry">Reintentar</string>
 
     <string name="form_required_note">Todos los campos son obligatorios (*).</string>

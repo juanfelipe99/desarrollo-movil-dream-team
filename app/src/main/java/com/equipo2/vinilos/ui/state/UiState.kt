@@ -1,16 +1,29 @@
 package com.equipo2.vinilos.ui.state
 
+import com.equipo2.vinilos.data.repository.DataError
+import com.equipo2.vinilos.data.repository.toDataError
+
 /** Estado de una pantalla que carga datos. */
 sealed interface UiState<out T> {
-    /** Esperando la respuesta, se muestra con showLoading. */
     data object Loading : UiState<Nothing>
 
-    /** Falló la carga, se muestra con showError. */
-    data object Error : UiState<Nothing>
+    data class Error(val reason: ErrorReason) : UiState<Nothing>
 
-    /** Cargó pero no hay nada, se muestra con showEmpty. */
     data object Empty : UiState<Nothing>
 
-    /** Cargó con datos y la pantalla muestra su contenido. */
     data class Success<T>(val data: T) : UiState<T>
+}
+
+/** Por qué falló la carga, que decide qué le pide la pantalla al usuario. */
+enum class ErrorReason {
+    /** Sin conexión o sin respuesta a tiempo. */
+    CONNECTION,
+
+    /** El servidor respondió con un error o con datos que la app no entiende. */
+    SERVER,
+}
+
+fun Throwable.toErrorReason(): ErrorReason = when (toDataError()) {
+    is DataError.Network, is DataError.Timeout -> ErrorReason.CONNECTION
+    else -> ErrorReason.SERVER
 }
