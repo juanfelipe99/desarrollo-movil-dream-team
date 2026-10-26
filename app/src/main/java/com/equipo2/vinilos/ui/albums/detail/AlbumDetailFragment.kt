@@ -23,12 +23,14 @@ import com.equipo2.vinilos.databinding.ItemAlbumInfoBinding
 import com.equipo2.vinilos.databinding.ItemTrackBinding
 import com.equipo2.vinilos.databinding.ViewPerformerChipBinding
 import com.equipo2.vinilos.ui.common.collectWhileVisible
+import com.equipo2.vinilos.ui.common.initialsOf
 import com.equipo2.vinilos.ui.common.toLongText
+import com.equipo2.vinilos.ui.state.UiState
 import com.equipo2.vinilos.ui.state.addEmptySection
 import com.equipo2.vinilos.ui.state.showError
 import com.equipo2.vinilos.ui.state.showLoading
 
-/** Pantalla de detalle de álbum (HU02). */
+/** Detalle de álbum (HU02). */
 class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
 
     private val viewModel: AlbumDetailViewModel by viewModels {
@@ -39,25 +41,19 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentAlbumDetailBinding.bind(view)
-        setUpStates(binding)
 
-        viewLifecycleOwner.collectWhileVisible(viewModel.album) { album -> album?.let { showAlbum(binding, it) } }
-        viewModel.loadAlbum()
-    }
-
-    /** Cargando y error usan los estados compartidos de la app. */
-    private fun setUpStates(binding: FragmentAlbumDetailBinding) {
-        viewLifecycleOwner.collectWhileVisible(viewModel.isLoading) { isLoading ->
-            if (isLoading) {
-                binding.albumLoading.showLoading(getString(R.string.album_detail_loading), R.layout.view_skeleton_detail)
+        viewLifecycleOwner.collectWhileVisible(viewModel.state) { state ->
+            when (state) {
+                UiState.Loading ->
+                    binding.albumLoading.showLoading(getString(R.string.album_detail_loading), R.layout.view_skeleton_detail)
+                is UiState.Error -> binding.albumError.showError(getString(R.string.album_detail_object), state.reason) { viewModel.retry() }
+                is UiState.Success -> showAlbum(binding, state.data)
+                UiState.Empty -> Unit
             }
-            binding.albumLoading.root.isVisible = isLoading
-            binding.albumContent.isVisible = !isLoading && viewModel.error.value == null && viewModel.album.value != null
-        }
-        viewLifecycleOwner.collectWhileVisible(viewModel.error) { message ->
-            if (message != null) binding.albumError.showError(getString(R.string.album_detail_object)) { viewModel.loadAlbum() }
-            binding.albumError.root.isVisible = message != null
-            if (message != null) binding.albumContent.isVisible = false
+
+            binding.albumLoading.root.isVisible = state == UiState.Loading
+            binding.albumError.root.isVisible = state is UiState.Error
+            binding.albumContent.isVisible = state is UiState.Success
         }
     }
 
@@ -164,7 +160,7 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         }
     }
 
-    /** Cinco estrellas de 16 dp, rellenas hasta la calificación. */
+    /** Cinco estrellas, rellenas hasta la calificación. */
     private fun showStars(container: LinearLayout, rating: Int) {
         val size = resources.getDimensionPixelSize(R.dimen.rating_star)
         val gap = resources.getDimensionPixelSize(R.dimen.rating_star_gap)
@@ -181,15 +177,10 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_detail) {
         addView(View(context), LinearLayout.LayoutParams(0, resources.getDimensionPixelSize(R.dimen.detail_section_gap)))
     }
 
-    /** Primera letra de las dos primeras palabras, por ejemplo «MB» para Manolo Bellon. */
-    private fun initialsOf(name: String): String =
-        name.split(' ').filter { it.isNotBlank() }.take(2).joinToString("") { it.first().uppercase() }
-
     companion object {
         /** Debe coincidir con el argumento de albumDetailFragment en nav_graph.xml. */
         private const val ARG_ALBUM_ID = "albumId"
 
-        /** Argumentos para abrir el detalle del álbum con este id. */
         fun args(albumId: Int): Bundle = bundleOf(ARG_ALBUM_ID to albumId)
 
         private const val DESCRIPTION_PREVIEW_LENGTH = 170

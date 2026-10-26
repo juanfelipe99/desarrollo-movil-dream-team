@@ -32,6 +32,7 @@ import com.equipo2.vinilos.support.BackVynils
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useAlbumRepository
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -46,7 +47,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.atomic.AtomicInteger
 
-/** Casos límite del listado de álbumes (HU01): giro de pantalla, doble toque, posición del catálogo, nombres largos y portadas que no cargan. */
+/** Casos límite del catálogo (HU01), como girar la pantalla, el doble toque y las portadas que no cargan. */
 @RunWith(AndroidJUnit4::class)
 class HU01CatalogEdgeCasesTest {
 
@@ -130,7 +131,7 @@ class HU01CatalogEdgeCasesTest {
         app.launch()
         enterAs(collector = false)
 
-        // Coil carga fuera de la vista de Espresso: se confirma que esta portada falla antes de revisar la tarjeta
+        // Coil carga fuera de la vista de Espresso, así que primero se confirma que esta portada falla
         assertTrue("La portada de prueba debería fallar", coverFails(BROKEN_COVER_URL))
 
         onView(allOf(withId(R.id.albumCover), isDescendantOfA(albumCard("Portada rota")))).check(matches(hasNoImage()))
@@ -192,7 +193,6 @@ private fun coverFails(url: String): Boolean {
     return runBlocking { SingletonImageLoader.get(context).execute(request) } is ErrorResult
 }
 
-/** Ícono de disco que queda detrás de la portada de la tarjeta. */
 private fun coverPlaceholder(name: String): Matcher<View> = allOf(
     isAssignableFrom(ImageView::class.java),
     not(withId(R.id.albumCover)),
@@ -214,7 +214,8 @@ private fun rotateScreen() {
         override fun getConstraints(): Matcher<View> = isRoot()
         override fun getDescription() = "girar la pantalla"
         override fun perform(uiController: UiController, view: View) {
-            var context = view.context
+            // En las versiones nuevas de Android la raíz no tiene la actividad como contexto, pero el contenido sí
+            var context = view.findViewById<View>(android.R.id.content).context
             while (context !is Activity) context = (context as ContextWrapper).baseContext
             context.recreate()
             uiController.loopMainThreadUntilIdle()

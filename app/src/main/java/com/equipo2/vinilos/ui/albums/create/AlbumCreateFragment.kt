@@ -45,7 +45,6 @@ class AlbumCreateFragment : Fragment(R.layout.fragment_album_create) {
         setUpSaving(binding)
         setUpResults(binding)
 
-        // Cancelar cierra la pantalla igual que la X
         binding.cancelButton.setOnClickListener { findNavController().navigateUp() }
         binding.saveButton.setOnClickListener { save(binding) }
     }

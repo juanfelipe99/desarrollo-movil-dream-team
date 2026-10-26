@@ -10,7 +10,7 @@ object BackVynils {
 
     private const val TIMEOUT_MS = 90_000
 
-    /** Despierta el servidor de Render, que puede tardar casi un minuto. */
+    /** Despierta el servidor publicado, que puede tardar en responder la primera vez. */
     fun wakeUp() {
         request("albums", "GET")
     }

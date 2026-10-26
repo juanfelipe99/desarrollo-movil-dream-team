@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-// API de BackVynils publicada en Render, la que usan release y el CI
-val renderApiBaseUrl = "https://backvynils-q6yc.onrender.com/"
+// API de BackVynils publicada en Replit, la que usan release y el CI
+val publishedApiBaseUrl = "https://back-vynils-api--vargasjuanp.replit.app/api/"
 
 // En debug se puede usar otra API, por ejemplo la de Docker: -PapiBaseUrl=... o apiBaseUrl en local.properties
 val localProperties = Properties().apply {
@@ -17,7 +17,7 @@ val debugApiBaseUrl = (providers.gradleProperty("apiBaseUrl").orNull ?: localPro
     ?.takeIf { it.isNotEmpty() }
     // Retrofit exige que la URL base termine en «/»
     ?.let { if (it.endsWith("/")) it else "$it/" }
-    ?: renderApiBaseUrl
+    ?: publishedApiBaseUrl
 
 android {
     namespace = "com.equipo2.vinilos"
@@ -33,7 +33,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_BASE_URL", "\"$renderApiBaseUrl\"")
+        buildConfigField("String", "API_BASE_URL", "\"$publishedApiBaseUrl\"")
     }
 
     signingConfigs {
@@ -103,6 +103,24 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+}
+
+// Cada prueba unitaria aparece en el log con su resultado, y al final los totales
+tasks.withType<Test>().configureEach {
+    testLogging {
+        events("passed", "failed", "skipped")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+    addTestListener(object : TestListener {
+        override fun beforeSuite(suite: TestDescriptor) {}
+        override fun beforeTest(test: TestDescriptor) {}
+        override fun afterTest(test: TestDescriptor, result: TestResult) {}
+        override fun afterSuite(suite: TestDescriptor, result: TestResult) {
+            if (suite.parent == null) {
+                println("Total: ${result.testCount}  Pasaron: ${result.successfulTestCount}  Fallaron: ${result.failedTestCount}  Omitidas: ${result.skippedTestCount}")
+            }
+        }
+    })
 }
 
 tasks.withType<com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask>().configureEach {

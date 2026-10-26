@@ -1,6 +1,7 @@
 package com.equipo2.vinilos.hu01
 
 import android.view.View
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
@@ -11,12 +12,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.platform.app.InstrumentationRegistry
-import com.equipo2.vinilos.AppContainer
 import com.equipo2.vinilos.R
-import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Album
-import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.ui.albums.list.AlbumAdapter
 import com.equipo2.vinilos.ui.albums.list.AlbumItem
 import com.google.android.material.card.MaterialCardView
@@ -26,14 +23,6 @@ import java.time.LocalDate
 
 /** Prefijo de los álbumes que crean las pruebas de HU01, que se borran al terminar. */
 const val HU01_ALBUM_PREFIX = "E2E HU01"
-
-/** La app usa este repositorio de álbumes en lugar del real. */
-fun useAlbumRepository(repository: AlbumRepository) {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    VinilosApplication.container = object : AppContainer(context) {
-        override val albumRepository: AlbumRepository = repository
-    }
-}
 
 fun testAlbum(id: Int, name: String, year: Int, genre: String) = Album(
     id = id,
@@ -59,7 +48,6 @@ fun openAlbum(name: String) {
     onView(albumCardName(name)).perform(click())
 }
 
-/** Álbumes que muestra la cuadrícula, en orden. */
 fun shownAlbums(): List<AlbumItem> {
     var items = emptyList<AlbumItem>()
     onView(withId(R.id.albumGrid)).check { view, noView ->
@@ -77,10 +65,12 @@ private fun scrollToAlbum(name: String) = object : ViewAction {
         val grid = view as RecyclerView
         val position = grid.albumAdapter.currentList.indexOfFirst { it.album.name == name }
         check(position >= 0) { "El catálogo no tiene el álbum «$name»" }
-        grid.scrollToPosition(position)
+        // Antes de las tarjetas va la fila del conteo
+        val headerRows = grid.adapter!!.itemCount - grid.albumAdapter.itemCount
+        grid.scrollToPosition(position + headerRows)
         uiController.loopMainThreadUntilIdle()
     }
 }
 
 private val RecyclerView.albumAdapter: AlbumAdapter
-    get() = adapter as AlbumAdapter
+    get() = (adapter as ConcatAdapter).adapters.filterIsInstance<AlbumAdapter>().single()

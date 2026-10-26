@@ -1,65 +1,65 @@
-# Vinilos - Dream Team
+# Vinilos · Equipo 2
 
-Proyecto del curso de Desarrollo de Aplicaciones Móviles (MISO, Universidad de los Andes).
+Aplicación Android nativa en Kotlin para consultar álbumes, artistas y coleccionistas de música en vinilo, y para que los coleccionistas registren álbumes nuevos. Proyecto del curso Ingeniería de Software para Aplicaciones Móviles (MISO, Universidad de los Andes). Funciona desde Android 5.0 (API 21).
 
-Aplicación Android desarrollada en **Kotlin** para consultar y gestionar álbumes, artistas y coleccionistas de música.
+## API
 
-## Backend
-
-La app consume el API REST de [BackVynils](https://github.com/TheSoftwareDesignLab/BackVynils). Por defecto usa la API publicada en Render (`https://backvynils-q6yc.onrender.com/`).
-
-### Usar la API local de Docker
-
-En debug la app puede usar BackVynils corriendo en Docker en tu computador. Release y el CI siempre usan Render.
-
-1. Levantar BackVynils en Docker y revisar que responda en `http://localhost:3000/albums`.
-2. Agregar la URL en `local.properties`, en la raíz del proyecto. Ese archivo no se sube al repositorio, así que cada uno pone la suya:
-   - **Emulador:** `apiBaseUrl=http://10.0.2.2:3000/`. Desde el emulador, `10.0.2.2` es tu computador.
-   - **Teléfono por USB:** `apiBaseUrl=http://localhost:3000/` y ejecutar `adb reverse tcp:3000 tcp:3000` cada vez que conectes el teléfono.
-3. Sincronizar Gradle y **volver a instalar la app** (▶ *Run* en Android Studio, o `./gradlew installDebug`). La URL queda fija en la app al compilarla, así que si la cambias tienes que reinstalar.
-
-También se puede pasar sin tocar `local.properties`, por ejemplo `./gradlew installDebug -PapiBaseUrl=http://10.0.2.2:3000/`.
-
-Para volver a Render, borrar o comentar la línea `apiBaseUrl` y reinstalar.
-
-Android bloquea `http` sin cifrar. Solo en debug se permite hacia `10.0.2.2`, `localhost` y `127.0.0.1` (ver `app/src/debug/res/xml/network_security_config.xml`).
-
-## Pruebas E2E
-
-Las pruebas E2E están hechas con Espresso, en `app/src/androidTest/java/com/equipo2/vinilos`, y usan la API real de BackVynils: la de Render, o la de Docker si configuraste `apiBaseUrl` (ver [Usar la API local de Docker](#usar-la-api-local-de-docker)). Están organizadas así:
-
-- `support/`: lo que comparten las pruebas de todas las historias, como la regla que abre la app, la espera a la API y las llamadas directas a BackVynils.
-- Una carpeta por historia de usuario, por ejemplo `hu07/`, con sus clases de prueba y las funciones que solo usa esa historia.
-
-Los datos que crean las pruebas en la API se borran al terminar.
-
-### Preparación
-
-Abrir un emulador o conectar un teléfono con Android 5.0 (API 21) o superior, con la depuración USB activa, y revisar que aparezca con `adb devices`. Las pruebas apagan las animaciones del dispositivo mientras corren y al terminar las dejan como estaban.
-
-### Desde Android Studio
-
-En el panel *Project*, clic derecho sobre `app/src/androidTest/java/com.equipo2.vinilos` → *Run 'Tests in com.equipo2.vinilos'*.
-
-Los resultados aparecen en el panel *Run*, abajo. Android Studio ejecuta las pruebas con Gradle.
-
-### Por línea de comandos (todas las versiones de Android)
-
-Desde la carpeta del proyecto se instalan la app y la app de pruebas, y luego se ejecutan las pruebas en el dispositivo:
+La app consume el API REST de [BackVynils](https://github.com/TheSoftwareDesignLab/BackVynils), publicada en:
 
 ```
-./gradlew installDebug installDebugAndroidTest
-adb shell am instrument -w com.equipo2.vinilos.test/androidx.test.runner.AndroidJUnitRunner
+https://back-vynils-api--vargasjuanp.replit.app/api/
 ```
 
-En Windows se usa `gradlew.bat` en lugar de `./gradlew`.
+Para usar otra API, cambiar `publishedApiBaseUrl` en `app/build.gradle.kts` y volver a instalar la app, porque la URL queda fija al compilar.
 
-## Pruebas unitarias
+## Instalar el APK
 
-Las pruebas unitarias están en `app/src/test/java/com/equipo2/vinilos`, en las mismas carpetas que el código que prueban, y `support/` tiene lo que comparten, como los repositorios falsos. Se ejecutan en el computador, sin emulador ni conexión a la API:
+El APK de cada versión está en [Releases](https://github.com/juanfelipe99/desarrollo-movil-equipo-2/releases). Se descarga en el teléfono y se abre, o se instala con el dispositivo conectado por USB:
 
-- **Desde Android Studio:** clic derecho sobre `app/src/test/java/com.equipo2.vinilos` → *Run 'Tests in com.equipo2.vinilos'*.
-- **Por línea de comandos:** `./gradlew testDebugUnitTest` desde la carpeta del proyecto (en Windows, `gradlew.bat testDebugUnitTest`). El reporte queda en `app/build/reports/tests/testDebugUnitTest/index.html`.
+```
+adb install vinilos-v1.0.0.apk
+```
+
+## Construir la app
+
+1. Clonar el repositorio.
+   ```
+   git clone https://github.com/juanfelipe99/desarrollo-movil-equipo-2.git
+   ```
+2. Abrirlo en Android Studio con *File → Open* y esperar a que termine la sincronización de Gradle. La primera vez se necesita internet para descargar las dependencias.
+3. Elegir un emulador o un teléfono conectado y presionar *Run 'app'*.
+
+Por línea de comandos, desde la carpeta del proyecto (en Windows, `gradlew.bat` en lugar de `./gradlew`):
+
+```
+./gradlew assembleDebug
+```
+
+El APK queda en `app/build/outputs/apk/debug/app-debug.apk`, y `./gradlew installDebug` lo instala en el dispositivo conectado.
+
+## Pruebas
+
+### E2E con Espresso
+
+Están en `app/src/androidTest/java/com/equipo2/vinilos`, con una carpeta por historia de usuario, y usan la API configurada en la app. Necesitan un emulador o un teléfono con Android 5.0 o superior conectado.
+
+- **Android Studio:** clic derecho sobre `app/src/androidTest/java/com.equipo2.vinilos` → *Run 'Tests in com.equipo2.vinilos'*.
+- **Línea de comandos:**
+  ```
+  ./gradlew installDebug installDebugAndroidTest
+  adb shell am instrument -w com.equipo2.vinilos.test/androidx.test.runner.AndroidJUnitRunner
+  ```
+
+### Unitarias
+
+Están en `app/src/test/java/com/equipo2/vinilos` y no necesitan emulador ni API.
+
+- **Android Studio:** clic derecho sobre `app/src/test/java/com.equipo2.vinilos` → *Run 'Tests in com.equipo2.vinilos'*.
+- **Línea de comandos:** `./gradlew testDebugUnitTest`.
+
+## Documentación
+
+La [wiki](https://github.com/juanfelipe99/desarrollo-movil-equipo-2/wiki) tiene la estrategia de pruebas, el diseño arquitectónico, las actas de reuniones y las retrospectivas.
 
 ## Integrantes
 

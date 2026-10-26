@@ -10,18 +10,15 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import com.equipo2.vinilos.AppContainer
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.VinilosApplication
-import com.equipo2.vinilos.data.repository.AlbumRepository
 import com.equipo2.vinilos.hu01.openAlbum
 import com.equipo2.vinilos.support.BackVynils
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useAlbumRepository
 import org.hamcrest.Matchers.allOf
-import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -32,16 +29,6 @@ class HU02AlbumDetailTest {
 
     @get:Rule
     val app = VinilosRule()
-
-    private var originalContainer: AppContainer? = null
-
-    @After
-    fun restoreContainer() {
-        originalContainer?.let {
-            VinilosApplication.container = it
-            originalContainer = null
-        }
-    }
 
     private fun openAlbumAsVisitor(): String {
         val albums = BackVynils.albumNames()
@@ -59,17 +46,8 @@ class HU02AlbumDetailTest {
     }
 
     private fun installFailingRepository(): FailingAlbumDetailRepository {
-        val container = VinilosApplication.container
-        originalContainer = container
-
-        val fake = FailingAlbumDetailRepository(container.albumRepository)
-        val context =
-            InstrumentationRegistry.getInstrumentation().targetContext
-
-        VinilosApplication.container = object : AppContainer(context) {
-            override val albumRepository: AlbumRepository = fake
-        }
-
+        val fake = FailingAlbumDetailRepository(VinilosApplication.container.albumRepository)
+        useAlbumRepository(fake)
         return fake
     }
 

@@ -5,10 +5,7 @@ import com.equipo2.vinilos.data.model.NewAlbum
 import com.equipo2.vinilos.data.repository.AlbumRepository
 import kotlinx.coroutines.awaitCancellation
 
-/**
- * Repositorio en memoria que responde el catálogo en el orden indicado y repite la última respuesta.
- * El detalle busca el álbum en la última respuesta del catálogo.
- */
+/** Repositorio en memoria que da las respuestas del catálogo en orden y repite la última. */
 class CatalogAlbumRepository(responses: List<Result<List<Album>>> = emptyList()) : AlbumRepository {
 
     constructor(response: Result<List<Album>>) : this(listOf(response))

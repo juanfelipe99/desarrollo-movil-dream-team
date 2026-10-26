@@ -6,7 +6,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 
-/** Navega solo si la acción existe desde la pantalla actual, con args si la pantalla los pide, y devuelve si navegó. */
+/** Navega solo si la acción existe desde la pantalla actual y devuelve si navegó. */
 fun NavController.navigateIfPossible(@IdRes actionId: Int, args: Bundle? = null): Boolean {
     // Si la acción no existe desde aquí, ya se navegó con un toque anterior
     if (currentDestination?.getAction(actionId) == null) return false

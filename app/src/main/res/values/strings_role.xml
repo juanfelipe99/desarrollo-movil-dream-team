@@ -27,5 +27,8 @@
     <string name="snackbar_role_collector">Ahora estás en modo coleccionista</string>
 
     <string name="cd_change_role">Cambiar de rol. Modo actual: %1$s</string>
+    <string name="cd_theme_mode_light">Tema claro</string>
+    <string name="cd_theme_mode_system">Tema del sistema</string>
+    <string name="cd_theme_mode_dark">Tema oscuro</string>
     <string name="cd_theme_mode_toggle">Tema: %1$s. Toca para cambiar a %2$s</string>
 </resources>

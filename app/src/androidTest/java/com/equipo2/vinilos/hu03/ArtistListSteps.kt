@@ -6,10 +6,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.platform.app.InstrumentationRegistry
-import com.equipo2.vinilos.AppContainer
 import com.equipo2.vinilos.R
-import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Artist
 import com.equipo2.vinilos.data.model.ArtistType
 import com.equipo2.vinilos.data.repository.ArtistRepository
@@ -44,13 +41,6 @@ fun testMusician(id: Int, name: String, birthYear: Int) =
 
 fun testBand(id: Int, name: String, creationYear: Int) =
     Artist(id, name, image = "", type = ArtistType.BAND, date = LocalDate.of(creationYear, 1, 1))
-
-fun useArtistRepository(repository: ArtistRepository) {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-    VinilosApplication.container = object : AppContainer(context) {
-        override val artistRepository: ArtistRepository = repository
-    }
-}
 
 /** Entra como visitante y abre la pestaña Artistas de la barra inferior. */
 fun openArtists() {

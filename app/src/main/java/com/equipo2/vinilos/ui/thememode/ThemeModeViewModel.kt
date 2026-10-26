@@ -19,7 +19,6 @@ class ThemeModeViewModel(private val repository: ThemeModeRepository) : ViewMode
     val themeMode: StateFlow<ThemeMode?> = currentMode
 
     init {
-        // Lee el tema guardado y lo actualiza cada vez que se guarda uno nuevo
         viewModelScope.launch { repository.themeMode.collect { currentMode.value = it } }
     }
 

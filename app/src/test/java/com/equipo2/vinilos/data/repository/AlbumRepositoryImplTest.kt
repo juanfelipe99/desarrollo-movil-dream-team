@@ -38,19 +38,14 @@ class AlbumRepositoryImplTest {
     }
 
     @Test
-    fun getAlbums_conMusicosYBandas_leeLaFechaDeCadaUno() = runTest {
+    fun getAlbums_conMusicosYBandas_leeCadaInterprete() = runTest {
         server.respond("albums", ALBUMS_JSON)
 
         val albums = repository.getAlbums().getOrThrow()
 
-        val musician = albums[0].performers.single()
-        assertEquals("1948-07-16T00:00:00.000Z", musician.birthDate)
-        assertEquals(null, musician.creationDate)
-
-        val band = albums[2].performers.single()
-        assertEquals("Queen", band.name)
-        assertEquals(null, band.birthDate)
-        assertEquals("1970-01-01T00:00:00.000Z", band.creationDate)
+        // Los músicos traen birthDate y las bandas creationDate, y ninguno de los dos debe hacer fallar la lectura
+        assertEquals("Rubén Blades Bellido de Luna", albums[0].performers.single().name)
+        assertEquals("Queen", albums[2].performers.single().name)
     }
 
     @Test

@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 /** Resultado de enviar el álbum a la API. */
 sealed interface AlbumCreateEvent {
-    /** La API creó el álbum con este id. */
     data class Saved(val albumId: Int) : AlbumCreateEvent
 
     /** No se pudo crear, y el formulario conserva lo escrito. */

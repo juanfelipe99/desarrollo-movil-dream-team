@@ -17,6 +17,7 @@ import com.equipo2.vinilos.data.repository.DataError
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.enterAs
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useAlbumRepository
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -87,6 +88,7 @@ class HU01CatalogStatesTest {
 
         val errorTitle = context.getString(R.string.error_load_title, context.getString(R.string.album_list_object))
         onView(withText(errorTitle)).check(matches(isDisplayed()))
+        onView(withText(R.string.error_network_body)).check(matches(isDisplayed()))
         onView(withId(R.id.albumGrid)).check(matches(withEffectiveVisibility(Visibility.GONE)))
 
         onView(withId(R.id.stateRetry)).perform(click())
@@ -96,7 +98,7 @@ class HU01CatalogStatesTest {
     }
 
     @Test
-    fun siElReintentoTambienFalla_sigueMostrandoElError() {
+    fun siElServidorFalla_avisaQueNoEstaDisponible_yReintentarSigueMostrandoElError() {
         useAlbumRepository(CatalogAlbumRepository(Result.failure(DataError.Server(500))))
         app.launch()
         enterAs(collector = false)
@@ -105,6 +107,7 @@ class HU01CatalogStatesTest {
 
         val errorTitle = context.getString(R.string.error_load_title, context.getString(R.string.album_list_object))
         onView(withText(errorTitle)).check(matches(isDisplayed()))
+        onView(withText(R.string.error_server_body)).check(matches(isDisplayed()))
         onView(withId(R.id.stateRetry)).check(matches(isDisplayed()))
     }
 

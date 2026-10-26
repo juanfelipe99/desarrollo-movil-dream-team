@@ -11,7 +11,7 @@ import com.equipo2.vinilos.R
 import com.equipo2.vinilos.data.model.Album
 import com.equipo2.vinilos.databinding.ItemAlbumBinding
 
-/** Tarjetas del catálogo: portada, nombre, año y género, y el distintivo «Nuevo». Al tocar una avisa con su álbum. */
+/** Tarjetas del catálogo. Al tocar una avisa con su álbum. */
 class AlbumAdapter(
     private val onAlbumClick: (Album) -> Unit,
 ) : ListAdapter<AlbumItem, AlbumAdapter.AlbumViewHolder>(AlbumDiff) {
@@ -36,6 +36,8 @@ class AlbumAdapter(
 
             binding.albumCover.load(album.cover)
             binding.albumName.text = album.name
+            binding.albumPerformers.text = album.performers.joinToString(", ") { it.name }
+                .ifEmpty { context.getString(R.string.album_list_no_performers) }
             binding.albumSubtitle.text = context.getString(R.string.album_list_subtitle, album.releaseDate.year, album.genre)
             binding.albumNewBadge.isVisible = item.isNew
         }

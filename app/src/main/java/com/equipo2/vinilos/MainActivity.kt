@@ -14,13 +14,16 @@ import com.equipo2.vinilos.ui.common.AppSnackbar
 import com.equipo2.vinilos.ui.common.applySystemBarsPadding
 import com.equipo2.vinilos.ui.role.changedMessageRes
 import com.equipo2.vinilos.ui.role.chip.RoleChip
+import com.google.android.material.snackbar.Snackbar
 
-/** Única actividad de la app: contiene la barra superior, las pantallas y la barra inferior. */
+/** Única actividad de la app, con la barra superior, las pantallas y la barra inferior. */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     var snackbarAnchor: View? = null
+
+    private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,20 +40,24 @@ class MainActivity : AppCompatActivity() {
     /** Muestra un aviso encima de anchor, snackbarAnchor o la barra inferior, el primero visible. */
     fun showSnackbar(message: CharSequence, isError: Boolean = false, anchor: View? = null) {
         val target = listOf(anchor, snackbarAnchor, binding.bottomNav).firstOrNull { it?.isShown == true }
-        AppSnackbar.show(binding.root, message, isError, target)
+        snackbar = AppSnackbar.show(binding.root, message, isError, target)
     }
 
     private fun setUpNavigation(firstLaunch: Boolean) {
         val navController = binding.navHost.getFragment<NavHostFragment>().navController
         binding.toolbar.setupWithNavController(navController, AppBarConfiguration(binding.bottomNav.menu))
         binding.bottomNav.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, destination, _ -> updateBars(destination.id) }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // El aviso es de la pantalla que se deja, y la nueva muestra el suyo después de llegar
+            snackbar?.dismiss()
+            updateBars(destination.id)
+        }
 
         // Al abrir va a la selección de rol, y al recrearse se queda donde estaba
         if (firstLaunch) navController.navigate(R.id.action_global_roleSelect)
     }
 
-    /** Oculta lo que no lleva cada pantalla */
+    /** Oculta las barras que no lleva cada pantalla. */
     private fun updateBars(@IdRes destinationId: Int) {
         val roleSelect = destinationId == R.id.roleSelectFragment
         val albumCreate = destinationId == R.id.albumCreateFragment

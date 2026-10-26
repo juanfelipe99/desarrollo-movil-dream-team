@@ -27,7 +27,7 @@ class FakeAlbumRepository : AlbumRepository {
     var albumRequests = 0
         private set
 
-    /** Respuesta del catálogo; puede esperar un CompletableDeferred para probar la carga. */
+    /** Respuesta del catálogo, que puede esperar un CompletableDeferred para probar la carga. */
     var albums: suspend () -> Result<List<Album>> = { Result.success(emptyList()) }
 
     override suspend fun getAlbums(): Result<List<Album>> {
@@ -35,10 +35,18 @@ class FakeAlbumRepository : AlbumRepository {
         return albums()
     }
 
-    override suspend fun getAlbumById(id: Int): Result<Album> = Result.failure(UnsupportedOperationException())
+    /** Ids pedidos al detalle, en orden. */
+    val detailRequests = mutableListOf<Int>()
+
+    /** Respuesta del detalle, que puede esperar un CompletableDeferred para probar la carga. */
+    var detail: suspend () -> Result<Album> = { Result.failure(UnsupportedOperationException()) }
+
+    override suspend fun getAlbumById(id: Int): Result<Album> {
+        detailRequests += id
+        return detail()
+    }
 }
 
-/** Repositorio de rol en memoria. */
 class FakeRoleRepository(initial: Role) : RoleRepository {
 
     override val role = MutableStateFlow(initial)
@@ -48,7 +56,6 @@ class FakeRoleRepository(initial: Role) : RoleRepository {
     }
 }
 
-/** Repositorio de tema en memoria. */
 class FakeThemeModeRepository(initial: ThemeMode) : ThemeModeRepository {
 
     override val themeMode = MutableStateFlow(initial)

@@ -89,6 +89,18 @@
         <item name="tint">@color/md_on_primary_container</item>
     </style>
 
+    <!-- Botón de solo ícono del control de tema, de 48 dp de ancho. -->
+    <style name="Widget.Vinilos.ThemeModeButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconSize">20dp</item>
+    </style>
+
     <style name="Widget.Vinilos.MenuDivider" parent="Widget.Vinilos.Divider">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>

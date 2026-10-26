@@ -16,6 +16,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.equipo2.vinilos.R
 import com.equipo2.vinilos.support.VinilosRule
 import com.equipo2.vinilos.support.toolbarTitle
+import com.equipo2.vinilos.support.useArtistRepository
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

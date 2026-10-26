@@ -28,7 +28,7 @@ class VinilosRule : ExternalResource() {
             shell("settings put global $scale 0")
         }
 
-        // Render puede tardar en despertar más de lo que Espresso espera por defecto
+        // El servidor puede tardar en despertar más de lo que Espresso espera por defecto
         IdlingPolicies.setIdlingResourceTimeout(2, TimeUnit.MINUTES)
         IdlingPolicies.setMasterPolicyTimeout(2, TimeUnit.MINUTES)
         IdlingRegistry.getInstance().register(apiIdling)

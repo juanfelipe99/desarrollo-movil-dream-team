@@ -46,7 +46,7 @@ class ArtistListFragment : Fragment(R.layout.fragment_artist_list) {
         }
     }
 
-    /** Filas de artistas, que abren el detalle al tocar una, el contador y los estados de carga, vacío y error con «Reintentar». */
+    /** Filas que abren el detalle al tocar una, el contador y los estados de carga, vacío y error. */
     private fun setUpList(binding: FragmentArtistListBinding) {
         val adapter = ArtistAdapter { artist ->
             findNavController().navigateIfPossible(R.id.action_artistList_to_artistDetail, ArtistDetailFragment.args(artist))
@@ -62,7 +62,7 @@ class ArtistListFragment : Fragment(R.layout.fragment_artist_list) {
                     getString(R.string.artist_list_empty_title),
                     getString(R.string.artist_list_empty_body),
                 )
-                UiState.Error -> binding.artistsMessage.showError(getString(R.string.artist_list_object)) { viewModel.retry() }
+                is UiState.Error -> binding.artistsMessage.showError(getString(R.string.artist_list_object), state.reason) { viewModel.retry() }
                 is UiState.Success -> adapter.submitList(state.data)
             }
 
@@ -72,7 +72,7 @@ class ArtistListFragment : Fragment(R.layout.fragment_artist_list) {
             // Los filtros y el contador se quedan en el vacío para poder cambiar de filtro
             binding.artistHeader.isVisible = state is UiState.Success || state == UiState.Empty
             binding.artistsLoading.root.isVisible = state == UiState.Loading
-            binding.artistsMessage.root.isVisible = state == UiState.Empty || state == UiState.Error
+            binding.artistsMessage.root.isVisible = state == UiState.Empty || state is UiState.Error
             binding.artistList.isVisible = state is UiState.Success
         }
     }

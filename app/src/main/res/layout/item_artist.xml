@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Fila de artista: foto o iniciales, nombre, etiqueta Músico o Banda con su año, y flecha. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:importantForAccessibility="no"
-                android:textAppearance="@style/TextAppearance.Vinilos.TitleMedium"
+                android:textAppearance="@style/TextAppearance.Vinilos.BodyLarge.Bold"
                 android:textColor="@color/md_on_surface_variant"
                 tools:text="RB" />
 
@@ -57,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textAppearance="@style/TextAppearance.Vinilos.BodyLarge"
+                android:textAppearance="@style/TextAppearance.Vinilos.BodyLarge.SemiBold"
                 android:textColor="@color/md_on_surface"
                 tools:text="Rubén Blades Bellido de Luna" />
 
@@ -90,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:textAppearance="@style/TextAppearance.Vinilos.LabelMedium"
+                        android:textAppearance="@style/TextAppearance.Vinilos.LabelMedium.SemiBold"
                         android:textColor="@color/md_on_surface"
                         tools:text="@string/artist_type_musician" />
                 </LinearLayout>

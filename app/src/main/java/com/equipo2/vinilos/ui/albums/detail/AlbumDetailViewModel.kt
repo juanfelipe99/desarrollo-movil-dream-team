@@ -6,47 +6,48 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.equipo2.vinilos.VinilosApplication
 import com.equipo2.vinilos.data.model.Album
+import com.equipo2.vinilos.data.repository.AlbumRepository
+import com.equipo2.vinilos.ui.state.UiState
+import com.equipo2.vinilos.ui.state.toErrorReason
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/** Detalle de un álbum (HU02): carga, éxito o error, y se conserva al girar. */
 class AlbumDetailViewModel(
+    private val repository: AlbumRepository,
     private val albumId: Int,
 ) : ViewModel() {
 
-    private val _album = MutableStateFlow<Album?>(null)
-    val album: StateFlow<Album?> = _album.asStateFlow()
+    private val _state = MutableStateFlow<UiState<Album>>(UiState.Loading)
+    val state: StateFlow<UiState<Album>> = _state.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+    private var loading: Job? = null
 
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
+    init {
+        load()
+    }
 
-    fun loadAlbum() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+    fun retry() = load()
 
-            VinilosApplication.container.albumRepository
-                .getAlbumById(albumId)
-                .onSuccess { result ->
-                    _album.value = result
-                }
-                .onFailure { exception ->
-                    _error.value = exception.message ?: "No se pudo cargar el álbum."
-                }
+    private fun load() {
+        // Si ya hay una petición en curso no se lanza otra
+        if (loading?.isActive == true) return
 
-            _isLoading.value = false
+        _state.value = UiState.Loading
+        loading = viewModelScope.launch {
+            _state.value = repository.getAlbumById(albumId).fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.toErrorReason()) },
+            )
         }
     }
 
     companion object {
         fun factory(albumId: Int) = viewModelFactory {
-            initializer {
-                AlbumDetailViewModel(albumId)
-            }
+            initializer { AlbumDetailViewModel(VinilosApplication.container.albumRepository, albumId) }
         }
     }
 }

@@ -20,13 +20,14 @@ object AppSnackbar {
     private const val DURATION_MS = 4000
 
     /** Muestra el aviso, y con anchor aparece encima de esa vista. */
-    fun show(root: View, message: CharSequence, isError: Boolean = false, anchor: View? = null) {
+    fun show(root: View, message: CharSequence, isError: Boolean = false, anchor: View? = null): Snackbar {
         val snackbar = Snackbar.make(root, message, DURATION_MS)
         snackbar.anchorView = anchor
         // Material mide el anchor sin descontar el padding de root, que ya incluye las barras
         if (anchor != null) snackbar.view.updateLayoutParams<ViewGroup.MarginLayoutParams> { bottomMargin -= root.paddingBottom }
         snackbar.customize(isError)
         snackbar.show()
+        return snackbar
     }
 
     private fun Snackbar.customize(isError: Boolean) {

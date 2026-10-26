@@ -19,7 +19,6 @@ class RoleViewModel(private val repository: RoleRepository) : ViewModel() {
     val role: StateFlow<Role?> = currentRole
 
     init {
-        // Lee el rol guardado y lo actualiza cada vez que se guarda uno nuevo
         viewModelScope.launch { repository.role.collect { currentRole.value = it } }
     }
 

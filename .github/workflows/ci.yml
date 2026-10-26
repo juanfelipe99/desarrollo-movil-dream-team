@@ -27,20 +27,8 @@ jobs:
         run: ./gradlew assembleDebug assembleDebugAndroidTest
 
       - name: Pruebas unitarias
-        id: unit
         run: ./gradlew testDebugUnitTest
-
-      - name: Resultados de las pruebas unitarias
-        if: ${{ !cancelled() && steps.unit.outcome != 'skipped' }}
-        run: python3 .github/scripts/test_report.py "Pruebas unitarias" "app/build/test-results/testDebugUnitTest/*.xml"
 
       - name: Lint
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: ./gradlew lintDebug
-
-      - name: Guardar reportes
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reportes
-          path: app/build/reports/
