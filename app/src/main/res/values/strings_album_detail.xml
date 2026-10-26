@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="album_detail_title">Álbum</string>
+    <string name="album_cover_description">Portada del álbum</string>
+
+    <string name="album_detail_no_performers">Sin intérpretes asociados</string>
+    <string name="album_detail_release_date_label">Fecha de lanzamiento</string>
+    <string name="album_detail_genre_label">Género</string>
+    <string name="album_detail_record_label_label">Sello discográfico</string>
+
+    <string name="album_detail_description_title">Descripción</string>
+    <string name="album_detail_expand">Ver más</string>
+    <string name="album_detail_collapse">Ver menos</string>
+
+    <string name="album_detail_tracks_title">Tracks</string>
+    <plurals name="album_detail_tracks_count">
+        <item quantity="one">· %d canción</item>
+        <item quantity="many">· %d canciones</item>
+        <item quantity="other">· %d canciones</item>
+    </plurals>
+    <string name="album_detail_track_number">%1$d</string>
+    <string name="album_detail_tracks_empty_title">Este álbum aún no tiene tracks</string>
+    <string name="album_detail_tracks_empty_body">Las canciones aparecerán aquí cuando se registren.</string>
+
+    <string name="album_detail_comments_title">Comentarios</string>
+    <plurals name="album_detail_comments_count">
+        <item quantity="one">· %d comentario</item>
+        <item quantity="many">· %d comentarios</item>
+        <item quantity="other">· %d comentarios</item>
+    </plurals>
+    <string name="album_detail_comments_empty_title">Sin comentarios</string>
+    <string name="album_detail_comments_empty_body">Ningún coleccionista ha comentado este álbum todavía.</string>
+    <string name="album_detail_comment_author_unknown">Coleccionista</string>
+    <string name="album_detail_comment_rating">%1$d/5</string>
+    <string name="album_detail_comment_text">“%1$s”</string>
+    <string name="cd_album_detail_comment_rating">Calificación: %1$d de 5</string>
+
+    <string name="album_detail_loading">Cargando álbum…</string>
+    <string name="album_detail_object">el álbum</string>
+</resources>

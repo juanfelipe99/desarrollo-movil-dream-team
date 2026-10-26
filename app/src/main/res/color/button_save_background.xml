@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Colores de Guardar, que se deshabilita mientras guarda. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/md_outline_variant" android:state_enabled="false" />
+    <item android:color="@color/md_primary" />
+</selector>

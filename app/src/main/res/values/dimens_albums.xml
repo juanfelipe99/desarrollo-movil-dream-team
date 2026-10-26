@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 10 + 6 = 16 dp al borde y 6 + 6 = 12 dp entre tarjetas, como el esqueleto de carga. -->
+    <dimen name="album_grid_padding">10dp</dimen>
+    <dimen name="album_grid_item_margin">6dp</dimen>
+
+    <integer name="album_grid_columns">2</integer>
+</resources>

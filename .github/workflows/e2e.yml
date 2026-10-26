@@ -1,0 +1,63 @@
+name: E2E
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    name: E2E (API ${{ matrix.api }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - api: 21
+            arch: x86
+          - api: 34
+            arch: x86_64
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Habilitar la virtualización para el emulador
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Compilar la app y las pruebas
+        run: ./gradlew assembleDebug assembleDebugAndroidTest
+
+      # Cada prueba aparece en el log con ✅ o ❌, y al final los errores y los totales
+      - name: Ejecutar las pruebas en el emulador
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          arch: ${{ matrix.arch }}
+          target: default
+          disable-animations: true
+          script: |
+            ./gradlew installDebug installDebugAndroidTest
+            adb shell am instrument -w -r com.equipo2.vinilos.test/androidx.test.runner.AndroidJUnitRunner > e2e.txt
+            tr -d '\r' < e2e.txt | awk -F= '/^INSTRUMENTATION_STATUS: class=/ { c = $2; sub(/.*\./, "", c) } /^INSTRUMENTATION_STATUS: test=/ { t = $2 } /^INSTRUMENTATION_STATUS_CODE: 0$/ { print "✅ " c " > " t } /^INSTRUMENTATION_STATUS_CODE: -[12]$/ { print "❌ " c " > " t }'
+            sed -n '/^INSTRUMENTATION_RESULT: stream=/,/^INSTRUMENTATION_CODE/p' e2e.txt
+            grep -q '^OK (' e2e.txt

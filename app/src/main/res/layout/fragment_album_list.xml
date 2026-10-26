@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Abajo queda espacio para que el botón «+» no tape la última fila. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/albumGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/album_grid_padding"
+        android:paddingTop="@dimen/album_grid_padding"
+        android:paddingBottom="88dp"
+        android:visibility="gone"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_album"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/albumsLoading"
+        layout="@layout/view_loading"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/albumsMessage"
+        layout="@layout/view_state_message"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/createAlbumButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/cd_create_album"
+        android:visibility="gone"
+        app:backgroundTint="@color/md_primary"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@color/md_on_primary" />
+</FrameLayout>

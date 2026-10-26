@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compilar el APK
+        run: |
+          ./gradlew assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk "vinilos-$GITHUB_REF_NAME.apk"
+
+      - name: Crear el release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "vinilos-$GITHUB_REF_NAME.apk" \
+            --verify-tag \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

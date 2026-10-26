@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="artist_filter_all">Todos</string>
+    <string name="artist_filter_musicians">Músicos</string>
+    <string name="artist_filter_bands">Bandas</string>
+
+    <plurals name="artist_list_count">
+        <item quantity="one">%d artista</item>
+        <item quantity="many">%d artistas</item>
+        <item quantity="other">%d artistas</item>
+    </plurals>
+
+    <string name="artist_type_musician">Músico</string>
+    <string name="artist_type_band">Banda</string>
+    <string name="artist_list_born_in">Nació en %1$d</string>
+    <string name="artist_list_created_in">Creada en %1$d</string>
+
+    <string name="artist_list_loading">Cargando artistas…</string>
+    <string name="artist_list_object">los artistas</string>
+    <string name="artist_list_empty_title">No hay artistas para mostrar</string>
+    <string name="artist_list_empty_body">Cuando se registren músicos o bandas aparecerán aquí.</string>
+
+    <string name="artist_detail_title">Artista</string>
+    <string name="artist_detail_soon_body">El detalle de los artistas llegará en la próxima versión de la app.</string>
+</resources>

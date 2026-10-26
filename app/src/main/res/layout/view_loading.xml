@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:indicatorColor="@color/md_primary"
+        app:trackColor="@color/md_primary_container"
+        app:trackThickness="4dp" />
+
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityLiveRegion="polite"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:text="@string/loading_default"
+        android:textAppearance="@style/TextAppearance.Vinilos.BodyMedium"
+        android:textColor="@color/md_on_surface_variant" />
+
+    <FrameLayout
+        android:id="@+id/skeleton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="noHideDescendants" />
+</LinearLayout>

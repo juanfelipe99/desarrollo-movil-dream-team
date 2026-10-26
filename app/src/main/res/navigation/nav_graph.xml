@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/albumListFragment">
+
+    <action
+        android:id="@+id/action_global_roleSelect"
+        app:destination="@id/roleSelectFragment"
+        app:popUpTo="@id/albumListFragment" />
+
+    <fragment
+        android:id="@+id/roleSelectFragment"
+        android:name="com.equipo2.vinilos.ui.role.select.RoleSelectFragment" />
+
+    <fragment
+        android:id="@+id/albumListFragment"
+        android:name="com.equipo2.vinilos.ui.albums.list.AlbumListFragment"
+        android:label="@string/album_list_title">
+
+        <action
+            android:id="@+id/action_albumList_to_albumCreate"
+            app:destination="@id/albumCreateFragment" />
+
+        <action
+            android:id="@+id/action_albumList_to_albumDetail"
+            app:destination="@id/albumDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/albumCreateFragment"
+        android:name="com.equipo2.vinilos.ui.albums.create.AlbumCreateFragment"
+        android:label="@string/album_create_title" />
+
+    <fragment
+        android:id="@+id/albumDetailFragment"
+        android:name="com.equipo2.vinilos.ui.albums.detail.AlbumDetailFragment"
+        android:label="@string/album_detail_title">
+
+        <argument
+            android:name="albumId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artistListFragment"
+        android:name="com.equipo2.vinilos.ui.artists.list.ArtistListFragment"
+        android:label="@string/artist_list_title">
+
+        <action
+            android:id="@+id/action_artistList_to_artistDetail"
+            app:destination="@id/artistDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artistDetailFragment"
+        android:name="com.equipo2.vinilos.ui.artists.detail.ArtistDetailFragment"
+        android:label="@string/artist_detail_title">
+
+        <argument
+            android:name="artistId"
+            app:argType="integer" />
+
+        <argument
+            android:name="artistType"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectorListFragment"
+        android:name="com.equipo2.vinilos.ui.collectors.CollectorListFragment"
+        android:label="@string/collector_list_title" />
+</navigation>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Vinilos.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/album_grid_item_margin"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- El marcador queda detrás y se ve mientras la portada carga o si falla -->
+        <FrameLayout
+            android:id="@+id/albumCoverFrame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/md_surface_variant"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                app:srcCompat="@drawable/ic_album"
+                app:tint="@color/placeholder_icon" />
+
+            <ImageView
+                android:id="@+id/albumCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/albumNewBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_badge_new"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="@string/album_list_new_badge"
+                android:textAppearance="@style/TextAppearance.Vinilos.LabelMedium.Bold"
+                android:textColor="@color/md_on_primary"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/albumName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.Vinilos.BodyLarge.SemiBold"
+            android:textColor="@color/md_on_surface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/albumCoverFrame"
+            tools:text="Buscando América" />
+
+        <TextView
+            android:id="@+id/albumPerformers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Vinilos.BodyMedium"
+            android:textColor="@color/md_on_surface_variant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/albumName"
+            tools:text="Rubén Blades" />
+
+        <TextView
+            android:id="@+id/albumSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Vinilos.LabelMedium"
+            android:textColor="@color/md_on_surface_variant"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/albumPerformers"
+            tools:text="1984 · Salsa" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

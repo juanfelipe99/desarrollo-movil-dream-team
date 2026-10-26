@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp">
+
+            <!-- La pantalla decide si hay chip y el chip decide si ya tiene un rol para mostrar. -->
+            <FrameLayout
+                android:id="@+id/roleChipSlot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp">
+
+                <include
+                    android:id="@+id/roleChip"
+                    layout="@layout/view_role_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/touch_target" />
+            </FrameLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <View
+            android:id="@+id/toolbarDivider"
+            style="@style/Widget.Vinilos.Divider" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/navHost"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" />
+
+        <View
+            android:id="@+id/bottomNavDivider"
+            style="@style/Widget.Vinilos.Divider" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

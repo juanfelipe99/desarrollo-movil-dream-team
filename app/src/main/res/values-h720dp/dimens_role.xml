@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="role_select_logo">120dp</dimen>
+    <dimen name="role_select_padding_vertical">32dp</dimen>
+    <dimen name="role_select_block_gap">40dp</dimen>
+</resources>
